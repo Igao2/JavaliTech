@@ -33,11 +33,9 @@
  - ######  5º Rodar o (```npm install```);
 
 ### Rodar projeto
-###### Para rodar o projeto, deve-se ter o Node e o React rodando simultaneamente, para isso, deve-se seguir o processo:
+###### Para rodar o projeto, deve-se ter o React rodando, para isso, deve-se seguir o processo:
  - ######  1º Navegue até 'client' (```cd client```);
  - ######  2º Inicio o projeto com (```npm start```);
- - ######  3º Deve-se abrir um segundo terminal, onde neste, navegara até 'server' (```cd server```);
- - ######  4º Iniciar a API com (```npm start```);
 
 ### Regras do Commit
 ###### Para tornar o commit organizado e padronizado deve-se seguir as seguintes regras:
