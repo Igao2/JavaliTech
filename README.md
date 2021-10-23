@@ -28,9 +28,6 @@
 ###### Após fazer o clone do repositorio em uma pasta local (em sua maquina), navegue até a o repositorio do projeto pelo terminal e faça os seguintes processos:
  - ######  1º Navegue até 'client' (```cd client```);
  - ######  2º Rodar o (```npm install```);
- - ######  3º Retornar para a raiz do projeto (```cd ..```);
- - ######  4º Deve navegar até 'server' (```cd server```);
- - ######  5º Rodar o (```npm install```);
 
 ### Rodar projeto
 ###### Para rodar o projeto, deve-se ter o React rodando, para isso, deve-se seguir o processo:
@@ -43,6 +40,25 @@
  - ```MM/DD Mudança (em inglês)```
  - ######  Description 
  - ```- Escreva a descrição aqui... (em português)```
+
+### Bibliotacas e FrameWork utilizados
+##### Para o desenvolvimento deste sistema web, foram utilizados algumas bibliotecas e frameworks, estes, listados a baixo, com os comando de instalação ao lado:
+##### Lembrando que para instalar, basta estar na pasta raiz do projeto - (```cd client```)
+
+ - ######  styled-components (https://styled-components.com) - ```npm install --save styled-components``` ou ```yarn add styled-components```
+ - ######  reactstrap (https://reactstrap.github.io) - ```npm install --save reactstrap react react-dom```
+ - ######  Blueprint (https://blueprintjs.com/docs/) - ```npm install --save reactstrap react react-dom```
+ - ######  1º fontawesome (https://fontawesome.com/v5.15/how-to-use/on-the-web/using-with/react) - ```npm i --save @fortawesome/fontawesome-svg-core | npm install --save @fortawesome/free-solid-svg-icons |  npm install --save @fortawesome/react-fontawesome``` ou ```yarn add @fortawesome/fontawesome-svg-core | yarn add @fortawesome/free-solid-svg-icons | yarn add @fortawesome/react-fontawesome```
+ - ######  2º fontawesome (https://fontawesome.com/v5.15/how-to-use/on-the-web/using-with/react) - ```npm install --save @fortawesome/free-brands-svg-icons | npm install --save @fortawesome/free-regular-svg-icons```
+
+#
+### Visualizar as edições no ```README.md```
+##### Para que seja visualizar as edições feitas nos arquivo ```README.md``` enquando o edita no vsCode, baixe a extenção: Markdown Preview Enhanced e siga o seginte processo:
+ - ######  1º Abra o arquivo ```READEME.mb```
+ - ######  2º Aperte  ```ctrl + shift + v```
+ - ######  3º Faça as edições e visualize os resultados em tempo real
+
+
 #
 ### ALGUNS LINKS:
 - ###### [Documento Temporario](https://docs.google.com/document/d/1R4NLWr8RZt11Kn9XUsH8bMgqU1FCFathNo6xrvawrxc/edit?usp=sharing)
