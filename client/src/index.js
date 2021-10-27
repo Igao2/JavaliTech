@@ -4,6 +4,6 @@ import Index from './views/index';
 import TestSearch from './views/search';
 
 ReactDOM.render(
-    <Index />,
+    <TestSearch />,
     document.getElementById('root')
 );
