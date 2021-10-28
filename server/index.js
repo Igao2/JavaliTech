@@ -2,8 +2,10 @@ const express = require('express');
 const favicon = require('serve-favicon');
 const path = require('path');
 const app = express();
-const router = require("./routes/routes")
+const router = require("./routes/routes");
+const cors = require('cors');
 
+app.use(cors())
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(router)

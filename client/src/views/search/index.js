@@ -28,13 +28,15 @@ function App() {
         event.target.value = code;
 
         if (code.length === 6) {
-            searchResultManager(code).then(v => {
-                console.log("ori:");
-                console.log(v.data);
+            searchResultManager(code).then(res => {
+                if (res.data === 204) alert("OS não existe")
+                else if (res.data === 417) alert("OS corronpida")
+                else if (res.data === 500) alert("Erro de sistema")
+                else setValue(res.data)
             });
-        }
+        } else
+            setValue({ ...null, "user_photo": ["", ""] });
 
-        console.log(code)
     }
 
     // O css da tabela está no arquivo "temporarycss.css", é um css de teste só pra não ficar tão ilegível como estava.
@@ -79,7 +81,9 @@ function App() {
                             <th>{value.status}</th>
                             <th>{value.service_value}</th>
                             <th>{value.user_name}</th>
-                            <th>{value.user_photo}</th>
+                            <th>
+                                <img width="50" src={value.user_photo[0]} />
+                            </th>
                         </tr>
                     </tbody>
                 </table>

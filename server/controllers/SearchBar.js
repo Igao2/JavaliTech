@@ -65,11 +65,12 @@ class SearchBar {
 
                 if (fs.existsSync("./public/userImages/" + userPhoto.nome)) {
                     userPhoto.nome = definitions.projectServerUrl + "userImages/" + userPhoto.nome;
-                    resultJson.user_photo = userPhoto;
+
+                    resultJson.user_photo = [userPhoto.nome, userPhoto.ajuste];
                 } else {
                     userPhoto.nome = definitions.projectServerUrl + "userImages/standard_photo.png";
                     userPhoto.ajuste = "";
-                    resultJson.user_photo = userPhoto;
+                    resultJson.user_photo = [userPhoto.nome, userPhoto.ajuste];
                 }
 
 
