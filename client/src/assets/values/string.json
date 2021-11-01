@@ -1,0 +1,17 @@
+﻿	{
+		"nomeApp": "JavaliTech",
+		"nomeApp_sistema": "Sistema JavaliTech",
+		"nomeApp_descricao": "Sistema web para gerenciamento de Ordem de Serviços para assistências técnicas de celulares/smartphone.",
+		
+		"devs": "2021 - Equipe JAVALITECH",
+		"dev01": "CARLOS EDUARDO SANTOS BARBOSA DE CARVALHO",
+		"dev02": "CESAR APARECIDO LOURENCO",
+		"dev03": "DENILSON FABIANO DE ARAUJO",
+		"dev04": "ELEAZAR JOSE RIBEIRO",
+		"dev05": "IGOR DA SILVA COSTA",
+		"dev06": "LEANDRO DE MEIRELLES",
+
+		"login": "Iniciar Sessão",
+		"search": "Buscar",
+		"search_OS": "Procure por uma Ordem de Serviço:"
+	}
