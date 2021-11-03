@@ -14,7 +14,7 @@ class HeaderContainerOn extends React.Component {
 			<ContainerHeaderOn>
 				<CenterHeaderOn></CenterHeaderOn>
 				<RightHeaderOn>
-					<Button block color="danger" >{String.search}</Button>
+					<Button block color="dark" >{String.search}</Button>
 				</RightHeaderOn>
 			</ContainerHeaderOn>
 		)

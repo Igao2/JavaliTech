@@ -12,6 +12,12 @@
 		"dev06": "LEANDRO DE MEIRELLES",
 
 		"login": "Iniciar Sessão",
+		"login_init": "Entre com os dados do Login:",
 		"search": "Buscar",
-		"search_OS": "Procure por uma Ordem de Serviço:"
+		"search_OS": "Procure por uma Ordem de Serviço:",
+		"cod_OS": "Entre com o Codigo",
+
+		"alete00":"As mensagens de alerta apareceram aqui!",
+		"alete01":"Codigo não corresponde a uma ordem de serviço existente!",
+		"alert02":"Erro ao buscar ordem de serviço"
 	}
