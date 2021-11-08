@@ -11,11 +11,11 @@ import logo from '../../assets/images/icons/logo_black.svg';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input, Button, Alert, Form, FormGroup } from 'reactstrap';
-import Footer_auto from '../components/footers/footers';
+import Footer_off from '../components/footers/footers_off';
 
 
 function App() {
-		
+
 	return (
 		<div>
 			<Helmet>
@@ -29,7 +29,7 @@ function App() {
 			<ContainerOff>
 				<HeaderOff>
 
-					<HeaderContainerOff/>
+					<HeaderContainerOff />
 
 				</HeaderOff>
 				<BodyOff>
@@ -45,28 +45,28 @@ function App() {
 
 						<Form>
 							<FormGroup row>
-									<Input
-										valid
-										id="cod_OS"
-										name="number"
-										placeholder={String.cod_OS}
-										type="number"
-									/>
+								<Input
+									valid
+									id="cod_OS"
+									name="number"
+									placeholder={String.cod_OS}
+									type="number"
+								/>
 							</FormGroup>
 							<FormGroup row >
-									<Button>
-										{String.search}
-									</Button>
+								<Button>
+									{String.search}
+								</Button>
 							</FormGroup>
 						</Form>
 
 					</BodyOff_buttom>
-					
+
 				</BodyOff>
 				<FooterOff>
 
-					<Footer_auto/>
-					
+					<Footer_off />
+
 				</FooterOff>
 			</ContainerOff>
 		</div >

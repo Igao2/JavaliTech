@@ -1,6 +1,4 @@
-﻿/* eslint-disable-next-line */
-import styled from 'styled-components';
-
+﻿import styled from 'styled-components';
 
 // Estilo de telas MODO OFF
 export const ContainerOff = styled.div`
@@ -30,7 +28,7 @@ export const FooterOff = styled.footer`
 	margin-block-start: auto;
 `;
 
-export const BodyOff = styled.div`
+export const BodyOff = styled.main`
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-area: b;
@@ -39,22 +37,22 @@ export const BodyOff = styled.div`
 	grid-template-rows: 1fr 1fr;
 	grid-template-areas: "bt bt" "bb bb";
 
-	
+	overflow: auto;
 	width: 1000px;
 	margin: 0 auto;
 
-	@media(max-width: 1000px) {
+	@media(max-width: 1024px) {
 		width: 100%;
 	}
 `;
 
 //BodyOff
-export const BodyOff_top_off = styled.div`
+export const BodyOff_top_off = styled.main`
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-area: bt;
 
-
+	overflow: auto;
 	padding: 20px 40px;
 
 	h1{
@@ -89,13 +87,14 @@ export const BodyOff_top_off = styled.div`
 
 export const BodyOffIcon_home = styled.img`
 	justify-self: center;
-  width: 40vh;
+  	width: 40vh;
 `;
 
-export const BodyOff_buttom = styled.div`
+export const BodyOff_buttom = styled.main`
 	grid-area: bb;
 	margin-block-end: auto;
 
+	overflow: auto;
 	text-align-last: center;
 	padding: 10px 40px;
 
@@ -178,13 +177,13 @@ export const ContainerOn = styled.div`
 	margin: auto;
 	justify-content: center;
 
-	@media(max-width: 1000px) {
-		grid-template-columns: 0r 4fr;
+	@media(max-width: 1024px) {
+		grid-template-columns: 0px 4fr;
 	}
 	
 `;
 
-export const AreaBodyLeft = styled.nav`
+export const AreaBodyLeft = styled.div`
 	display: grid;
 	grid-template-columns: 1fr;
 	background-color: #222;
@@ -200,6 +199,11 @@ export const AreaBodyRight = styled.div`
 
 	grid-template-rows: 15vh 75vh 10vh;
 	grid-template-areas: "hr hr" "br br" "fr fr";
+
+	
+	@media(max-width: 1024px) {
+		grid-template-rows: 10vh 80vh 10vh;
+	}
 `;
 
 export const HeaderOn = styled.header`
@@ -213,29 +217,15 @@ export const HeaderOn_Nav = styled.header`
 	color: #fff !important;
 		
 	width: 100%;
-	// border-bottom: 2px solid #fff2;
 	text-align: center;
 `;
 
-export const HeaderIcon_Nav_pc = styled.img`
-  width: 15vh;
-  height: 100%;
+export const HeaderIcon_Nav_complet = styled.img`
+	width: 100%;
+	height: 100%;
+	padding: 30px;
 	display: inline;
 
-	@media(max-width: 1000px) {
-		display: none;
-	}
-`;
-
-export const HeaderIcon_Nav_mob = styled.img`
-  width: 15vh;
-  height: 100%;
-	display: none;
-	padding: 0 20px;
-
-	@media(max-width: 1000px) {
-		display: inline;
-	}
 `;
 
 export const FooterOn = styled.footer`
@@ -260,33 +250,61 @@ export const FooterOn_Nav = styled.footer`
 	margin-block-start: auto;
 `;
 
-export const BodyOn = styled.div`
+export const BodyOn = styled.main`
 	display: grid;
 	grid-template-columns: 1fr;
-	grid-area: b;
+	grid-area: br;
 	grid-template-areas: "m m";
 
 	grid-template-rows: 1fr 1fr;
 	grid-template-areas: "bt bt" "bb bb";
 
-	
+	overflow: auto;
 	width: 1000px;
 	margin: 0 auto;
 
-	@media(max-width: 1000px) {
+	background: #f505;
+
+	@media(max-width: 1280px) {
 		width: 100%;
 	}
 `;
 
-export const BodyOn_Nav = styled.div`
+export const BodyOn_Nav = styled.main`
 	display: grid;
 	grid-template-columns: 1fr;
-	grid-area: b;
-	grid-template-areas: "m m";
+	grid-template-areas: "bl bl";
 
-	grid-template-rows: 1fr 1fr;
-	grid-template-areas: "bt bt" "bb bb";
+	// grid-template-rows: 1fr 1fr;
 
+	overflow: auto;
+
+	a:hover{
+		color: #fff;
+		background: #d30000aa;
+		border-left: 8px solid #fff6;
+		
+		border-bottom: 1px solid #d3000088;
+		border-top: 1px solid #d3000088;
+	}
+
+	a:active, a:focus {
+		color: #222;
+		background: #fff;
+		border-left: 8px solid #fff;
+
+		
+		border-bottom: 1px solid #fff1;
+		border-top: 1px solid #fff1;
+	}
+
+
+`;
+
+export const ButtonMenu_UserP = styled.div`
+	width: 100%;
+	height: 40px;
+	background: #f00;
 `;
 
 
@@ -301,6 +319,85 @@ export const ContainerHeaderOn = styled.div`
 	margin: auto;
 	justify-content: center;
 
+	@media(max-width: 1024px) {
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+		padding: 2px;
+		grid-template-rows: 10vh;
+	}
+
+	a:hover{
+		color: #fff;
+		background: #FFf4;
+		border-bottom: 8px solid #fff6;
+	}
+
+	a:active, a:focus{
+		color: #222;
+		background: #FFf;
+		border-bottom: 0px solid #b30000;
+	}
+
+	svg{
+		width: 3vh !important;
+		height: 3vh;
+	}
+`;
+
+export const ContainerHeaderOn_MobMenu = styled.a`
+	display: none;	
+	margin: 0 auto;
+    align-self: center;
+
+	text-decoration: none;
+	color: #fff;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+	font-size: medium;
+
+	@media(max-width: 1024px) {
+		display: inline;
+		font-size: small;
+	}
+
+`;
+
+export const ContainerHeaderOn_LatPcMenu = styled.a`
+	display: block;	
+	margin: 0 auto;
+
+	text-align: start;
+
+	text-decoration: none;
+	color: #fff;
+    height: auto;
+    width: 100%;
+    padding: 20px 0 15px 10px;
+	font-size: medium;
+
+	background: #222;
+	border-bottom: 1px solid #fff1;
+	border-top: 1px solid #fff1;
+
+	@media(max-width: 1024px) {
+		display: none;
+	}
+
+	svg{
+		margin: 0 10px 0 5px;
+	}
+
+`;
+
+export const ContainerHeaderOn_PcMenu = styled.div`
+	display: inline;	
+	margin: 0 auto;
+    align-self: center;
+
+	@media(max-width: 1024px) {
+		display: none;
+	}
 `;
 
 export const CenterHeaderOn = styled.div``;
@@ -312,6 +409,7 @@ export const RightHeaderOn = styled.div`
 	text-align: center;
 
 	.btn{
+		margin: auto 5px;
 		background-color: #222;
 		border-color: #222;
 	}

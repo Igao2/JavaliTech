@@ -16,8 +16,20 @@
 		"search": "Buscar",
 		"search_OS": "Procure por uma Ordem de Serviço:",
 		"cod_OS": "Entre com o Codigo",
+		"menu": "Menu",
 
 		"alete00":"As mensagens de alerta apareceram aqui!",
 		"alete01":"Codigo não corresponde a uma ordem de serviço existente!",
-		"alert02":"Erro ao buscar ordem de serviço"
+		"alert02":"Erro ao buscar ordem de serviço",
+
+		"menuUser":"Usuario",
+		"menuUserWellcome":"Seja Bem-vindo: ",
+		"menuEditUser":"Editar Perfil",
+		"menuExit":"Sair",
+		"menuAddOS":"Adicionar Ordem de Serviço",
+		"menuListOS":"Lista de Ordem de Serviço",
+		"munuSearchOS":"Buscar Registros",
+		"menuAddOS_small":"Adicionar OS",
+		"menuListOS_small":"Lista de OS"
+
 	}

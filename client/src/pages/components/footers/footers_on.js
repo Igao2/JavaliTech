@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import String from '../../../assets/values/string.json';
 
-function Footer_auto() {
+function Footer_on() {
 	return (
 		<div>
 
@@ -11,4 +11,4 @@ function Footer_auto() {
 	);
 }
 
-export default Footer_auto;
+export default Footer_on;
