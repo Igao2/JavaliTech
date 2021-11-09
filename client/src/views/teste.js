@@ -32,3 +32,98 @@ searchResultManager("codeId").then(v => {
 connection.end();
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -------------------------------
+request(req, res, function (err) {
+  console.log(req.body)
+})
+
+let formInputs = new Promise((resolve, reject) => {
+
+  request(req, res, function (err) {
+    console.log(req.body.formInputs)
+    resolve(req.body.formInputs)
+  })
+
+})
+formInputs.then(result => {
+
+  console.log(result)
+
+  // upload(req, res, function (err) {
+  //     console.log(req.body)
+  //     res.json("oi")
+  // })
+  res.json("oi")
+
+}).catch(error => {
+  res.json(error)
+});
+
+
+
+// -------------------------
+
+
+const mysql = require('mysql');
+const mysqlConnection = require('../database/connection');
+const fs = require('fs')
+const definitions = require('../assets/definitions.json');
+const multer = require('multer')
+const uploadUser = multer({ dest: './public/userImages/' });
+
+// var upload = ;
+const upload = uploadUser.single('image');
+
+class Register {
+  registerQuery(req, res) {
+
+    console.log(req.body)
+
+    // request(req, res, function (err) {
+    //     console.log(req.body)
+
+    // })
+    upload(req, res, function (err) {
+      console.log(req.body)
+    })
+
+    var oi = req.body;
+    res.json(oi)
+  }
+}
+
+module.exports = new Register();
+
+
+
+// --------------------------
+const mysql = require('mysql');
+const mysqlConnection = require('../database/connection');
+const express = require('express');
+const router = express.Router();
+const SearchBar = require('../controllers/SearchBar');
+const Register = require('../controllers/Register');
+
+
+
+router.get("/search/:osId", SearchBar.searchQuery)
+router.post("/register", Register.registerQuery)
+
+module.exports = router;

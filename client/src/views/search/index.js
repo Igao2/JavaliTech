@@ -45,12 +45,6 @@ function App() {
 
         <Container>
             <Header>
-                <div>
-                    {
-
-                    }
-                </div>
-
                 <input type="text"
                     maxLength="6"
                     placeholder="definir placeholder"
@@ -95,9 +89,6 @@ function App() {
                 </table>
             </div>
         </Container>
-
-
-
     );
 }
 

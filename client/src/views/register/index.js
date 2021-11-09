@@ -13,7 +13,13 @@ function App() {
         "name": "",
         "email": "",
         "password": "",
-        "telephone": ""
+        "telephone": "",
+        "cep": "",
+        "numero": "",
+        "complemento": "",
+        "bairro": "",
+        "cidade": "",
+        "estado": ""
     });
     const [image, setImage] = useState('');
     const [imagePreview, setPreview] = useState({
@@ -36,7 +42,7 @@ function App() {
 
 
     const onChangeEvent = event => {
-        let value = event.target.value;
+        var value = event.target.value;
 
         console.log(value)
         console.log(event.target.name)
@@ -50,8 +56,13 @@ function App() {
         }
 
 
-
-        if (event.target.name === "telephone") {
+        if (event.target.name === "cep") {
+            let cep = value;
+            cep = cep.replace(/\D/g, "")
+            cep = cep.replace(/(\d{5})(\d)/, "$1-$2")
+            event.target.value = cep;
+            setValue({ ...value });
+        } else if (event.target.name === "telephone") {
             let phone = cleanMask(value);
             let ddd, number;
 
@@ -65,7 +76,7 @@ function App() {
                     number += "-" + phone.slice(6, 10);
                 } else number = phone.slice(2);
 
-                phone = ddd + " " + number;
+                phone = `(${ddd}) ${number}`;
             }
 
             event.target.value = phone;
@@ -87,6 +98,12 @@ function App() {
             "password": "Senha",
             "telephone": "Telefone",
             "image": "Imagem",
+            "cep": "Cep",
+            "numero": "Numero",
+            "complemento": "Complemento",
+            "bairro": "Bairro",
+            "cidade": "Cidade",
+            "estado": "Estado"
         }
 
         for (let i = 0; i < (event.target.length - 1); i++) {
@@ -99,15 +116,25 @@ function App() {
 
         if (valid) {
 
-            let formInputs = {}
-            formInputs.name = event.target[0].value;
-            formInputs.email = event.target[1].value;
-            formInputs.password = event.target[2].value;
-            formInputs.telephone = event.target[3].value;
-            formInputs.ajuste = {
-                "left": imagePreview.left,
-                "top": imagePreview.top,
-                "width": imagePreview.width
+            let formInputs = {
+                "name": event.target[0].value,
+                "email": event.target[1].value,
+                "password": event.target[2].value,
+                "telephone": event.target[3].value,
+                "address": {
+                    "cep": event.target[4].value,
+                    "bairro": event.target[7].value,
+                    "cidade": event.target[8].value,
+                    "estado": event.target[9].value,
+                    "numero": event.target[5].value,
+                    "complemento": event.target[6].value
+                },
+                "ajuste": {
+                    "left": imagePreview.left,
+                    "top": imagePreview.top,
+                    "width": imagePreview.width
+                }
+
             }
 
             const request = new FormData();
@@ -116,14 +143,14 @@ function App() {
 
 
             registerProfileManager(request).then(res => {
-                console.log("ola")
+                console.log(res.data);
             });
 
         }
 
     }
 
-    // O css da tabela está no arquivo "temporarycss.css", é um css de teste só pra não ficar tão ilegível como estava.
+    // O css da tabela está no arquivo "stemporarycss.css", é um css de teste só pra não ficar tão ilegível como estava.
     // Quando o layout legitimo for criado esse css deve ser previsto para evitar problemas futuros.
     return (
 
@@ -134,54 +161,136 @@ function App() {
             </Header>
 
             <form onSubmit={registerProfile}>
+                <div className="primariIputs">
+                    <label>Nome
+                        <input
+                            type="text"
+                            maxLength="150"
+                            placeholder="Nome"
+                            name='nome'
+                            value={register.name}
+                            onChange={onChangeEvent}
+                            required
+                        />
+                    </label>
+                    <br />
 
-                <label>Nome
-                    <input
-                        type="text"
-                        maxLength="150"
-                        placeholder="Nome"
-                        name='nome'
-                        value={register.name}
-                        onChange={onChangeEvent}
-                        required
-                    />
-                </label>
+                    <label>Email
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            name='email'
+                            value={register.email}
+                            onChange={onChangeEvent}
+                            required
+                        />
+                    </label>
+                    <br />
 
-                <label>Email
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        name='email'
-                        value={register.email}
-                        onChange={onChangeEvent}
-                        required
-                    />
-                </label>
-                <br />
+                    <label>Senha
+                        <input
+                            type="password"
+                            maxLength="60"
+                            placeholder="Senha"
+                            name='password'
+                            value={register.password}
+                            onChange={onChangeEvent}
+                            required
+                        />
+                    </label>
+                    <br />
 
-                <label>Senha
-                    <input
-                        type="password"
-                        maxLength="60"
-                        placeholder="Senha"
-                        name='password'
-                        value={register.password}
-                        onChange={onChangeEvent}
-                        required
-                    />
-                </label>
+                    <label>Telefone
+                        <input
+                            type="text"
+                            maxLength="15"
+                            placeholder="Telefone"
+                            name='telephone'
+                            value={register.telephone}
+                            onChange={onChangeEvent}
+                            required
+                        />
+                    </label>
+                    <br />
+                </div>
 
-                <label>Telefone
-                    <input
-                        type="text"
-                        maxLength="15"
-                        placeholder="Telefone"
-                        name='telephone'
-                        value={register.telephone}
-                        onChange={onChangeEvent}
-                        required
-                    />
-                </label>
+                <div className="emdereco">
+                    <p>Emdereço</p>
+
+                    <label>
+                        Cep
+                        <input
+                            type="text"
+                            maxLength="9"
+                            placeholder="cep"
+                            name='cep'
+                            value={register.cep}
+                            onChange={onChangeEvent}
+                            required
+                        />
+                    </label>
+
+                    <label>
+                        Estado
+                        <input
+                            type="text"
+                            placeholder="estado"
+                            name='estado'
+                            value={register.estado}
+                            onChange={onChangeEvent}
+                            required
+                        />
+                    </label>
+
+
+                    <label>
+                        Cidade
+                        <input
+                            type="text"
+                            placeholder="cidade"
+                            name='cidade'
+                            value={register.cidade}
+                            onChange={onChangeEvent}
+                            required
+                        />
+                    </label>
+
+                    <label>
+                        Bairro
+                        <input
+                            type="text"
+                            placeholder="bairro"
+                            name='bairro'
+                            value={register.bairro}
+                            onChange={onChangeEvent}
+                            required
+                        />
+                    </label>
+
+                    <label>
+                        Complemento
+                        <input
+                            type="text"
+                            placeholder="complemento"
+                            name='complemento'
+                            value={register.complemento}
+                            onChange={onChangeEvent}
+                        />
+                    </label>
+
+                    <label>
+                        Numero
+                        <input
+                            type="number"
+                            placeholder="numero na casa"
+                            name='numero'
+                            value={register.numero}
+                            onChange={onChangeEvent}
+                        />
+                    </label>
+
+
+                </div>
                 <br />
 
                 <label>
@@ -196,6 +305,10 @@ function App() {
                     />
                 </label>
                 <br />
+
+
+
+
                 <div>
 
                     <ProfilePhoto>
@@ -232,6 +345,7 @@ function App() {
                     <a className="button" onClick={() => { setPreview({ ...previewImageChenge(6) }) }}>Diminuir</a>
                 </div>
                 <br />
+
 
                 <button className="button right" type="submit">Salvar</button>
 
