@@ -2,7 +2,7 @@ const express = require('express');
 const favicon = require('serve-favicon');
 const path = require('path');
 const app = express();
-const router = require("./routes");
+const router = require("./src/routes");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
@@ -21,7 +21,7 @@ app.listen(3001, () => {
 })
 
 app.get("/", (req, res) => {
-    res.send("ola")
+    res.send("este é o server")
 })
 
 

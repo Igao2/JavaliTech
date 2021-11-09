@@ -44,10 +44,10 @@ class Register {
                                     reject({
                                         erro: true,
                                         code: 400,
-                                        erroDetails: {
+                                        erroDetails: [{
                                             campo: "email",
                                             mensagem: "O email inserido já existe."
-                                        }
+                                        }]
                                     });
 
                                 else {
@@ -61,7 +61,7 @@ class Register {
 
                                     do {
                                         namePath = data.toJSON().replace(/([0-9-]+)T([0-9]+):([0-9]+)(\S+)/, "$1_$2-$3") + "_" + (Math.floor(Math.random() * (9 - 1)) + 1) + "." + pathExtension();
-                                        targetPath = '../../public/userImages' + namePath;
+                                        targetPath = '../server/public/userImages/' + namePath;
                                     } while (fs.existsSync(targetPath));
 
                                     let photo = {
@@ -121,12 +121,14 @@ class Register {
 
                     }).catch(error => {
                         fs.unlink('./' + temporaryPath, () => { res.json(error); })
-
                     });
             } else res.json({
                 erro: true,
                 code: 400,
-                mensagem: "Upload não foi sucedido, necessário enviar uma imagem PNG ou JPG!"
+                erroDetails: [{
+                    campo: "image",
+                    mensagem: "Upload não foi sucedido, necessário enviar uma imagem PNG ou JPG!"
+                }]
             });
 
 

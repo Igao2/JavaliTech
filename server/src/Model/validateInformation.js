@@ -88,7 +88,6 @@ module.exports = class validateInformation {
     checkPassword(password) {
         if (password.length <= 0) return false;
         else return true;
-
     }
 
     checkNameFormat(name) {

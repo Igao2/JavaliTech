@@ -44,9 +44,6 @@ function App() {
     const onChangeEvent = event => {
         var value = event.target.value;
 
-        console.log(value)
-        console.log(event.target.name)
-
         function cleanMask(number) {
             number = number.replace(/[A-Z]/gi, '');
             number = number.replace(/[^a-z0-9]/gi, '');
@@ -143,7 +140,14 @@ function App() {
 
 
             registerProfileManager(request).then(res => {
-                console.log(res.data);
+                if (res.data.erro) {
+
+                    if (res.data.code === 400)
+                        for (let i = 0; i < res.data.erroDetails.length; i++) alert(res.data.erroDetails[i].mensagem);
+
+                    else if (res.data === 500) alert(res.data.mensagem);
+
+                } else alert(res.data.mensagem);
             });
 
         }
