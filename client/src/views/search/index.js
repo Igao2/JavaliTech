@@ -89,9 +89,6 @@ function App() {
                 </table>
             </div>
         </Container>
-
-
-
     );
 }
 

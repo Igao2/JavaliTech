@@ -1,0 +1,5 @@
+{
+    "projectName": "JavaliTech",
+    "projectServerUrl": "http://localhost:3001/",
+    "bcryptSalt": 6
+}
