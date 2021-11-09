@@ -1,0 +1,83 @@
+* {
+  box-sizing: border-box;
+}
+
+input{
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  margin-left: 0;
+  margin-top: 2%;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.button {
+  background-color: #d61515;
+  border: none;
+  color: white;
+  padding: 15px 0px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px;
+  width: 100px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #971414; 
+}
+
+.right{
+  float: right;
+}
+
+form{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-around;
+}
+
+.primariIputs {display: flex;width: 18%;flex-direction: column;align-items: center;}
+
+.emdereco label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 0px 10px 0px;
+}
+
+.emdereco p {
+    margin-bottom: 20px;
+}
+
+.primariIputs label {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 0px 19px 0px;
+    flex-wrap: wrap;
+    align-items: center;
+}

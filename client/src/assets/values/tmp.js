@@ -300,3 +300,20 @@ export const ContainerTempButton = styled.div`
 	}
 
 `;
+
+export const ProfilePhoto = styled.div`
+	border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    border-color: #ffffff87;
+    border-width: 1.3px;
+    border-style: solid;
+    box-shadow: 0px 0px 27px #000 inset;
+    width: 150px;
+    height: 150px;
+	margin: auto;
+
+ 	img {
+    	position: absolute;
+	}
+`;
