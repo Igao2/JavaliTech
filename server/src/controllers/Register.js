@@ -61,7 +61,7 @@ class Register {
 
                                     do {
                                         namePath = data.toJSON().replace(/([0-9-]+)T([0-9]+):([0-9]+)(\S+)/, "$1_$2-$3") + "_" + (Math.floor(Math.random() * (9 - 1)) + 1) + "." + pathExtension();
-                                        targetPath = './public/userImages/' + namePath;
+                                        targetPath = '../../public/userImages' + namePath;
                                     } while (fs.existsSync(targetPath));
 
                                     let photo = {
