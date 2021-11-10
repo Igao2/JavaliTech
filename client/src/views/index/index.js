@@ -1,15 +1,133 @@
-import React from 'react';
+/* eslint-disable react/jsx-pascal-case */
+import React, { useState } from 'react';
+import Helmet from 'react-helmet';
+import String from '../../assets/values/string.json';
+import { BodyOff, BodyOffIcon_home, BodyOff_buttom, BodyOff_top_off, ContainerOff, FooterOff, HeaderOff } from '../../assets/values/styles';
 
-import { Container, Header, BodyMain } from '../../style/style';
-import String from '../../assets/string/string.json';
+import HeaderContainerOff from '../components/headers/header_off';
+import HeaderContainerOn from '../components/headers/header_on';
+import searchResultManager from '../../dispatcher/searchBarRequest';
+
+import logo from '../../assets/images/icons/logo_black.svg';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Input, Button } from 'reactstrap';
+import './intemporarycss.css';
 
 function App() {
+	var searchBar;
+	useState(searchBar);
+	const [value, setValue] = useState({
+		"service_order_id": "",
+		"owner_name": "",
+		"description": "",
+		"device_photos": "",
+		"delivery_date": "",
+		"completion_date": "",
+		"status": "",
+		"service_value": "",
+		"user_name": "",
+		"user_photo": ""
+	});
+
+	const onChangeEvent = event => {
+		let code = event.target.value.toUpperCase();
+		event.target.value = code;
+
+		if (code.length === 6) {
+			searchResultManager(code).then(res => {
+				if (res.data === 204) alert("OS não existe")
+				else if (res.data === 417) alert("OS corronpida")
+				else if (res.data === 500) alert("Erro de sistema")
+				else setValue(res.data)
+			});
+		} else
+			setValue({ ...null, "user_photo": ["", ""] });
+
+	}
+
+	// O css da tabela está no arquivo "temporarycss.css", é um css de teste só pra não ficar tão ilegível como estava.
+	// Quando o layout legitimo for criado esse css deve ser previsto para evitar problemas futuros.
 	return (
+		<div>
+			<Helmet>
+				<title>{String.nomeApp_sistema}</title>
+				<meta name="title" content={String.nomeApp_sistema} />
+				<meta property="og:title" content={String.nomeApp_sistema} />
+				<meta property="og:site_name" content={String.nomeApp_sistema} />
+				<meta property="og:description" content={String.nomeApp_descricao} />
+			</Helmet>
 
-		<Container>
-			<Header> {String.nomeApp} </Header>
-		</Container>
+			<ContainerOff>
+				<HeaderOff>
 
+					{/* <HeaderContainerOn/> */}
+					<HeaderContainerOff />
+
+				</HeaderOff>
+				<BodyOff>
+
+					<BodyOff_top_off>
+
+						<h1>{String.nomeApp}</h1>
+						<h5>{String.nomeApp_descricao}</h5>
+
+					</BodyOff_top_off>
+					<BodyOff_buttom>
+
+						<h6>{String.search_OS}</h6>
+						<Input bsSize="sm"
+							type="text"
+							maxLength="6"
+							placeholder="definir placeholder"
+							name='searchText'
+							value={searchBar}
+							onChange={onChangeEvent}
+						/>
+					</BodyOff_buttom>
+
+					<div>
+						<table>
+							<tbody>
+								<tr>
+									<th>service_order_id</th>
+									<th>owner_name</th>
+									<th>description</th>
+									<th>device_photos</th>
+									<th>delivery_date</th>
+									<th>completion_date</th>
+									<th>status</th>
+									<th>service_value</th>
+									<th>user_name</th>
+									<th>user_photo</th>
+								</tr>
+
+								<tr>
+									<th>{value.service_order_id}</th>
+									<th>{value.owner_name}</th>
+									<th>{value.description}</th>
+									<th>{value.device_photos}</th>
+									<th>{value.delivery_date}</th>
+									<th>{value.completion_date}</th>
+									<th>{value.status}</th>
+									<th>{value.service_value}</th>
+									<th>{value.user_name}</th>
+									<th>
+										<img width="50" src={value.user_photo[0]} />
+									</th>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</BodyOff>
+				<FooterOff>
+
+					<p>{String.devs}</p>
+
+				</FooterOff>
+			</ContainerOff>
+		</div >
 	);
 }
 
