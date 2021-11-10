@@ -1,9 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Index from './views/index';
-import TestRegister from './views/register';
+import App from './App';
 
-ReactDOM.render(
-    <Index />,
-    document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById('root'));

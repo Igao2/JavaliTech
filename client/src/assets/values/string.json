@@ -12,6 +12,32 @@
 		"dev06": "LEANDRO DE MEIRELLES",
 
 		"login": "Iniciar Sessão",
+		"login_init": "Entre com os dados do Login:",
 		"search": "Buscar",
-		"search_OS": "Procure por uma Ordem de Serviço:"
+		"search_OS": "Procure por uma Ordem de Serviço:",
+		"cod_OS": "Entre com o Codigo",
+		"menu": "Menu",
+
+		"alete00":"As mensagens de alerta apareceram aqui!",
+		"alete01":"Codigo não corresponde a uma ordem de serviço existente!",
+		"alert02":"Erro ao buscar ordem de serviço",
+
+		"menuUser":"Usuario",
+		"menuUserWellcome":"Seja Bem-vindo: ",
+		"menuEditUser":"Editar Perfil",
+		"menuExit":"Sair",
+		"menuAddOS":"Adicionar Ordem de Serviço",
+		"menuListOS":"Lista de Ordem de Serviço",
+		"munuSearchOS":"Buscar Registros",
+		"menuAddOS_small":"Adicionar OS",
+		"menuListOS_small":"Lista de OS",
+
+		"itemInfo01":"Nome: ",
+		"itemInfo01_tmp":"Roberto Celulares",
+		"itemInfo02":"Endereço: ",
+		"itemInfo02_tmp":"Rua, Bairro, Cidade, Estado",
+		"itemInfo03":"Telefone: ",
+		"itemInfo03_tmp":"(00) 4002-8922 PS2",
+		"itemCalendar":"Calendario de Manutenção"
+
 	}
