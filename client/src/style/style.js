@@ -1,5 +1,49 @@
-/* eslint-disable-next-line */
-import styled from 'styled-components';
+﻿import styled from 'styled-components';
+
+/**
+ *  JavaliTech Team
+ * 
+ *  Feito por:
+ *  @author CARLOS EDUARDO SANTOS BARBOSA DE CARVALHO 
+ *  @author CESAR APARECIDO LOURENCO
+ *  @author DENILSON FABIANO DE ARAUJO
+ *  @author ELEAZAR JOSE RIBEIRO
+ *  @author IGOR DA SILVA COSTA
+ *  @author LEANDRO DE MEIRELLES
+ * 
+ *  @version 1.0
+ * 
+ */
+
+//-------------------------------------------------------------
+export const Container = styled.div`
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 12vh 76vh 12vh;
+	grid-template-areas: "h h" "b b" "f f";
+    background-color: #f1f1f1;
+	
+	margin: auto;
+	justify-content: center;
+`;
+
+export const Header = styled.header`
+	grid-area: h;
+	background-color: #d61515;
+`;
+
+export const Footer = styled.footer`
+	/* background-color: red; */
+	grid-area: f;
+	background-color: #23272a;
+`;
+
+export const BodyMain = styled.div`
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-area: b;
+	grid-template-areas: "m m";
+`;
 
 export const Main = styled.main`
 	/* background-color: blue; */
