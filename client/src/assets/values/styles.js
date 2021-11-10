@@ -261,13 +261,17 @@ export const BodyOn = styled.main`
 
 	overflow: auto;
 	width: 1000px;
-	margin: 0 auto;
+	margin: 20px auto;
 
-	background: #f505;
+	background: #fff;
+	box-shadow: 0px 5px 10px #0002;
+    border-radius: 5px;
 
 	@media(max-width: 1280px) {
 		width: 100%;
 	}
+
+
 `;
 
 export const BodyOn_Nav = styled.main`
@@ -296,7 +300,12 @@ export const BodyOn_Nav = styled.main`
 		
 		border-bottom: 1px solid #fff1;
 		border-top: 1px solid #fff1;
+
+		img {
+			filter: brightness(0);
+		}
 	}
+
 
 
 `;
@@ -335,9 +344,13 @@ export const ContainerHeaderOn = styled.div`
 		color: #222;
 		background: #FFf;
 		border-bottom: 0px solid #b30000;
+
+		img {
+			filter: brightness(0);
+		}
 	}
 
-	svg{
+	img {
 		width: 3vh !important;
 		height: 3vh;
 	}
@@ -417,5 +430,61 @@ export const RightHeaderOn = styled.div`
 	.btn:hover{
 		background-color: #444;
 		border-color: #444;
+	}
+`;
+
+// Painel User
+export const ItemMsgUser = styled.h4`
+	padding: 20px 10px 5px;
+`;
+
+export const ItemIcoMenu = styled.img`
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+
+`;
+
+export const ItemDiv = styled.hr`
+	margin: 5px 0;	
+`;
+
+export const ItemColAvatar = styled.div`
+	text-align: center;
+	display: grid;
+    text-align: center;
+    justify-content: center;
+
+	padding: 10px;
+    background: #efefef;
+	
+	border-radius: 200px;
+`;
+
+export const ItemAvatar = styled.img`
+	width: 120px;
+	height: 120px;
+	border: 1px solid #ffffff87;
+	border-radius: 200px;
+	fill: #fff;
+	
+`;
+
+export const ItemColText = styled.div`
+	display: grid;
+    align-items: center;
+	
+	height: 100%;
+
+	p{
+		display: grid;
+		height: 100%;
+		align-items: center;
+		height: 100%;
+		font-size: medium;
+	}
+
+	@media(max-width: 1024px) {
+		margin: 5px 0 0;
 	}
 `;

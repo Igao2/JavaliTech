@@ -3,20 +3,16 @@
 import React from 'react';
 import String from '../../../assets/values/string.json';
 
-import { CenterHeaderOn, ContainerHeaderOn, RightHeaderOn, HeaderIcon, ContainerHeaderOn_MobMenu, ContainerHeaderOn_PcMenu }
+import { ContainerHeaderOn, ContainerHeaderOn_MobMenu, ContainerHeaderOn_PcMenu, ItemIcoMenu }
 	from '../../../assets/values/styles';
-import logo from '../../../assets/images/icons/logo_white.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-	Button, Navbar, NavbarBrand, NavbarToggler, Collapse, Nav,
-	NavItem, NavLink, UncontrolledDropdown, DropdownToggle,
-	DropdownMenu, DropdownItem, NavbarText, Row, Col
-} from 'reactstrap';
-import PainelUser_menuMob from '../painel/menu_tmp';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserEdit, faEdit, faList, faSearch, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-
+import calendar_plus_solid   from '../../../assets/images/fontwesome/calendar_plus_solid.svg';
+import list_alt_solid   from '../../../assets/images/fontwesome/list_alt_solid.svg';
+import search_solid   from '../../../assets/images/fontwesome/search_solid.svg';
+import sign_out_alt_solid   from '../../../assets/images/fontwesome/sign_out_alt_solid.svg';
+import user_edit_solid   from '../../../assets/images/fontwesome/user_edit_solid.svg';
+import user_solid   from '../../../assets/images/fontwesome/user_solid.svg';
 
 class HeaderContainerOn extends React.Component {
 	render() {
@@ -26,6 +22,7 @@ class HeaderContainerOn extends React.Component {
 				{/* Visão em PC */}
 				<ContainerHeaderOn_PcMenu />
 				<ContainerHeaderOn_PcMenu>
+				<i class="fas fa-sign-in-alt"></i>
 					{String.menuUserWellcome}<b>{String.menuUser}</b>
 				</ContainerHeaderOn_PcMenu>
 
@@ -34,32 +31,32 @@ class HeaderContainerOn extends React.Component {
 					href="#1"
 					alt={String.menuEditUser}
 					title={String.menuEditUser}>
-					<FontAwesomeIcon icon={faUserEdit} />
+					<ItemIcoMenu src={user_edit_solid}/>
 				</ContainerHeaderOn_MobMenu>
 				<ContainerHeaderOn_MobMenu
 					href="#2"
 					alt={String.menuAddOS}
 					title={String.menuAddOS}>
-					<FontAwesomeIcon icon={faEdit} />
+					<ItemIcoMenu src={calendar_plus_solid}/>
 				</ContainerHeaderOn_MobMenu>
 				<ContainerHeaderOn_MobMenu
 					href="#3"
 					alt={String.menuListOS}
 					title={String.menuListOS}>
-					<FontAwesomeIcon icon={faList} />
+					<ItemIcoMenu src={list_alt_solid}/>
 				</ContainerHeaderOn_MobMenu>
 				<ContainerHeaderOn_MobMenu
 					href="#4"
 					alt={String.munuSearchOS}
 					title={String.munuSearchOS} >
-					<FontAwesomeIcon icon={faSearch} />
+					<ItemIcoMenu src={search_solid}/>
 				</ContainerHeaderOn_MobMenu>
 
 				<ContainerHeaderOn_MobMenu
 					href="#5"
 					alt={String.menuExit}
 					title={String.menuExit} >
-					<FontAwesomeIcon icon={faSignOutAlt} />
+					<ItemIcoMenu src={sign_out_alt_solid}/>
 				</ContainerHeaderOn_MobMenu>
 
 				{/* <PainelUser_menuMob/> */}
