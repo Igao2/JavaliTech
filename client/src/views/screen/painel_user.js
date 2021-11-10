@@ -14,6 +14,8 @@ import HeaderContainerOn from '../components/headers/header_on';
 import logo from '../../assets/images/icons/logo_white.svg';
 import Button_UserP from '../components/painel/button_userP';
 import Footer_off from '../components/footers/footers_off';
+import itemUser from '../components/painel/item_user';
+import ItemUser from '../components/painel/item_user';
 
 
 function App() {
@@ -48,9 +50,13 @@ function App() {
 					</HeaderOn>
 					<BodyOn>
 
+						<ItemUser/>
+
 					</BodyOn>
 					<FooterOn>
+
 						<Footer_off />
+						
 					</FooterOn>
 				</AreaBodyRight>
 			</ContainerOn>
