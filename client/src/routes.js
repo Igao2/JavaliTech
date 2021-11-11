@@ -7,6 +7,7 @@ import Index from './views/screen/index';
 import Search from './views/screen/search';
 import Login from './views/screen/login';
 import PainelUser from './views/screen/painel_user';
+import Register from './views/register';
 
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -26,6 +27,7 @@ const Routes = () => (
     <BrowserRouter>
         <Switch>
             <Route exact path="/" component={Index} />
+            <Route exact path="/register" component={Register} />
             <PrivateRoute path="/search" component={Search} />
             <PrivateRoute path="/login" component={Login} />
             <PrivateRoute path="/painel" component={PainelUser} />

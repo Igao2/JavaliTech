@@ -65,8 +65,8 @@ class Register {
                                     } while (fs.existsSync(targetPath));
 
                                     let photo = {
-                                        nome: namePath,
-                                        ajuste: formInputs.ajuste
+                                        name: namePath,
+                                        imageSetting: formInputs.imageSetting
                                     }
 
                                     let password = bcrypt.hashSync(formInputs.password, salt);
