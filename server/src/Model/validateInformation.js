@@ -6,7 +6,7 @@ module.exports = class validateInformation {
         this.telephone = info.telephone;
     }
 
-    get check() {
+    get checkAll() {
         let errors = {
             erro: false,
             code: 400,
@@ -48,6 +48,32 @@ module.exports = class validateInformation {
             errors.erroDetails.push({
                 campo: "name",
                 mensagem: "Nome muito longo."
+            })
+        }
+
+        return errors;
+    }
+
+    get checkLogin() {
+        let errors = {
+            erro: false,
+            code: 400,
+            erroDetails: []
+        }
+
+        if (!this.checkEmail(this.email)) {
+            errors.erro = true;
+            errors.erroDetails.push({
+                campo: "email",
+                mensagem: "Formato de Email invalido."
+            })
+        }
+
+        if (!this.checkPassword(this.password)) {
+            errors.erro = true;
+            errors.erroDetails.push({
+                campo: "password",
+                mensagem: "Tamanho de senha invalida."
             })
         }
 
