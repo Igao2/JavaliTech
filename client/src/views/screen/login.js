@@ -1,11 +1,13 @@
 /* eslint-disable react/jsx-pascal-case */
-import React from 'react';
+import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 import String from '../../assets/values/string.json';
 import { BodyOff, BodyOff_buttom, BodyOff_top_off, ContainerOff, FooterOff, HeaderOff } from '../../assets/values/styles';
 
 import HeaderContainerOff from '../components/headers/header_off';
 import HeaderContainerOn from '../components/headers/header_on';
+
+import loginManager from '../../dispatcher/login';
 
 import logo from '../../assets/images/icons/logo_black.svg';
 
@@ -15,6 +17,52 @@ import Footer_off from '../components/footers/footers_off';
 
 
 function App() {
+
+	const [login, setLogin] = useState({
+		"email": "",
+		"password": ""
+	})
+
+	const onChangeEvent = event => {
+		var value = event.target.value;
+
+		setLogin({ ...value });
+	}
+
+	const loginOnSubmit = event => {
+
+		event.preventDefault();
+
+		var valid = true;
+
+		const inputNames = {
+			"email": "Email",
+			"password": "Senha"
+		}
+
+		for (let i = 0; i < (event.target.length - 1); i++) {
+			if (event.target[i].value == "") {
+				alert("O campo " + inputNames[event.target[i].name] + " esta vazio")
+				valid = false;
+			}
+		}
+
+		if (valid) {
+
+			let formInputs = {
+				"email": event.target[0].value,
+				"password": event.target[1].value
+			}
+
+			loginManager(formInputs).then(res => {
+				console.log(res.data)
+				console.log(res.data.token)
+
+				if (res.data.code === 200) alert(res.data.token)
+				else alert("não foi")
+			});
+		}
+	}
 
 	return (
 		<div>
@@ -45,14 +93,17 @@ function App() {
 
 						{/* invalid: vermelho | valid: verde */}
 
-						<Form>
+						<Form onSubmit={loginOnSubmit}>
 							<FormGroup row>
 								<Input
 									valid
+									required
 									id="login_at"
 									name="email"
 									placeholder="Login"
 									type="email"
+									value={login.email}
+									onChange={onChangeEvent}
 								/>
 							</FormGroup>
 							<FormGroup row>
@@ -62,6 +113,8 @@ function App() {
 									name="password"
 									placeholder="Senha"
 									type="password"
+									value={login.password}
+									onChange={onChangeEvent}
 								/>
 							</FormGroup>
 							<FormGroup row >
