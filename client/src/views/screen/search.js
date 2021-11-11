@@ -17,8 +17,12 @@ import Footer_off from '../components/footers/footers_off';
 import './intemporarycss.css';
 
 function App() {
+	
+	/** variave useState para o Input "searchText" */
 	var searchBar;
 	useState(searchBar);
+
+	/** const useState para o resultado de pesquisa OS */
 	const [value, setValue] = useState({
 		"service_order_id": "",
 		"owner_name": "",
@@ -32,6 +36,11 @@ function App() {
 		"user_photo": ""
 	});
 
+	/**
+    * Esta arrow function pega o valor do Input "searchText" e armazena no useState “searchBar” e quando o número de caracteres digitados pelo usuário chega a 6, ele faz uma requisição ao server,  se o código da OS for válido o useState “value” é atualizado com as novas informações.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * */
 	const onChangeEvent = event => {
 		let code = event.target.value.toUpperCase();
 		event.target.value = code;

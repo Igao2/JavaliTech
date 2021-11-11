@@ -9,6 +9,7 @@ import registerProfileManager from '../../dispatcher/register';
 
 function App() {
 
+    /** const useState para os Inputs do formulari de cadatro  */
     const [register, setValue] = useState({
         "name": "",
         "email": "",
@@ -21,13 +22,21 @@ function App() {
         "cidade": "",
         "estado": ""
     });
+
+    /** const useState para o Input "image" */
     const [image, setImage] = useState('');
+
+    /** const useState para os ajustes da imagem */
     const [imagePreview, setPreview] = useState({
         "left": 0,
         "top": 0,
         "width": 100
     });
 
+    /**
+    * Essa função cria a dinâmica de ajuste da posição de imagem, podendo aumentar, diminuir, mover para a esquerda ou para a direita e também podendo movê-la para cima e para baixo.
+    * @param {number} type - Determina qual será o ajuste de posição da imagem.
+    */
     function previewImageChenge(type) {
         let styleCharge = imagePreview;
         let interval = 5;
@@ -40,7 +49,12 @@ function App() {
         return styleCharge;
     }
 
-
+/**
+    * Esta arrow function pega o valor dos Inputs do form e armazena no useState "register", ele tambem implementa mascaras nos inputs telephone e cep.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
     const onChangeEvent = event => {
         var value = event.target.value;
 
@@ -83,6 +97,13 @@ function App() {
         }
     }
 
+    /**
+    * Esta arrow function é o evento de submit do form, ela pega os valores dos Inputs do form, verifica se os campos foram preenchidos, se sim ele manda os dados para API para que o cadastro seja realizado
+    * @param {object} event - Informações do evento onChange.
+    * @param {object[]} event.target - Array com as informações de cada input.
+    * @param {string} event.target[].value - valor do input.
+    * @param {string} event.target[].name - nome do input.
+    */
     const registerProfile = event => {
 
         event.preventDefault();
@@ -139,6 +160,10 @@ function App() {
             request.append('formInputs', JSON.stringify(formInputs));
 
 
+            /** Faz a requisição para a API com os dados do novo usuarido, para que ele possa ser cadastrado.
+            * @param {object} request - Dados do novo usuarido.
+            * @param {object} res - Resposta da API.
+            */
             registerProfileManager(request).then(res => {
                 if (res.data.erro) {
 
