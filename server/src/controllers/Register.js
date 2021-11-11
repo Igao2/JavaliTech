@@ -17,11 +17,11 @@ class Register {
 
                 const temporaryPath = req.file.path;
 
-                function registerResultQuery(formInputs) {
+                function searchResultQuery(formInputs) {
                     return new Promise((resolve, reject) => {
 
                         var validate = new validateInformation(formInputs);
-                        let valida = validate.checkAll;
+                        let valida = validate.check;
 
                         if (valida.erro) {
                             reject(valida)
@@ -111,7 +111,7 @@ class Register {
                     });
                 }
 
-                registerResultQuery(formInputs)
+                searchResultQuery(formInputs)
                     .then(result => {
                         res.json({
                             erro: false,
