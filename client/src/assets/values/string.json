@@ -38,6 +38,9 @@
 		"itemInfo02_tmp":"Rua, Bairro, Cidade, Estado",
 		"itemInfo03":"Telefone: ",
 		"itemInfo03_tmp":"(00) 4002-8922 PS2",
-		"itemCalendar":"Calendario de Manutenção"
+		"itemCalendar":"Calendario de Manutenção",
+
+		"itemEditUpload":"Foto de Perfil",
+		"itemEditUploadTxt":"O arquivo deve ter menos de 50MB."
 
 	}

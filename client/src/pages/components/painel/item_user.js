@@ -11,7 +11,7 @@ import { Col, Row, Container, Table } from 'reactstrap';
 import avatarTMP from '../../../assets/images/tmp/avartar_tmp.jpg';
 
 
-class ItemUser extends React.Component {
+class ItemEditUser extends React.Component {
     render() {
         return (
             <Container>
@@ -157,4 +157,4 @@ class ItemUser extends React.Component {
     }
 }
 
-export default ItemUser;
+export default ItemEditUser;

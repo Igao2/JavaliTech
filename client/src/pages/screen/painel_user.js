@@ -16,6 +16,7 @@ import Button_UserP from '../components/painel/button_userP';
 import Footer_off from '../components/footers/footers_off';
 import itemUser from '../components/painel/item_user';
 import ItemUser from '../components/painel/item_user';
+import ItemEditUser from '../components/painel/item_editUser';
 
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
 						<HeaderIcon_Nav_complet src={logo} alt="logo" />
 					</HeaderOn_Nav>
 					<BodyOn_Nav>
-						<Button_UserP/>
+						<Button_UserP />
 					</BodyOn_Nav>
 					{/* <FooterOn_Nav>
 					</FooterOn_Nav> */}
@@ -50,13 +51,15 @@ function App() {
 					</HeaderOn>
 					<BodyOn>
 
-						<ItemUser/>
+						{/* Painel do Item /selecionado */}
+						{/* <ItemUser/> */}
+						<ItemEditUser />
 
 					</BodyOn>
 					<FooterOn>
 
 						<Footer_off />
-						
+
 					</FooterOn>
 				</AreaBodyRight>
 			</ContainerOn>
