@@ -13,9 +13,10 @@ class SearchBar {
 
                 connection.connect();
 
-                connection.query(('SELECT service_order_id, user_id, owner_name, description, device_photos, delivery_date, completion_date, status, service_value  FROM service_order WHERE service_order_id="' + codeId + '";'), (error, osInformation) => {
+                connection.query(('SELECT service_order_id, user_id, owner_name, description, delivery_date, completion_date, status, service_value  FROM service_order WHERE service_order_id="' + codeId + '";'), (error, osInformation) => {
                     if (error)
                         reject(500);
+
                     osInformation = JSON.parse(JSON.stringify(osInformation));
 
                     if (osInformation.length != 1)
@@ -54,7 +55,6 @@ class SearchBar {
                 resultJson.service_order_id = result[0].service_order_id;
                 resultJson.owner_name = result[0].owner_name;
                 resultJson.description = result[0].description;
-                resultJson.device_photos = JSON.parse(result[0].device_photos);
                 resultJson.delivery_date = result[0].delivery_date;
                 resultJson.completion_date = result[0].completion_date;
                 resultJson.status = result[0].status;
@@ -63,16 +63,15 @@ class SearchBar {
 
                 let userPhoto = JSON.parse(result[1].photo);
 
-                if (fs.existsSync("./public/userImages/" + userPhoto.nome)) {
-                    userPhoto.nome = definitions.projectServerUrl + "userImages/" + userPhoto.nome;
+                if (fs.existsSync("./public/userImages/" + userPhoto.name)) {
+                    userPhoto.name = definitions.projectServerUrl + "userImages/" + userPhoto.name;
 
-                    resultJson.user_photo = [userPhoto.nome, userPhoto.ajuste];
+                    resultJson.user_photo = [userPhoto.name, userPhoto.imageSetting];
                 } else {
-                    userPhoto.nome = definitions.projectServerUrl + "userImages/standard_photo.png";
-                    userPhoto.ajuste = "";
-                    resultJson.user_photo = [userPhoto.nome, userPhoto.ajuste];
+                    userPhoto.name = definitions.projectServerUrl + "userImages/standard_photo.png";
+                    userPhoto.imageSetting = "";
+                    resultJson.user_photo = [userPhoto.name, userPhoto.imageSetting];
                 }
-
 
                 res.json(resultJson)
             }).catch(error => {
