@@ -38,6 +38,10 @@ function App() {
 		else teste[1](event.target.name)
 	}
 
+	const switchScreens = (name) => {
+		teste[1](name)
+	}
+
 	return (
 		<div>
 			<Helmet>
@@ -128,8 +132,8 @@ function App() {
 						{teste[0] == 1 && <ItemUser />}
 						{teste[0] == 2 && <Teste />}
 						{teste[0] == 3 && <Teste2 />}
-						{teste[0] == 4 && <Teste3 />}
-						{teste[0] == 5 && <Teste3 />}
+						{teste[0] == 4 && <Teste3 switchScreens={switchScreens} />}
+						{teste[0] == 5 && <Teste3 switchScreens={switchScreens} />}
 					</BodyOn>
 					<FooterOn>
 
