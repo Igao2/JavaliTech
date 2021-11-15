@@ -79,7 +79,6 @@ class Register {
 
                                     connection.query((sqlCode), (error, response) => {
                                         if (error) {
-                                            console.log(error)
                                             reject({
                                                 erro: true,
                                                 code: 500,
