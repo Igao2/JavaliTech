@@ -17,7 +17,7 @@ import Footer_off from '../components/footers/footers_off';
 import './intemporarycss.css';
 
 function App() {
-	
+
 	/** variave useState para o Input "searchText" */
 	var searchBar;
 	useState(searchBar);
@@ -27,7 +27,6 @@ function App() {
 		"service_order_id": "",
 		"owner_name": "",
 		"description": "",
-		"device_photos": "",
 		"delivery_date": "",
 		"completion_date": "",
 		"status": "",
@@ -37,16 +36,18 @@ function App() {
 	});
 
 	/**
-    * Esta arrow function pega o valor do Input "searchText" e armazena no useState “searchBar” e quando o número de caracteres digitados pelo usuário chega a 6, ele faz uma requisição ao server,  se o código da OS for válido o useState “value” é atualizado com as novas informações.
-    * @param {object} event - Informações do evento onChange.
-    * @param {string} event.target.value - valor do input.
-    * */
+	* Esta arrow function pega o valor do Input "searchText" e armazena no useState “searchBar” e quando o número de caracteres digitados pelo usuário chega a 6, ele faz uma requisição ao server,  se o código da OS for válido o useState “value” é atualizado com as novas informações.
+	* @param {object} event - Informações do evento onChange.
+	* @param {string} event.target.value - valor do input.
+	* */
 	const onChangeEvent = event => {
 		let code = event.target.value.toUpperCase();
 		event.target.value = code;
 
 		if (code.length === 6) {
 			searchResultManager(code).then(res => {
+				console.log(res.data)
+
 				if (res.data === 204) alert("OS não existe")
 				else if (res.data === 417) alert("OS corronpida")
 				else if (res.data === 500) alert("Erro de sistema")
@@ -107,7 +108,6 @@ function App() {
 										<th>service_order_id</th>
 										<th>owner_name</th>
 										<th>description</th>
-										<th>device_photos</th>
 										<th>delivery_date</th>
 										<th>completion_date</th>
 										<th>status</th>
@@ -120,7 +120,6 @@ function App() {
 										<th>{value.service_order_id}</th>
 										<th>{value.owner_name}</th>
 										<th>{value.description}</th>
-										<th>{value.device_photos}</th>
 										<th>{value.delivery_date}</th>
 										<th>{value.completion_date}</th>
 										<th>{value.status}</th>

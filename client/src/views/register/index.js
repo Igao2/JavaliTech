@@ -31,7 +31,7 @@ function Index() {
     /** const useState para o Input "image" */
     const [image, setImage] = useState('');
 
-    /** const useState para os ajustes da imagem */
+    /** const useState para os imageSettings da imagem */
     const [imagePreview, setPreview] = useState({
         "left": 0,
         "top": 0,
@@ -63,6 +63,11 @@ function Index() {
     const onChangeEvent = event => {
         var value = event.target.value;
 
+        console.log({
+            "left": imagePreview.left,
+            "top": imagePreview.top,
+            "width": imagePreview.width
+        })
         function cleanMask(number) {
             number = number.replace(/[A-Z]/gi, '');
             number = number.replace(/[^a-z0-9]/gi, '');
@@ -152,7 +157,7 @@ function Index() {
                     "numero": event.target[5].value,
                     "complemento": event.target[6].value
                 },
-                "ajuste": {
+                "imageSetting": {
                     "left": imagePreview.left,
                     "top": imagePreview.top,
                     "width": imagePreview.width

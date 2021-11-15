@@ -17,11 +17,11 @@ class Register {
 
                 const temporaryPath = req.file.path;
 
-                function searchResultQuery(formInputs) {
+                function registerResultQuery(formInputs) {
                     return new Promise((resolve, reject) => {
 
                         var validate = new validateInformation(formInputs);
-                        let valida = validate.check;
+                        let valida = validate.checkAll;
 
                         if (valida.erro) {
                             reject(valida)
@@ -65,8 +65,8 @@ class Register {
                                     } while (fs.existsSync(targetPath));
 
                                     let photo = {
-                                        nome: namePath,
-                                        ajuste: formInputs.ajuste
+                                        name: namePath,
+                                        imageSetting: formInputs.imageSetting
                                     }
 
                                     let password = bcrypt.hashSync(formInputs.password, salt);
@@ -79,7 +79,6 @@ class Register {
 
                                     connection.query((sqlCode), (error, response) => {
                                         if (error) {
-                                            console.log(error)
                                             reject({
                                                 erro: true,
                                                 code: 500,
@@ -111,7 +110,7 @@ class Register {
                     });
                 }
 
-                searchResultQuery(formInputs)
+                registerResultQuery(formInputs)
                     .then(result => {
                         res.json({
                             erro: false,

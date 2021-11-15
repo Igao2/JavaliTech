@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import React from 'react';
+import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 import String from '../../assets/values/string.json';
 import { BodyOff, BodyOff_buttom, BodyOff_top_off, ContainerOff, FooterOff, HeaderOff } from '../../assets/values/styles';
@@ -7,17 +7,77 @@ import { BodyOff, BodyOff_buttom, BodyOff_top_off, ContainerOff, FooterOff, Head
 import HeaderContainerOff from '../components/headers/header_off';
 import HeaderContainerOn from '../components/headers/header_on';
 
+import loginManager from '../../dispatcher/login';
+import { Redirect } from "react-router-dom";
+
 import logo from '../../assets/images/icons/logo_black.svg';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input, Button, Alert, Form, FormGroup } from 'reactstrap';
 import Footer_off from '../components/footers/footers_off';
 
+const tokenManager = require('../../dispatcher/tokenManager');
+
 
 function App() {
 
+	const [login, setLogin] = useState({
+		"email": "",
+		"password": ""
+	})
+
+	const [loading, setLoading] = useState(0);
+
+	const redirect = useState(0);
+
+	const onChangeEvent = event => {
+		var value = event.target.value;
+
+		setLogin({ ...value });
+	}
+
+	const loginOnSubmit = event => {
+
+		event.preventDefault();
+		setLoading(1)
+
+		var valid = true;
+
+		const inputNames = {
+			"email": "Email",
+			"password": "Senha"
+		}
+
+		for (let i = 0; i < (event.target.length - 1); i++) {
+			if (event.target[i].value == "") {
+				alert("O campo " + inputNames[event.target[i].name] + " esta vazio")
+				valid = false;
+			}
+		}
+
+		if (valid) {
+
+			let formInputs = {
+				"email": event.target[0].value,
+				"password": event.target[1].value
+			}
+
+			loginManager(formInputs).then(res => {
+
+				if (res.data.code === 200) {
+					tokenManager.createToken(res.data.token);
+					redirect[1](1);
+				}
+				else alert("não foi")
+				setLoading(0)
+			});
+		}
+	}
+
 	return (
+
 		<div>
+			{redirect[0] ? <Redirect to='/painel' /> : null}
 			<Helmet>
 				<title>{String.nomeApp_sistema}</title>
 				<meta name="title" content={String.nomeApp_sistema} />
@@ -45,29 +105,39 @@ function App() {
 
 						{/* invalid: vermelho | valid: verde */}
 
-						<Form>
+						<Form onSubmit={loginOnSubmit}>
 							<FormGroup row>
 								<Input
-									// valid
+									valid
+									required
 									id="login_at"
 									name="email"
 									placeholder="Login"
 									type="email"
+									value={login.email}
+									onChange={onChangeEvent}
 								/>
 							</FormGroup>
 							<FormGroup row>
 								<Input
-									// invalid
+									invalid
+									required
 									id="pass_at"
 									name="password"
 									placeholder="Senha"
 									type="password"
+									value={login.password}
+									onChange={onChangeEvent}
 								/>
 							</FormGroup>
 							<FormGroup row >
-								<Button>
-									{String.enter}
-								</Button>
+								{loading ?
+									<Button><img style={{ height: "100%" }} src="https://i.imgur.com/TRbq1bq.gif" /></Button>
+									:
+									<Button>Entrar</Button>
+								}
+
+
 							</FormGroup>
 						</Form>
 
