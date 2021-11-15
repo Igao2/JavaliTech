@@ -1,4 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+const renderDefinitiveLine = (rows, password, tableColumn) => {
+    console.log(tableColumn)
+    return (
+        <tr>
+            {tableColumn.map(item => {
+                console.log(item)
+                if (item == "senha") {
+                    console.log("ola")
+                    return (<th>{password}</th>)
+                }
+                else return (<th>{rows[item]}</th>)
+            })}
+        </tr>
+    )
+}
 
 class ListFactory extends React.Component {
     constructor(props) {
@@ -6,42 +22,16 @@ class ListFactory extends React.Component {
         this.state = { hide: false };
     }
 
-    renderLine(rows) {
-        return (
-            <tr>
-                <th>{rows.service_order_id}</th>
-                <th>{rows.senha}</th>
-                <th>{rows.owner_name}</th>
-                <th>{rows.device_name}</th>
-                <th>{rows.delivery_date}</th>
-                <th>{rows.completion_date}</th>
-                <th>{rows.status}</th>
-                <th>{rows.service_value}</th>
-            </tr>
-        )
-    }
+    renderLine(rows, tableColumn) { let password = rows.senha; return renderDefinitiveLine(rows, password, tableColumn); }
 
-    renderLineHiderPassword(rows) {
+    renderLineHiderPassword(rows, tableColumn) {
         let password;
         if (rows.senha) password = "••••••";
         else password = "";
-        return (
-            <tr>
-                <th>{rows.service_order_id}</th>
-                <th>{password}</th>
-                <th>{rows.owner_name}</th>
-                <th>{rows.device_name}</th>
-                <th>{rows.delivery_date}</th>
-                <th>{rows.completion_date}</th>
-                <th>{rows.status}</th>
-                <th>{rows.service_value}</th>
-            </tr>
-        )
+        return renderDefinitiveLine(rows, password, tableColumn);
     }
 
     render() {
-
-
         let line = [];
 
         for (let i = 0; i < this.props.listItens.length; i++)
@@ -55,32 +45,30 @@ class ListFactory extends React.Component {
         }
         return (
             <div>
-
                 <table>
                     <tbody>
                         <tr>
-                            <th>service_order_id</th>
-                            <th>
-                                senha
-                                {
-                                    this.state.hide ?
-                                        <img style={{ margin: "0px 10px", width: "15px" }} src="https://i.imgur.com/GI7oJZq.png" onClick={hidePassword} />
-                                        :
-                                        <img style={{ margin: "0px 10px", width: "15px" }} src="https://i.imgur.com/UruvGMc.png" onClick={hidePassword} />
+                            {this.props.tableColumn.map(item => {
+                                if (item == "senha") {
+                                    return (
+                                        <th>
+                                            senha
+                                            {
+                                                this.state.hide ?
+                                                    <img style={{ margin: "0px 10px", width: "15px" }} src="https://i.imgur.com/GI7oJZq.png" onClick={hidePassword} />
+                                                    :
+                                                    <img style={{ margin: "0px 10px", width: "15px" }} src="https://i.imgur.com/UruvGMc.png" onClick={hidePassword} />
+                                            }
+                                        </th>
+                                    )
                                 }
-                            </th>
-                            <th>owner_name</th>
-                            <th>device_name</th>
-                            <th>delivery_date</th>
-                            <th>completion_date</th>
-                            <th>status</th>
-                            <th>service_value</th>
+                                else return (<th>{item}</th>)
+                            })}
                         </tr>
 
-                        {this.state.hide ? line.map(this.renderLine) : line.map(this.renderLineHiderPassword)}
+                        {this.state.hide ? line.map(item => { return this.renderLine(item, this.props.tableColumn) }) : line.map(item => { return this.renderLineHiderPassword(item, this.props.tableColumn) })}
                     </tbody>
                 </table>
-
             </div >
         )
 

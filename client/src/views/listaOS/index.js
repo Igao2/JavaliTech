@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import './stemporarycss.css';
-import { Button } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
 
 import listarOSRequestManager from '../../dispatcher/listarOSRequest';
 import ListFactory from './listFactory';
@@ -8,10 +6,11 @@ import ListFactory from './listFactory';
 const tokenManager = require('../../dispatcher/tokenManager');
 
 
-
 function App() {
 
-    const [listItens, setListItens] = useState([{
+    const breakOfPages = 2;
+    const filterType = 0;
+    let nullListItens = {
         service_order_id: "",
         senha: "",
         owner_name: "",
@@ -20,51 +19,50 @@ function App() {
         completion_date: "",
         status: "",
         service_value: ""
-    }])
-    console.log(listItens)
-    const teste = e => {
-        console.log("ola")
-        var urlParams = new URLSearchParams({ filterType: 0, break: 2 });
-        listarOSRequestManager(2, urlParams, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
-            setListItens(res.data.liste)
+    }
+    let initListItens = [];
+
+    for (let i = 0; i < breakOfPages; i++)
+        initListItens[i] = nullListItens;
+
+    const [listItens, setListItens] = useState(initListItens)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pages, setPages] = useState([]);
+
+    const tableColumn = ["service_order_id", "senha", "owner_name", "device_name", "delivery_date", "completion_date", "status", "service_value"];
+
+    const listarOS = () => {
+        var urlParams = new URLSearchParams({ filterType: filterType, break: breakOfPages });
+
+        listarOSRequestManager(currentPage, urlParams, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+            setListItens(res.data.liste);
+
+            let newPages = []
+
+            for (let i = 1; i <= res.data.numberOfPages; i++) {
+                newPages[i] = i;
+            }
+
+            setPages(newPages);
         });
     }
 
+    const changeThePage = e => { setCurrentPage(parseInt(e.target.innerText)); }
+
+    useEffect(() => { listarOS(); }, [currentPage]);
+
     return (
-
         <div>
-            <Button onClick={teste}> atualisar </Button>
-            <div>
-                <ListFactory {...({ listItens })} />
+            <ListFactory {...({ listItens, tableColumn })} />
 
-
-            </div>
+            {pages.map(item => (
+                <ul>
+                    {item == currentPage && <li onClick={changeThePage} style={{ color: "red", cursor: "pointer" }}>{item}</li>}
+                    {item != currentPage && <li onClick={changeThePage} style={{ cursor: "pointer" }}>{item}</li>}
+                </ul>
+            ))}
         </div>
-
-
     );
 }
 
 export default App;
-
-// setListItens([{
-//     service_order_id: "testando1",
-//     senha: "testando1",
-//     owner_name: "testando1",
-//     device_name: "testando1",
-//     delivery_date: "testando1",
-//     completion_date: "testando1",
-//     status: "testando1",
-//     service_value: "testando1"
-// },
-// {
-//     service_order_id: "testando2",
-//     senha: "testando2",
-//     owner_name: "testando2",
-//     device_name: "testando2",
-//     delivery_date: "testando2",
-//     completion_date: "testando2",
-//     status: "testando2",
-//     service_value: "testando2"
-// }
-// ])

@@ -63,9 +63,9 @@ class ListOS {
 
 
 
-                            } else resolve([numberOfPages, 0, params.break, params.filterType, []])
+                            } else resolve([numberOfPages, 0, parseInt(params.break), parseInt(params.filterType), []])
 
-                        } else resolve([numberOfPages, 0, params.break, params.filterType, []])
+                        } else resolve([numberOfPages, 0, parseInt(params.break), parseInt(params.filterType), []])
                     }
 
                 });
