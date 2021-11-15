@@ -16,6 +16,13 @@ import Button_UserP from '../components/painel/button_userP';
 import Footer_off from '../components/footers/footers_off';
 import itemUser from '../components/painel/item_user';
 import ItemUser from '../components/painel/item_user';
+import ItemEditUser from '../components/painel/item_editUser';
+import ItemAddOs from '../components/painel/item_addOS';
+import ItemListOs_On from '../components/painel/item_listOS_on';
+import ItemSearch from '../components/painel/item_search';
+import ItemLoginOff from '../components/painel/item_loginOff';
+import ViewOpenOs_on from '../components/painel/view_openOs_on';
+import InfoAlert from '../components/painel/info_alert';
 
 
 function App() {
@@ -36,7 +43,7 @@ function App() {
 						<HeaderIcon_Nav_complet src={logo} alt="logo" />
 					</HeaderOn_Nav>
 					<BodyOn_Nav>
-						<Button_UserP/>
+						<Button_UserP />
 					</BodyOn_Nav>
 					{/* <FooterOn_Nav>
 					</FooterOn_Nav> */}
@@ -51,12 +58,24 @@ function App() {
 					<BodyOn>
 
 						<ItemUser/>
+						{/* <ItemEditUser/> */}
+						{/* <ItemAddOs /> */}
+						{/* <ItemListOs_On /> */}
+						{/* <ItemSearch /> */}
+						{/* <ItemLoginOff /> */}
+
+						{/* *** Outros itens *** */}
+						{/* <ViewOpenOs_on/> */}
+						{/* <InfoAlert
+                            titleAlert={String.titleAlert}
+                            describeAlert={String.describeAlert}
+                        /> */}
 
 					</BodyOn>
 					<FooterOn>
 
 						<Footer_off />
-						
+
 					</FooterOn>
 				</AreaBodyRight>
 			</ContainerOn>

@@ -2,154 +2,156 @@
 import React from 'react';
 import String from '../../../assets/values/string.json';
 
-import { ItemAvatar, ItemColAvatar, ItemColText, ItemDiv, ItemMsgUser } from '../../../assets/values/styles';
+import { AlertDelet, ItemAvatar, ItemColAvatar, ItemColText, ItemDiv, ItemMsgUser, QuadrosOS } from '../../../assets/values/styles';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Col, Row, Container, Table } from 'reactstrap';
+import { Col, Row, Container, Table, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
 import avatarTMP from '../../../assets/images/tmp/avartar_tmp.jpg';
 
 
-class ItemUser extends React.Component {
+class ItemEditUser extends React.Component {
     render() {
         return (
             <Container>
-                <Row>
-                    <Col size="20px">
-                        <ItemMsgUser>
-                            {String.menuUserWellcome}<b>{String.menuUser}</b>
-                        </ItemMsgUser>
-                    </Col>
-                </Row>
+                <br />
+
+                <h3>{String.menuEditUser}</h3>
                 <ItemDiv />
-                <Row md="2" sm="2" xs="1" >
-                    <Col size="200px">
+                <Row md="2" sm="2" xs="1">
+                    <Col>
                         <ItemColAvatar>
+                            {/* Foto de Perfil */}
                             <ItemAvatar src={avatarTMP} />
+                            <Form>
+                                <FormGroup>
+                                    {/* Posicionar Foto de perfil */}
+                                    <QuadrosOS>
+                                    <Button color="dark"> {String.left} </Button> <Button color="dark"> {String.up} </Button>  <Button color="dark"> {String.down} </Button> <Button color="dark"> {String.right} </Button>
+                                    </QuadrosOS>
+                                </FormGroup>
+                            </Form>
                         </ItemColAvatar>
                     </Col>
                     <Col>
-                        <ItemColText>
-                            <p>
-                                {String.itemInfo01} {String.itemInfo01_tmp}
+                        <h5>{String.userAvatarUpdate}: </h5>
+                        <Form>
+                            <FormGroup>
+                                {/* Atualizar foto de Perfil */}
+                                <Input
+                                    id="exampleFile"
+                                    name="file"
+                                    type="file"
+                                />
                                 <br />
-                                {String.itemInfo02} {String.itemInfo02_tmp}
-                                <br />
-                                {String.itemInfo03} {String.itemInfo03_tmp}
-
-                            </p>
-                        </ItemColText>
+                                <Button block color="dark" >
+                                    {String.send}
+                                </Button>
+                            </FormGroup>
+                        </Form>
                     </Col>
                 </Row>
 
-                <Row>
+                <ItemDiv />
+                <h5>{String.email}: </h5>
+                <Form>
+                    <FormGroup>
+                        <Input
+                            id="newEmail"
+                            name="newEmail"
+                            placeholder={String.userEmailUpdate}
+                            type="email"
+                        />
+                    </FormGroup>
+
+                    <Button
+                        block
+                        color="dark"
+                    >
+                        {String.save}
+                    </Button>
+
+                </Form>
+                <ItemDiv />
+                <Row md="2" sm="2" xs="1" >
+                    <Col size="200px">
+                        {/* Atualizar Nome/Endereço/Numero de Telefone */}
+                        <h5>{String.datas}: </h5>
+                        <Form>
+                            <FormGroup>
+                                <Input
+                                    id="newLogin"
+                                    name="newLogin"
+                                    placeholder={String.userNameUpdate}
+                                    type="text"
+                                />
+                                <br />
+                                <Input
+                                    id="newEmail"
+                                    name="newEmail"
+                                    placeholder={String.userAaddressUpdate}
+                                    type="text"
+                                />
+                                <br />
+                                <Input
+                                    id="newTell"
+                                    name="newTell"
+                                    placeholder={String.userTellUpdate}
+                                    type="text"
+                                />
+                            </FormGroup>
+
+                            <Button
+                                block
+                                color="dark"
+                            >
+                                {String.save}
+                            </Button>
+
+                        </Form>
+                    </Col>
                     <Col>
-                        <ItemMsgUser>
-                            {String.itemCalendar}
-                        </ItemMsgUser>
+                        {/* Atualizar senha */}
+                        <h5>{String.pass}: </h5>
+                        <Form>
+                            <FormGroup>
+                                <Input
+                                    id="newPass"
+                                    name="newPass"
+                                    placeholder={String.userPassUpdate}
+                                    type="password"
+                                />
+                                <br />
+                                <Input
+                                    id="newPassRepet"
+                                    name="newPassRepet"
+                                    placeholder={String.userPassRepet}
+                                    type="password"
+                                />
+                            </FormGroup>
 
-                        <ItemDiv />
-                        <Table responsive>
-                            <thead>
-                                <tr>
-                                    <th>
-                                        #
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">
-                                        1
-                                    </th>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        2
-                                    </th>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        3
-                                    </th>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </Table>
+                            <Button block color="dark" >
+                                {String.save}
+                            </Button>
+
+                        </Form>
                     </Col>
                 </Row>
+                <ItemDiv />
+                <Form>
+                    <AlertDelet>
+
+                        <h4>{String.userDelteCount}? </h4>
+                        <Button
+                            block
+                            color="danger"
+                        >
+                            {String.save}
+                        </Button>
+                    </AlertDelet>
+                </Form>
+                <br />
 
             </Container>
 
@@ -157,4 +159,4 @@ class ItemUser extends React.Component {
     }
 }
 
-export default ItemUser;
+export default ItemEditUser;

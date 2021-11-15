@@ -48,7 +48,7 @@ function App() {
 						<Form>
 							<FormGroup row>
 								<Input
-									valid
+									// valid
 									id="login_at"
 									name="email"
 									placeholder="Login"
@@ -57,7 +57,7 @@ function App() {
 							</FormGroup>
 							<FormGroup row>
 								<Input
-									invalid
+									// invalid
 									id="pass_at"
 									name="password"
 									placeholder="Senha"
@@ -66,7 +66,7 @@ function App() {
 							</FormGroup>
 							<FormGroup row >
 								<Button>
-									Entrar
+									{String.enter}
 								</Button>
 							</FormGroup>
 						</Form>

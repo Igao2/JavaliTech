@@ -11,23 +11,24 @@ import searchResultManager from '../../dispatcher/searchBarRequest';
 import logo from '../../assets/images/icons/logo_black.svg';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Input, Button, Form, FormGroup } from 'reactstrap';
+import { Input, Button, Form, FormGroup, Table } from 'reactstrap';
 import Footer_off from '../components/footers/footers_off';
+import ViewOS from '../components/painel/view_os';
 
 function App() {
     var searchBar;
     useState(searchBar);
     const [value, setValue] = useState({
-        "service_order_id": "",
-        "owner_name": "",
-        "description": "",
-        "device_photos": "",
-        "delivery_date": "",
-        "completion_date": "",
-        "status": "",
-        "service_value": "",
-        "user_name": "",
-        "user_photo": ""
+        "service_order_id": "00",
+        "owner_name": "Ana Lise",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed mauris eu tellus volutpat iaculis. Duis efficitur ipsum urna, sit amet hendrerit mauris suscipit in. Suspendisse ut leo congue eros malesuada fermentum. Pellentesque id diam eget odio pharetra lacinia viverra id nisl. Donec ligula tortor, ultricies eu viverra id, posuere et justo. Pellentesque eu libero eleifend, ornare libero a, aliquet lorem. Morbi sed suscipit enim. Nullam augue quam, congue sed magna posuere, fringilla cursus nulla.",
+        "device_photos": "ban",
+        "delivery_date": "31/02/1990",
+        "completion_date": "-1/01/2022",
+        "status": "Divorciado",
+        "service_value": "3 Reaix",
+        "user_name": "Steve Macqueen",
+        "user_photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2oo2DMYa3vo-93KIrS9K8bUc0_aRvjnMRBg&usqp=CAU"
     });
 
     const onChangeEvent = event => {
@@ -78,7 +79,7 @@ function App() {
                         <Form>
                             <FormGroup row>
                                 <Input
-                                    valid
+                                    // valid
                                     id="cod_OS"
                                     type="text"
                                     maxLength="6"
@@ -89,39 +90,17 @@ function App() {
                                 />
                             </FormGroup>
                         </Form>
-                        <div>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th>service_order_id</th>
-                                        <th>owner_name</th>
-                                        <th>description</th>
-                                        <th>device_photos</th>
-                                        <th>delivery_date</th>
-                                        <th>completion_date</th>
-                                        <th>status</th>
-                                        <th>service_value</th>
-                                        <th>user_name</th>
-                                        <th>user_photo</th>
-                                    </tr>
-
-                                    <tr>
-                                        <th>{value.service_order_id}</th>
-                                        <th>{value.owner_name}</th>
-                                        <th>{value.description}</th>
-                                        <th>{value.device_photos}</th>
-                                        <th>{value.delivery_date}</th>
-                                        <th>{value.completion_date}</th>
-                                        <th>{value.status}</th>
-                                        <th>{value.service_value}</th>
-                                        <th>{value.user_name}</th>
-                                        <th>
-                                            <img width="50" src={value.user_photo[0]} />
-                                        </th>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <ViewOS
+                            service_order_id={value.service_order_id}
+                            owner_name={value.owner_name}
+                            description={value.description}
+                            delivery_date={value.delivery_date}
+                            completion_date={value.completion_date}
+                            status={value.status}
+                            service_value={value.service_value}
+                            user_name={value.user_name}
+                            user_photo={value.user_photo}
+                        />
 
                     </BodyOff_buttom>
 

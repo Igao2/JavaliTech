@@ -8,6 +8,10 @@ import Search from './views/screen/search';
 import Login from './views/screen/login';
 import PainelUser from './views/screen/painel_user';
 
+import Temp from './views/screen/registrar';
+// import Temp from './views/register/index';
+import Temp1 from './views/register/index2';
+
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -29,6 +33,11 @@ const Routes = () => (
             <PrivateRoute path="/search" component={Search} />
             <PrivateRoute path="/login" component={Login} />
             <PrivateRoute path="/painel" component={PainelUser} />
+
+            
+            <PrivateRoute path="/tmp" component={Temp} />
+            <PrivateRoute path="/tmp1" component={Temp1} />
+            
         </Switch>
     </BrowserRouter>
 );
