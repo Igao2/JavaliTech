@@ -1,15 +1,20 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useState } from 'react';
-import { Container, Header, ProfilePhoto } from '../../style/style';
-import './stemporarycss.css';
+import String from '../../assets/values/string.json';
+
+import { AlertDelet, ItemAvatar, ItemColAvatar, ItemDiv, ProfilePhoto, QuadrosOS } from '../../assets/values/styles';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import registerProfileManager from '../../dispatcher/register';
 
+import { Col, Row, Container, Form, FormGroup, Input, Button } from 'reactstrap';
+import avatarBackground from '../../assets/images/icons/backgroundAvatar.png';
+import avatarTemp from '../../assets/images/icons/avatarTemp.png'
 
+function Index() {
 
-
-function App() {
-
-    /** const useState para os Inputs do formulari de cadatro  */
+    /** const useState para os Inputs do formulario de cadatro  */
     const [register, setValue] = useState({
         "name": "",
         "email": "",
@@ -30,7 +35,7 @@ function App() {
     const [imagePreview, setPreview] = useState({
         "left": 0,
         "top": 0,
-        "width": 100
+        "width": 150
     });
 
     /**
@@ -186,212 +191,213 @@ function App() {
 
     // O css da tabela está no arquivo "stemporarycss.css", é um css de teste só pra não ficar tão ilegível como estava.
     // Quando o layout legitimo for criado esse css deve ser previsto para evitar problemas futuros.
+
     return (
+        <QuadrosOS>
+            <Form onSubmit={registerProfile}>
+                <FormGroup>
+                    <h3>{String.registrerUser}</h3>
+                    <QuadrosOS>
+                        <Row md="2" sm="2" xs="1">
+                            <Col>
+                                <ItemColAvatar>
+                                    {/* Foto de Perfil */}
+                                    {/* <ItemAvatar src={avatarTMP} /> */}
+                                    <ProfilePhoto imgUrl={avatarBackground}>
+                                    {image ?
+                                        <img
+                                            src={URL.createObjectURL(image)}
+                                            alt="Imagem"
+                                            style={{
+                                                left: imagePreview.left + "px",
+                                                top: imagePreview.top + "px",
+                                                width: imagePreview.width + "px"
+                                            }}
+                                        />
+                                        : <img
+                                            src={avatarTemp}
+                                            alt="Imagem"
+                                            style={{
+                                                left: imagePreview.left + "px",
+                                                top: imagePreview.top + "px",
+                                                width: imagePreview.width + "px"
+                                            }}
+                                        />
+                                    }
+                                    </ProfilePhoto>
+                                </ItemColAvatar>
+                            </Col>
+                            <Col>
+                                <h5>{String.userAvaterSend}: </h5>
+                                {/* Atualizar foto de Perfil */}
+                                <Input
+                                    type="file"
+                                    placeholder={String.userAvaterSend}
+                                    name='image'
+                                    value={register.image}
+                                    onChange={e => setImage(e.target.files[0])}
+                                    required
+                                />
+                                <ItemDiv />
+                                {/* Deve-se manter esta formatação para que seja obedecido o espaçamento entre os botões */}
+                                <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(1) }) }}> {String.left}
+                                </Button> <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(3) }) }}> {String.up}
+                                </Button>  <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(4) }) }}> {String.down}
+                                </Button> <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(2) }) }}> {String.right}
+                                </Button> <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(5) }) }}> {String.zoomplus}
+                                </Button> <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(6) }) }}> {String.zoomsmall}
+                                </Button>
+                            </Col>
+                        </Row>
+                    </QuadrosOS>
+                    <QuadrosOS>
+                        <h6>{String.osInfoBasic}: </h6>
 
-        <Container>
-            <Header>
-                oi meu chapa
-
-            </Header>
-
-            <form onSubmit={registerProfile}>
-                <div className="primariIputs">
-                    <label>Nome
-                        <input
-                            type="text"
-                            maxLength="150"
-                            placeholder="Nome"
-                            name='nome'
-                            value={register.name}
-                            onChange={onChangeEvent}
-                            required
-                        />
-                    </label>
-                    <br />
-
-                    <label>Email
-                        <input
+                        <Row md="2" sm="2" xs="1">
+                            <Col>
+                                <br />
+                                <Input
+                                    type="text"
+                                    maxLength="150"
+                                    placeholder={String.userNameNew}
+                                    name="nome"
+                                    value={register.name}
+                                    onChange={onChangeEvent}
+                                    required
+                                />
+                            </Col>
+                            <Col>
+                                <br />
+                                <Input
+                                    type="text"
+                                    maxLength="15"
+                                    placeholder={String.userTellNew}
+                                    name='telephone'
+                                    value={register.telephone}
+                                    onChange={onChangeEvent}
+                                    required
+                                // data-mask="(00) 0000-0000"
+                                // data-mask-selectonfocus="true"
+                                />
+                            </Col>
+                        </Row>
+                        <br />
+                        <Input
                             type="email"
-                            placeholder="Email"
+                            placeholder={String.userEmailNew}
                             name='email'
                             value={register.email}
                             onChange={onChangeEvent}
                             required
                         />
-                    </label>
-                    <br />
-
-                    <label>Senha
-                        <input
+                        <br />
+                        <Input
                             type="password"
                             maxLength="60"
-                            placeholder="Senha"
+                            placeholder={String.userPassNew}
                             name='password'
                             value={register.password}
                             onChange={onChangeEvent}
                             required
                         />
-                    </label>
-                    <br />
-
-                    <label>Telefone
-                        <input
-                            type="text"
-                            maxLength="15"
-                            placeholder="Telefone"
-                            name='telephone'
-                            value={register.telephone}
-                            onChange={onChangeEvent}
-                            required
-                        />
-                    </label>
-                    <br />
-                </div>
-
-                <div className="emdereco">
-                    <p>Emdereço</p>
-
-                    <label>
-                        Cep
-                        <input
+                        <br />
+                        <h6>{String.itemInfo02}</h6>
+                        <Row md="3" sm="3" xs="1">
+                            {/* <Col>
+                                <br />
+                                <Input
+                                    invalid
+                                    // name="endRua"
+                                    placeholder={String.endRua}
+                                // type="text"
+                                />
+                            </Col> */}
+                            <Col>
+                                <br />
+                                <Input
+                                    type="text"
+                                    placeholder={String.endBairro}
+                                    name='bairro'
+                                    value={register.bairro}
+                                    onChange={onChangeEvent}
+                                    required
+                                />
+                            </Col>
+                            <Col>
+                                <br />
+                                <Input
+                                    type="text"
+                                    placeholder={String.endCidad}
+                                    name='cidade'
+                                    value={register.cidade}
+                                    onChange={onChangeEvent}
+                                    required
+                                />
+                            </Col>
+                            <Col>
+                                <br />
+                                <Input
+                                    type="text"
+                                    placeholder={String.endEstado}
+                                    name='estado'
+                                    value={register.estado}
+                                    onChange={onChangeEvent}
+                                    required
+                                />
+                            </Col>
+                        </Row>
+                        <Row md="2" sm="2" xs="1">
+                            <Col>
+                                <br />
+                                <Input
+                                    type="number"
+                                    placeholder={String.endNum}
+                                    name='numero'
+                                    value={register.numero}
+                                    onChange={onChangeEvent}
+                                />
+                            </Col>
+                            <Col>
+                                <br />
+                                <Input
+                                    type="text"
+                                    placeholder={String.endComplet}
+                                    name='complemento'
+                                    value={register.complemento}
+                                    onChange={onChangeEvent}
+                                />
+                            </Col>
+                        </Row>
+                        <br />
+                        <Input
                             type="text"
                             maxLength="9"
-                            placeholder="cep"
+                            placeholder={String.endCep}
                             name='cep'
                             value={register.cep}
                             onChange={onChangeEvent}
                             required
                         />
-                    </label>
+                    </QuadrosOS>
 
-                    <label>
-                        Estado
-                        <input
-                            type="text"
-                            placeholder="estado"
-                            name='estado'
-                            value={register.estado}
-                            onChange={onChangeEvent}
-                            required
-                        />
-                    </label>
+                    <AlertDelet>
 
-
-                    <label>
-                        Cidade
-                        <input
-                            type="text"
-                            placeholder="cidade"
-                            name='cidade'
-                            value={register.cidade}
-                            onChange={onChangeEvent}
-                            required
-                        />
-                    </label>
-
-                    <label>
-                        Bairro
-                        <input
-                            type="text"
-                            placeholder="bairro"
-                            name='bairro'
-                            value={register.bairro}
-                            onChange={onChangeEvent}
-                            required
-                        />
-                    </label>
-
-                    <label>
-                        Complemento
-                        <input
-                            type="text"
-                            placeholder="complemento"
-                            name='complemento'
-                            value={register.complemento}
-                            onChange={onChangeEvent}
-                        />
-                    </label>
-
-                    <label>
-                        Numero
-                        <input
-                            type="number"
-                            placeholder="numero na casa"
-                            name='numero'
-                            value={register.numero}
-                            onChange={onChangeEvent}
-                        />
-                    </label>
-
-
-                </div>
-                <br />
-
-                <label>
-                    Foto
-                    <input
-                        type="file"
-                        placeholder="Foto"
-                        name='image'
-                        value={register.image}
-                        onChange={e => setImage(e.target.files[0])}
-                        required
-                    />
-                </label>
-                <br />
-
-
-
-
-                <div>
-
-                    <ProfilePhoto>
-                        {image ?
-                            <img
-                                src={URL.createObjectURL(image)}
-                                alt="Imagem"
-                                style={{
-                                    left: imagePreview.left + "px",
-                                    top: imagePreview.top + "px",
-                                    width: imagePreview.width + "px"
-                                }}
-                            />
-                            : <img
-                                src='./favicon.ico'
-                                alt="Imagem"
-                                style={{
-                                    left: imagePreview.left + "px",
-                                    top: imagePreview.top + "px",
-                                    width: imagePreview.width + "px"
-                                }}
-                            />
-                        }
-
-                    </ProfilePhoto>
-
-
-                    <a className="button" onClick={() => { setPreview({ ...previewImageChenge(1) }) }}>Esquerda</a>
-                    <a className="button" onClick={() => { setPreview({ ...previewImageChenge(2) }) }}>Direita</a>
-                    <a className="button" onClick={() => { setPreview({ ...previewImageChenge(3) }) }}>Cima</a>
+                        <h4>{String.userAddCOunt}? </h4>
+                        <Button
+                            block
+                            color="dark"
+                            type="submit"
+                        >
+                            {String.registrerUser}
+                        </Button>
+                    </AlertDelet>
                     <br />
-                    <a className="button" onClick={() => { setPreview({ ...previewImageChenge(4) }) }}>Baixo</a>
-                    <a className="button" onClick={() => { setPreview({ ...previewImageChenge(5) }) }}>Aumentar</a>
-                    <a className="button" onClick={() => { setPreview({ ...previewImageChenge(6) }) }}>Diminuir</a>
-                </div>
-                <br />
+                </FormGroup>
+            </Form>
 
+        </QuadrosOS >
 
-                <button className="button right" type="submit">Salvar</button>
-
-            </form>
-
-
-
-        </Container>
-
-
-
-    );
+    )
 }
 
-export default App;
+export default Index;

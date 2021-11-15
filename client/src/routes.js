@@ -9,6 +9,10 @@ import PainelUser from './views/screen/painel_user';
 import Register from './views/register';
 import ListaOS from './views/listaOS';
 
+import Temp from './views/screen/registrar';
+// import Temp from './views/register/index';
+import Temp1 from './views/register/index2';
+
 const tokenManager = require('./dispatcher/tokenManager');
 
 
@@ -33,6 +37,11 @@ const Routes = () => (
             <Route exact path="/search" component={Search} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute path="/painel" component={PainelUser} />
+
+
+            <PrivateRoute path="/tmp" component={Temp} />
+            <PrivateRoute path="/tmp1" component={Temp1} />
+
             <PrivateRoute path="/listaOS" component={ListaOS} />
         </Switch>
     </BrowserRouter>

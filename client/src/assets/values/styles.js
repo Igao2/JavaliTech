@@ -39,7 +39,7 @@ export const BodyOff = styled.main`
 
 	overflow: auto;
 	width: 1000px;
-	margin: 0 auto;
+	margin: 20px auto 0;
 
 	@media(max-width: 1024px) {
 		width: 100%;
@@ -122,6 +122,26 @@ export const BodyOff_buttom = styled.main`
 		background-color: #a00;
 		border-color: #a00;
 	}							
+`;
+
+export const ParagrafLeftGeral = styled.p`
+	text-align-last: left;
+
+	div.dataItem{
+		padding: 10px;
+    	background: #eee;
+	}
+
+	div.statusItem{
+		padding: 10px;
+    	background: #fafafa;
+	}
+`;
+
+export const FotoCentoOitenta = styled.img`
+	width: 180px;
+	height: 180px;
+	background: #eee;
 `;
 
 // Estilo Geral topo
@@ -254,14 +274,14 @@ export const BodyOn = styled.main`
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-area: br;
-	grid-template-areas: "m m";
+	// grid-template-areas: "m m";
 
 	grid-template-rows: 1fr 1fr;
 	grid-template-areas: "bt bt" "bb bb";
 
 	overflow: auto;
 	width: 1000px;
-	margin: 20px auto;
+	margin: 20px auto 0px;
 
 	background: #fff;
 	box-shadow: 0px 5px 10px #0002;
@@ -269,6 +289,7 @@ export const BodyOn = styled.main`
 
 	@media(max-width: 1280px) {
 		width: 100%;
+		margin: 0 auto;
 	}
 
 
@@ -446,26 +467,36 @@ export const ItemIcoMenu = styled.img`
 `;
 
 export const ItemDiv = styled.hr`
-	margin: 5px 0;	
+	margin: 10px 0 15px;	
+`;
+
+export const AlertDelet = styled.div`
+	padding: 20px 20px;
+	background: #eee;
 `;
 
 export const ItemColAvatar = styled.div`
+	width: 100%;
 	text-align: center;
 	display: grid;
     text-align: center;
     justify-content: center;
+	justify-items: center;
 
 	padding: 10px;
     background: #efefef;
+
+	height: 100%;
+    align-content: center;
 	
-	border-radius: 200px;
+	// border-radius: 200px;
 `;
 
 export const ItemAvatar = styled.img`
 	width: 120px;
 	height: 120px;
 	border: 1px solid #ffffff87;
-	border-radius: 200px;
+	// border-radius: 200px;
 	fill: #fff;
 	
 `;
@@ -486,5 +517,47 @@ export const ItemColText = styled.div`
 
 	@media(max-width: 1024px) {
 		margin: 5px 0 0;
+	}
+`;
+
+export const ItemColTextOS = styled.div`
+	display: grid;
+    align-items: center;
+	
+	height: 100%;
+
+	p{
+		display: grid;
+		height: 100%;
+		align-items: center;
+		height: 100%;
+		font-size: medium;
+	}
+
+	@media(max-width: 1024px) {
+		margin: 5px 0 0;
+	}
+`;
+
+export const QuadrosOS = styled.div`
+	background: #fff;
+	padding: 10px;
+	border: 1px solid #dee2e6!important;
+	margin: 0px 0px 10px;
+	border-radius: 5px;
+`;
+
+export const ProfilePhoto = styled.div`
+	border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+	border: 1px solid #666;
+    width: 150px;
+    height: 150px;
+	margin: auto;
+	background: url(${(props)=>props.imgUrl});  
+
+ 	img {
+    	position: absolute;
 	}
 `;
