@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const mysqlConnection = require('../database/connection');
-const fs = require('fs')
 const definitions = require('../assets/definitions.json');
 const validateInformation = require('../Model/validateInformation');
 const bcrypt = require('bcryptjs');
