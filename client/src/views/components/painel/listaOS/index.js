@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-import listarOSRequestManager from '../../dispatcher/listarOSRequest';
+import listOSRequestManager from '../../../../dispatcher/listOSRequest';
 import ListFactory from './listFactory';
 
-const tokenManager = require('../../dispatcher/tokenManager');
+const tokenManager = require('../../../../dispatcher/tokenManager');
 
 
-function App() {
+function App(props) {
 
-    const breakOfPages = 2;
-    const filterType = 0;
+    const breakOfPages = props.breakOfPages;
+    const filterType = props.filterType;
+    const tableColumn = props.tableColumn;
+
     let nullListItens = {
         service_order_id: "",
         senha: "",
@@ -22,26 +24,22 @@ function App() {
     }
     let initListItens = [];
 
-    for (let i = 0; i < breakOfPages; i++)
-        initListItens[i] = nullListItens;
+    for (let i = 0; i < breakOfPages; i++) initListItens[i] = nullListItens;
 
     const [listItens, setListItens] = useState(initListItens)
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState([]);
 
-    const tableColumn = ["service_order_id", "senha", "owner_name", "device_name", "delivery_date", "completion_date", "status", "service_value"];
-
     const listarOS = () => {
         var urlParams = new URLSearchParams({ filterType: filterType, break: breakOfPages });
 
-        listarOSRequestManager(currentPage, urlParams, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+        listOSRequestManager(currentPage, urlParams, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
             setListItens(res.data.liste);
 
             let newPages = []
 
-            for (let i = 1; i <= res.data.numberOfPages; i++) {
-                newPages[i] = i;
-            }
+            for (let i = 1; i <= res.data.numberOfPages; i++) newPages[i] = i;
+
 
             setPages(newPages);
         });

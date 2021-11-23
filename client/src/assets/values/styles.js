@@ -361,7 +361,7 @@ export const ContainerHeaderOn = styled.div`
 		border-bottom: 8px solid #fff6;
 	}
 
-	a:active, a:focus{
+	a:active, a:focus, a[active]{
 		color: #222;
 		background: #FFf;
 		border-bottom: 0px solid #b30000;
@@ -404,16 +404,21 @@ export const ContainerHeaderOn_LatPcMenu = styled.a`
 	text-align: start;
 
 	text-decoration: none;
-	color: #fff;
+	color: ${props => props.active ? "#222" : "#fff"};
     height: auto;
     width: 100%;
     padding: 20px 0 15px 10px;
 	font-size: medium;
 
-	background: #222;
-	border-bottom: 1px solid #fff1;
-	border-top: 1px solid #fff1;
+	img {
+		filter:${props => props.active ? "brightness(0)" : "brightness(1)"}
+	}
 
+		
+	background: ${props => props.active ? "#FFf" : "#222"};
+	border-bottom: ${props => props.active ? "0px solid #b30000" : "1px solid #fff1"};
+	border-top: 1px solid #fff1;
+	border-left: ${props => props.active ? "8px solid #fff" : "none"};
 	@media(max-width: 1024px) {
 		display: none;
 	}
@@ -423,6 +428,8 @@ export const ContainerHeaderOn_LatPcMenu = styled.a`
 	}
 
 `;
+
+
 
 export const ContainerHeaderOn_PcMenu = styled.div`
 	display: inline;	
@@ -555,7 +562,7 @@ export const ProfilePhoto = styled.div`
     width: 150px;
     height: 150px;
 	margin: auto;
-	background: url(${(props)=>props.imgUrl});  
+	background: url(${(props) => props.imgUrl});  
 
  	img {
     	position: absolute;

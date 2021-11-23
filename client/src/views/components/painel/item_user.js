@@ -2,23 +2,29 @@
 import React from 'react';
 import String from '../../../assets/values/string.json';
 
-import { ItemAvatar, ItemColAvatar, ItemColText, ItemDiv, ItemMsgUser } from '../../../assets/values/styles';
+import { ItemColAvatar, ItemColText, ItemDiv, ItemMsgUser, ProfilePhoto } from '../../../assets/values/styles';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Col, Row, Container, Table } from 'reactstrap';
+import TableListaOS from "./listaOS/index";
+import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
 
 import avatarTMP from '../../../assets/images/tmp/avartar_tmp.jpg';
 
 
 class ItemUser extends React.Component {
     render() {
+        const breakOfPages = 3;
+        const filterType = 1;
+        const tableColumn = ["service_order_id", "owner_name", "device_name", "delivery_date", "status", "service_value"];
+
         return (
             <Container>
                 <Row>
                     <Col size="20px">
                         <ItemMsgUser>
-                            {String.menuUserWellcome}<b>{String.menuUser}</b>
+                            {String.menuUserWellcome}<b>{this.props.userInfos.name}</b>
                         </ItemMsgUser>
                     </Col>
                 </Row>
@@ -26,17 +32,29 @@ class ItemUser extends React.Component {
                 <Row md="2" sm="2" xs="1" >
                     <Col size="200px">
                         <ItemColAvatar>
-                            <ItemAvatar src={avatarTMP} />
+                            <ProfilePhoto imgUrl={avatarBackground}>
+
+                                <img
+                                    src={this.props.userInfos.photo[0]}
+                                    alt="Imagem"
+                                    style={{
+                                        left: this.props.userInfos.photo[1].left + "px",
+                                        top: this.props.userInfos.photo[1].top + "px",
+                                        width: this.props.userInfos.photo[1].width + "%"
+                                    }}
+                                />
+
+                            </ProfilePhoto>
                         </ItemColAvatar>
                     </Col>
                     <Col>
                         <ItemColText>
                             <p>
-                                {String.itemInfo01} {String.itemInfo01_tmp}
+                                {String.itemInfo01} {this.props.userInfos.name}
                                 <br />
-                                {String.itemInfo02} {String.itemInfo02_tmp}
+                                {String.itemInfo02} {this.props.userInfos.address.rua}, {this.props.userInfos.address.bairro}, {this.props.userInfos.address.cidade}, {this.props.userInfos.address.estado}
                                 <br />
-                                {String.itemInfo03} {String.itemInfo03_tmp}
+                                {String.itemInfo03} {this.props.userInfos.telephone}
 
                             </p>
                         </ItemColText>
@@ -50,104 +68,7 @@ class ItemUser extends React.Component {
                         </ItemMsgUser>
 
                         <ItemDiv />
-                        <Table responsive>
-                            <thead>
-                                <tr>
-                                    <th>
-                                        #
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                    <th>
-                                        Table heading
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">
-                                        1
-                                    </th>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        2
-                                    </th>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        3
-                                    </th>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                    <td>
-                                        Table cell
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </Table>
+                        <TableListaOS {...({ breakOfPages, filterType, tableColumn })} />
                     </Col>
                 </Row>
 

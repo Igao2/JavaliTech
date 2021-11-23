@@ -1,5 +1,6 @@
 module.exports = class validateInformation {
     constructor(info) {
+        this.type = info.type
         this.name = info.name;
         this.email = info.email;
         this.password = info.password;
@@ -41,7 +42,7 @@ module.exports = class validateInformation {
             errors.erro = true;
             errors.erroDetails.push({
                 campo: "name",
-                mensagem: "Formato de namo invalido."
+                mensagem: "Formato de nome invalido."
             })
         } else if (!this.checkName(this.name)) {
             errors.erro = true;
@@ -75,6 +76,60 @@ module.exports = class validateInformation {
                 campo: "password",
                 mensagem: "Tamanho de senha invalida."
             })
+        }
+
+        return errors;
+    }
+
+    get checkForParams() {
+
+        var errors = {
+            erro: false
+        };
+
+        switch (this.type) {
+            case 1:
+                if (!this.checkEmail(this.email)) {
+                    errors = {
+                        erro: true,
+                        code: 400,
+                        mensagem: "Formato de Email invalido."
+                    }
+                }
+                break;
+            case 2:
+                if (!this.checkPassword(this.password)) {
+                    errors = {
+                        erro: true,
+                        code: 400,
+                        mensagem: "Tamanho de senha invalida."
+                    }
+                }
+                break;
+            case 3:
+                if (!this.checkTelephone(this.telephone)) {
+                    errors = {
+                        erro: true,
+                        code: 400,
+                        mensagem: "Formato de Telefone invalido."
+                    }
+                }
+                break;
+            case 4:
+                if (!this.checkNameFormat(this.name)) {
+                    errors = {
+                        erro: true,
+                        code: 400,
+                        mensagem: "Formato de nome invalido."
+                    }
+                } else if (!this.checkName(this.name)) {
+                    errors = {
+                        erro: true,
+                        code: 400,
+                        mensagem: "Nome muito longo."
+                    }
+                }
+                break;
         }
 
         return errors;

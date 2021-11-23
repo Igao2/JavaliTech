@@ -8,7 +8,7 @@ import HeaderContainerOff from '../components/headers/header_off';
 import HeaderContainerOn from '../components/headers/header_on';
 
 import loginManager from '../../dispatcher/login';
-import { Redirect } from "react-router-dom";
+import { Redirect, NavLink } from "react-router-dom";
 
 import logo from '../../assets/images/icons/logo_black.svg';
 
@@ -21,21 +21,47 @@ const tokenManager = require('../../dispatcher/tokenManager');
 
 function App() {
 
-	const [login, setLogin] = useState({
-		"email": "",
-		"password": ""
+	/** const useState para alertar errors, warnings, informs e etc... */
+	const [announcement, setAnnouncement] = useState({
+		enabled: 0,
+		type: "",
+		massage: ""
 	})
 
+	/** const useState para o valor e status dos campos email e senha. */
+	const [login, setLogin] = useState({
+		email: "",
+		emailState: 0,
+		password: "",
+		passwordState: 0
+	})
+
+	/** const useState ativar e desativar a gif de loading do botão de entrar. */
 	const [loading, setLoading] = useState(0);
 
+	/** const useState para o redirecionamento de tela. */
 	const redirect = useState(0);
 
+	/**
+	* Esta arrow function pega os valores dos Inputs e armazena no useState “login”.
+	* @param {object} event - Informações do evento onChange.
+	* @param {string} event.target.value - valor do input.
+	* */
 	const onChangeEvent = event => {
 		var value = event.target.value;
 
-		setLogin({ ...value });
+		setAnnouncement({ ..."", enabled: 0 })
+
+		setLogin({ ...value, emailState: 0, passwordState: 0 });
 	}
 
+	/**
+	* Esta arrow function é o evento de submit do form, ela pega os valores dos Inputs do form, verifica se os campos foram preenchidos, se sim ele manda os dados para API para que o login seja realizado
+	* @param {object} event - Informações do evento onChange.
+	* @param {object[]} event.target - Array com as informações de cada input.
+	* @param {string} event.target[].value - valor do input.
+	* @param {string} event.target[].name - nome do input.
+	*/
 	const loginOnSubmit = event => {
 
 		event.preventDefault();
@@ -44,13 +70,26 @@ function App() {
 		var valid = true;
 
 		const inputNames = {
-			"email": "Email",
-			"password": "Senha"
+			"email": ["Email", "emailState"],
+			"password": ["Senha", "passwordState"]
 		}
 
-		for (let i = 0; i < (event.target.length - 1); i++) {
+		for (let i = 0; i < (event.target.length - 2); i++) {
 			if (event.target[i].value == "") {
-				alert("O campo " + inputNames[event.target[i].name] + " esta vazio")
+				if (!valid)
+					setAnnouncement({
+						enabled: 1,
+						type: "info",
+						massage: "Os campos Email e Senha estão vazios"
+					})
+				else
+					setAnnouncement({
+						enabled: 1,
+						type: "info",
+						massage: "O campo " + inputNames[event.target[i].name][0] + " esta vazio"
+					})
+
+				login[inputNames[event.target[i].name][1]] = 2;
 				valid = false;
 			}
 		}
@@ -64,14 +103,56 @@ function App() {
 
 			loginManager(formInputs).then(res => {
 
-				if (res.data.code === 200) {
+				if (res.data.erro) {
+					switch (res.data.code) {
+						case 500:
+							setAnnouncement({
+								enabled: 1,
+								type: "danger",
+								massage: res.data.mensagem
+							})
+							break;
+						case 400:
+							for (let i = 0; i < res.data.erroDetails.length; i++) {
+								setAnnouncement({
+									enabled: 1,
+									type: "warning",
+									massage: res.data.erroDetails[i].mensagem
+								})
+								login[res.data.erroDetails[i].campo] = 2;
+							}
+							break;
+						case 401:
+							setAnnouncement({
+								enabled: 1,
+								type: "danger",
+								massage: "O email ou a senha inserido esta incorreto."
+							})
+							setLogin({ ...login, emailState: 2, passwordState: 2 });
+							break;
+						default:
+							setAnnouncement({
+								enabled: 1,
+								type: "danger",
+								massage: String.error500
+							})
+					}
+
+				} else {
 					tokenManager.createToken(res.data.token);
 					redirect[1](1);
 				}
-				else alert("não foi")
+
 				setLoading(0)
-			});
-		}
+			}).catch(error => {
+				setAnnouncement({
+					enabled: 1,
+					type: "danger",
+					massage: String.error500
+				})
+				setLoading(0)
+			});;
+		} else setLoading(0)
 	}
 
 	return (
@@ -97,7 +178,8 @@ function App() {
 					<BodyOff_top_off>
 
 						{/* danger: vermelho | warning: amarelo | info: azul | dark: cinza*/}
-						<Alert color="warning" dismissible>{String.alete00}</Alert>
+						{announcement.enabled ? <Alert color={announcement.type} dismissible>{announcement.massage}</Alert> : null}
+
 						<h2>{String.login_init}</h2>
 
 					</BodyOff_top_off>
@@ -108,8 +190,12 @@ function App() {
 						<Form onSubmit={loginOnSubmit}>
 							<FormGroup row>
 								<Input
-									valid
-									required
+									className={(state => {
+										if (state == 0) return ("")
+										else if (state == 1) return ("is-valid")
+										else if (state == 2) return ("is-invalid")
+									})(login.emailState)}
+
 									id="login_at"
 									name="email"
 									placeholder="Login"
@@ -120,8 +206,12 @@ function App() {
 							</FormGroup>
 							<FormGroup row>
 								<Input
-									invalid
-									required
+									className={(state => {
+										if (state == 0) return ("")
+										else if (state == 1) return ("is-valid")
+										else if (state == 2) return ("is-invalid")
+									})(login.passwordState)}
+
 									id="pass_at"
 									name="password"
 									placeholder="Senha"
@@ -131,12 +221,17 @@ function App() {
 								/>
 							</FormGroup>
 							<FormGroup row >
-								{loading ?
-									<Button><img style={{ height: "100%" }} src="https://i.imgur.com/TRbq1bq.gif" /></Button>
-									:
-									<Button>Entrar</Button>
-								}
+								<div>
+									{loading ?
+										<Button><img style={{ height: "100%" }} src="https://i.imgur.com/TRbq1bq.gif" /></Button>
+										:
+										<Button>Entrar</Button>
+									}
+								</div>
 
+								<NavLink to="/register">
+									<Button block color="danger">{String.registrerUserButtom}</Button>
+								</NavLink>
 
 							</FormGroup>
 						</Form>

@@ -14,6 +14,9 @@ import ViewOS from './view_os';
 
 class ItemLoginOff extends React.Component {
     render() {
+
+        const backToWelcomeScreen = () => this.props.switchScreensFromProps(1);
+        const logoutUser = () => this.props.logout();
         return (
             <Container>
 
@@ -29,6 +32,7 @@ class ItemLoginOff extends React.Component {
                             <Button
                                 block
                                 color="dark"
+                                onClick={logoutUser}
                             >
                                 {String.yes}
                             </Button>
@@ -38,6 +42,8 @@ class ItemLoginOff extends React.Component {
                             <Button
                                 block
                                 color="dark"
+                                onClick={backToWelcomeScreen}
+                                href="#1"
                             >
                                 {String.no}
                             </Button>

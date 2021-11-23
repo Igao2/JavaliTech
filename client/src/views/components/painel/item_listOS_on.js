@@ -11,82 +11,23 @@ import { Col, Row, Container, Table, Form, FormGroup, Label, Input, Button } fro
 import avatarTMP from '../../../assets/images/tmp/avartar_tmp.jpg';
 import ViewOS from './view_os';
 
+import TableListaOS from "./listaOS/index";
+
 
 class ItemListOs_On extends React.Component {
     render() {
+        const breakOfPages = 7;
+        const filterType = 0;
+        const tableColumn = ["service_order_id", "senha", "owner_name", "device_name", "delivery_date", "completion_date", "status", "service_value"];
+
         return (
             <Container>
                 <br />
 
                 <h3>{String.menuListOS}</h3>
                 <ItemDiv />
-                <Table
-                    bordered
-                    hover
-                    responsive
-                    size="sm"
-                >
-                    <thead>
-                        <tr>
-                            <th>
-                                {String.service_order_id}
-                            </th>
-                            <th>
-                                {String.device_name}
-                            </th>
-                            <th>
-                               {String.completion_date}
-                            </th>
-                            <th>
-                                {String.status}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">
-                                1
-                            </th>
-                            <td>
-                                Mark
-                            </td>
-                            <td>
-                                Otto
-                            </td>
-                            <td>
-                                @mdo
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                2
-                            </th>
-                            <td>
-                                Jacob
-                            </td>
-                            <td>
-                                Thornton
-                            </td>
-                            <td>
-                                @fat
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                3
-                            </th>
-                            <td>
-                                Larry
-                            </td>
-                            <td>
-                                the Bird
-                            </td>
-                            <td>
-                                @twitter
-                            </td>
-                        </tr>
-                    </tbody>
-                </Table>
+
+                <TableListaOS {...({ breakOfPages, filterType, tableColumn })} />
 
             </Container>
 
