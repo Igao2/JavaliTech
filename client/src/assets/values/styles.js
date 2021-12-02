@@ -383,13 +383,19 @@ export const ContainerHeaderOn_MobMenu = styled.a`
     align-self: center;
 
 	text-decoration: none;
-	color: #fff;
     height: 100%;
     width: 100%;
     text-align: center;
     padding: 15px 0;
 	font-size: medium;
 
+	color: ${props => props.active ? "#fff" : "#222"};;
+    background: ${props => props.active ? "#FFf4" : "transparent"};
+	border-bottom:${props => props.active ? "8px solid #fff6" : "0px solid #b30000"};
+
+	img {
+		margin:0px;
+	}
 	@media(max-width: 1024px) {
 		display: inline;
 		font-size: small;
@@ -567,4 +573,22 @@ export const ProfilePhoto = styled.div`
  	img {
     	position: absolute;
 	}
+`;
+
+export const PaginationRed = styled.div`
+	.page-item.active .page-link{
+		z-index: 3;
+	    color: #fff;
+	    background-color: #d30000;
+	    border-color: #d30000;
+	}
+	.page-link{
+		color: #d30000;
+	}
+`;
+
+export const LocateButton = styled.div`
+	display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 `;

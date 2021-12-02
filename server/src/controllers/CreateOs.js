@@ -34,9 +34,15 @@ class CreateOs {
                             let data = new Date();
                             let hora = data.toJSON().split("T")[1];
                             req.body.deliveryDate = req.body.deliveryDate.replace(/(\d{4}-\d{2}-\d{2})/gm, "$1") + " " + hora.slice(0, -6);
-                            req.body.completionDate = req.body.completionDate.replace(/(\d{4}-\d{2}-\d{2})/gm, "$1") + " " + hora.slice(0, -6);
-
-                            var sqlCode = `INSERT INTO\`service_order\`(    \`service_order_id\`,    \`user_id\`,    \`senha\`,    \`owner_information\`,    \`owner_name\`,    \`description\`,    \`device_name\`,    \`delivery_date\`,    \`completion_date\`,    \`status\`,    \`service_value\`) VALUES(    '${result[1]}',    '${userId}',    '${req.body.senha}',    '${req.body.ownerInformation}',    '${req.body.ownerName}',    '${req.body.description}',    '${req.body.deviceName}',    '${req.body.deliveryDate}',    '${req.body.completionDate}',    '${req.body.status}',    '${req.body.serviceValue}');`;
+                            let completionDateCampo, completionDateValue;
+                            if (req.body.completionDate != "") {
+                                completionDateCampo = `\`completion_date\`,`;
+                                completionDateValue = `'${req.body.completionDate.replace(/(\d{4}-\d{2}-\d{2})/gm, "$1") + " " + hora.slice(0, -6)}',`;
+                            } else {
+                                completionDateCampo = ` `;
+                                completionDateValue = ` `;
+                            }
+                            var sqlCode = `INSERT INTO\`service_order\`(    \`service_order_id\`,    \`user_id\`,    \`senha\`,    \`owner_information\`,    \`owner_name\`,    \`description\`,    \`device_name\`,    \`delivery_date\`,    ${completionDateCampo}    \`status\`,    \`service_value\`) VALUES(    '${result[1]}',    '${userId}',    '${req.body.senha}',    '${req.body.ownerInformation}',    '${req.body.ownerName}',    '${req.body.description}',    '${req.body.deviceName}',    '${req.body.deliveryDate}',    ${completionDateValue}   '${req.body.status}',    '${req.body.serviceValue}');`;
 
                             const connection = mysql.createConnection(mysqlConnection);
 
@@ -48,7 +54,7 @@ class CreateOs {
                                 }
 
                                 else
-                                    resolve();
+                                    resolve([result[1], req.body.senha]);
 
 
 
@@ -66,7 +72,9 @@ class CreateOs {
                     res.json({
                         erro: false,
                         code: 200,
-                        mensagem: "Ordem de serviço criada com sucesso"
+                        mensagem: "Ordem de serviço criada com sucesso",
+                        osCode: result[0],
+                        osSenha: result[1]
                     });
 
                 }).catch(error => {

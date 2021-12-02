@@ -5,12 +5,9 @@ import String from '../../assets/values/string.json';
 import { BodyOff, BodyOff_buttom, BodyOff_top_off, ContainerOff, FooterOff, HeaderOff } from '../../assets/values/styles';
 
 import HeaderContainerOff from '../components/headers/header_off';
-import HeaderContainerOn from '../components/headers/header_on';
 
 import loginManager from '../../dispatcher/login';
 import { Redirect, NavLink } from "react-router-dom";
-
-import logo from '../../assets/images/icons/logo_black.svg';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input, Button, Alert, Form, FormGroup } from 'reactstrap';
@@ -75,7 +72,7 @@ function App() {
 		}
 
 		for (let i = 0; i < (event.target.length - 2); i++) {
-			if (event.target[i].value == "") {
+			if (event.target[i].value === "") {
 				if (!valid)
 					setAnnouncement({
 						enabled: 1,
@@ -191,9 +188,9 @@ function App() {
 							<FormGroup row>
 								<Input
 									className={(state => {
-										if (state == 0) return ("")
-										else if (state == 1) return ("is-valid")
-										else if (state == 2) return ("is-invalid")
+										if (state === 0) return ("")
+										else if (state === 1) return ("is-valid")
+										else if (state === 2) return ("is-invalid")
 									})(login.emailState)}
 
 									id="login_at"
@@ -207,9 +204,9 @@ function App() {
 							<FormGroup row>
 								<Input
 									className={(state => {
-										if (state == 0) return ("")
-										else if (state == 1) return ("is-valid")
-										else if (state == 2) return ("is-invalid")
+										if (state === 0) return ("")
+										else if (state === 1) return ("is-valid")
+										else if (state === 2) return ("is-invalid")
 									})(login.passwordState)}
 
 									id="pass_at"
@@ -223,7 +220,7 @@ function App() {
 							<FormGroup row >
 								<div>
 									{loading ?
-										<Button><img style={{ height: "100%" }} src="https://i.imgur.com/TRbq1bq.gif" /></Button>
+										<Button><img alt="loading.gif" style={{ height: "100%" }} src="https://i.imgur.com/TRbq1bq.gif" /></Button>
 										:
 										<Button>Entrar</Button>
 									}

@@ -3,18 +3,17 @@ import React, { useState } from 'react';
 import String from '../../../assets/values/string.json';
 
 import {
-    AlertDelet, ItemAvatar, ItemColAvatar,
-    ItemColText, ItemDiv, ItemMsgUser, QuadrosOS, ProfilePhoto
+    AlertDelet, ItemColAvatar,
+    ItemDiv, ProfilePhoto, LocateButton
 } from '../../../assets/values/styles';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import updateInfosManager from '../../../dispatcher/updateInfos';
 
-import { Col, Row, Container, Table, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
+import { Col, Row, Container, Form, FormGroup, Input, Button, Alert } from 'reactstrap';
 
-import avatarTMP from '../../../assets/images/tmp/avartar_tmp.jpg';
+
 import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
-import avatarTemp from '../../../assets/images/icons/avatarTemp.png';
 import { Redirect } from "react-router-dom";
 
 const tokenManager = require('../../../dispatcher/tokenManager');
@@ -614,6 +613,8 @@ function App(props) {
         setLoading(0);
     }
 
+    const goToDeleteUserScreen = () => props.switchScreensFromProps(7);
+
     return (
         <Container>
             {redirect[0] ? <Redirect to='/login' /> : null}
@@ -678,14 +679,16 @@ function App(props) {
                             />
                             <br />
                             {/* Deve-se manter esta formatação para que seja obedecido o espaçamento entre os botões */}
-                            <div>
+
+                            <LocateButton>
                                 <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(1) }) }}> {String.left}</Button>
                                 <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(3) }) }}> {String.up}</Button>
                                 <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(4) }) }}> {String.down}</Button>
                                 <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(2) }) }}> {String.right}</Button>
                                 <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(5) }) }}> {String.zoomplus}</Button>
                                 <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(6) }) }}> {String.zoomsmall}</Button>
-                            </div>
+                            </LocateButton>
+
                         </FormGroup>
 
                         {loading[0] ?
@@ -930,8 +933,9 @@ function App(props) {
                     <Button
                         block
                         color="danger"
+                        onClick={goToDeleteUserScreen}
                     >
-                        {String.save}
+                        {String.delete}
                     </Button>
                 </AlertDelet>
             </Form>

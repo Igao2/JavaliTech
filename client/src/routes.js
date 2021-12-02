@@ -6,12 +6,10 @@ import Index from './views/screen/index';
 import Search from './views/screen/search';
 import Login from './views/screen/login';
 import PainelUser from './views/screen/painel_user';
-import Register from './views/register';
-import ListaOS from './views/components/painel/listaOS';
+import Register from './views/screen/registrar';
+import ViewOs from './views/screen/openOs_off';
+import Alert from './views/screen/alerts_auto';
 
-import Temp from './views/screen/registrar';
-// import Temp from './views/register/index';
-import Temp1 from './views/register/index2';
 
 const tokenManager = require('./dispatcher/tokenManager');
 
@@ -33,16 +31,18 @@ const Routes = () => (
     <BrowserRouter>
         <Switch>
             <Route exact path="/" component={Index} />
-            <Route exact path="/register" component={Temp} />
+            <Route exact path="/register" component={Register} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/login" component={Login} />
-            <PrivateRoute path="/painel" component={PainelUser} />
+            <Route exact path="/viewOs/:osId/:osPass" component={ViewOs} />
+            <Route exact path="/alert/:title/:describe" component={Alert} />
+            <PrivateRoute exact path="/painel" component={PainelUser} />
+            <PrivateRoute exact path="/painel/:item1/:item2" component={PainelUser} />
 
 
-            <PrivateRoute path="/tmp" component={Register} />
-            <PrivateRoute path="/tmp1" component={Temp1} />
+            {/* <PrivateRoute path="/tmp" component={Register} />
+            <PrivateRoute path="/tmp1" component={Temp1} /> */}
 
-            <PrivateRoute path="/listaOS" component={ListaOS} />
         </Switch>
     </BrowserRouter>
 );

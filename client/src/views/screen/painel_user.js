@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import String from '../../assets/values/string.json';
 import {
-	HeaderIcon, BodyOn, BodyOnIcon_home, BodyOn_buttom,
-	BodyOff_top_off, ContainerOn, FooterOn,
+	BodyOn, ContainerOn, FooterOn,
 	HeaderOn, AreaBodyLeft, AreaBodyRight,
-	HeaderOn_Nav, HeaderIcon_Nav_complet, FooterOn_Nav, BodyOn_Nav
+	HeaderOn_Nav, HeaderIcon_Nav_complet, BodyOn_Nav
 } from '../../assets/values/styles';
 
 import HeaderContainerOn from '../components/headers/header_on';
@@ -17,22 +16,24 @@ import { Redirect, NavLink } from "react-router-dom";
 import logo from '../../assets/images/icons/logo_white.svg';
 import Button_UserP from '../components/painel/button_userP';
 import Footer_off from '../components/footers/footers_off';
-import itemUser from '../components/painel/item_user';
 import ItemUser from '../components/painel/item_user';
 import ItemEditUser from '../components/painel/item_editUser';
 import ItemAddOs from '../components/painel/item_addOS';
 import ItemListOs_On from '../components/painel/item_listOS_on';
 import ItemSearch from '../components/painel/item_search';
 import ItemLoginOff from '../components/painel/item_loginOff';
-import ViewOpenOs_on from '../components/painel/view_openOs_on';
-import InfoAlert from '../components/painel/info_alert';
-
+import DeleteUser from '../components/painel/deleteUserAlert';
+import AdivancedViewOs from '../components/painel/adivanced_view_os';
+import EditOs from '../components/painel/item_editOS';
 const tokenManager = require('../../dispatcher/tokenManager');
 
 function App() {
 
 	/** const useState para o redirecionamento de tela. */
 	const redirect = useState(0);
+
+	/** const useState para o redirecionamento de tela. */
+	const deleteRedirect = useState(0);
 
 	const [screen, setScreen] = useState(0);
 
@@ -46,24 +47,29 @@ function App() {
 
 	useEffect(() => {
 		userInfosRequestManager({ headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
-			switch (res.data) {
-				case 500:
-					alert("erro do sistema")
-					break;
 
-				case 400:
-					redirect[1](1);
-					break;
+			if (typeof res.data.erro === 'undefined') {
+				switch (res.data) {
+					case 500: tokenManager.deleteToken(); redirect[1](1); break;
 
-				default:
-					setUserInfos(res.data)
-					if (window.location.href.indexOf("#") >= 0) setScreen(window.location.href.slice(-1));
-					else setScreen(1);
-			}
+					case 400: tokenManager.deleteToken(); redirect[1](1); break;
+
+					case 401: tokenManager.deleteToken(); redirect[1](1); break;
+
+					case 417: tokenManager.deleteToken(); redirect[1](1); break;
+
+					default:
+						setUserInfos(res.data)
+						if (window.location.href.indexOf("#") >= 0) setScreen(window.location.href.slice(-1));
+						else setScreen("1");
+				}
+			} else { tokenManager.deleteToken(); redirect[1](1); }
 		});
 	}, []);
 
 	const logout = () => { tokenManager.deleteToken(); redirect[1](1); }
+
+	const deleteUserRedirect = () => { tokenManager.deleteToken(); deleteRedirect[1](1); }
 
 	const switchScreensFromEvent = event => setScreen(event.target.name);
 
@@ -72,6 +78,7 @@ function App() {
 	return (
 		<div>
 			{redirect[0] ? <Redirect to='/' /> : null}
+			{deleteRedirect[0] ? <Redirect to='/#1' /> : null}
 			<Helmet>
 				<title>{String.nomeApp_sistema}</title>
 				<meta name="title" content={String.nomeApp_sistema} />
@@ -103,12 +110,16 @@ function App() {
 
 					</HeaderOn>
 					<BodyOn>
-						{screen == 1 && <ItemUser {...({ userInfos, switchScreensFromProps })} />}
-						{screen == 2 && <ItemEditUser {...({ userInfos, switchScreensFromProps })} />}
-						{screen == 3 && <ItemAddOs {...({ userInfos, switchScreensFromProps })} />}
-						{screen == 4 && <ItemListOs_On {...({ userInfos, switchScreensFromProps })} />}
-						{screen == 5 && <ItemSearch {...({ userInfos, switchScreensFromProps })} />}
-						{screen == 6 && <ItemLoginOff {...({ userInfos, switchScreensFromProps, logout })} />}
+						{screen === "1" && <ItemUser {...({ userInfos, switchScreensFromProps })} />}
+						{screen === "2" && <ItemEditUser {...({ userInfos, switchScreensFromProps })} />}
+						{screen === "3" && <ItemAddOs {...({ userInfos, switchScreensFromProps })} />}
+						{screen === "4" && <ItemListOs_On {...({ userInfos, switchScreensFromProps })} />}
+						{screen === "5" && <ItemSearch {...({ userInfos, switchScreensFromProps })} />}
+						{screen === "6" && <ItemLoginOff {...({ userInfos, switchScreensFromProps, logout })} />}
+						{screen === "7" && <DeleteUser {...({ userInfos, switchScreensFromProps, deleteUserRedirect })} />}
+						{screen === "8" && <AdivancedViewOs {...({ userInfos, switchScreensFromProps })} />}
+						{screen === "9" && <EditOs {...({ userInfos, switchScreensFromProps })} />}
+
 
 						{/* <ItemUser /> */}
 						{/* <ItemEditUser /> */}

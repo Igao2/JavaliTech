@@ -2,12 +2,7 @@
 import React from 'react';
 import String from '../../../assets/values/string.json';
 
-import {
-	CenterHeaderOn, ContainerHeaderOn, RightHeaderOn,
-	HeaderIcon_Nav_complet, HeaderOn_Nav, BodyOn, FooterOn,
-	ContainerOn, ButtonMenu_UserP, ContainerHeaderOn_LatPcMenu, ItemIcoMenu
-}
-	from '../../../assets/values/styles';
+import { ContainerHeaderOn_LatPcMenu, ItemIcoMenu } from '../../../assets/values/styles';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import calendar_plus_solid from '../../../assets/images/fontwesome/calendar_plus_solid.svg';
@@ -31,7 +26,8 @@ class Button_UserP extends React.Component {
 					{...this.props.screen == 1 && { active: true }}
 					onClick={this.props.switchScreensFromEvent}
 					alt={String.menuUser}
-					title={String.menuUser}>
+					title={String.menuUser}
+				>
 					<ItemIcoMenu src={user_solid} />
 					{String.menuUser}
 				</ContainerHeaderOn_LatPcMenu>
@@ -42,7 +38,8 @@ class Button_UserP extends React.Component {
 					{...this.props.screen == 2 && { active: true }}
 					onClick={this.props.switchScreensFromEvent}
 					alt={String.menuEditUser}
-					title={String.menuEditUser}>
+					title={String.menuEditUser}
+				>
 					<ItemIcoMenu src={user_edit_solid} />
 					{String.menuEditUser}
 				</ContainerHeaderOn_LatPcMenu>
@@ -53,7 +50,8 @@ class Button_UserP extends React.Component {
 					{...this.props.screen == 3 && { active: true }}
 					onClick={this.props.switchScreensFromEvent}
 					alt={String.menuAddOS}
-					title={String.menuAddOS}>
+					title={String.menuAddOS}
+				>
 					<ItemIcoMenu src={calendar_plus_solid} />
 					{String.menuAddOS_small}
 				</ContainerHeaderOn_LatPcMenu>
@@ -64,7 +62,8 @@ class Button_UserP extends React.Component {
 					{...this.props.screen == 4 && { active: true }}
 					onClick={this.props.switchScreensFromEvent}
 					alt={String.menuListOS}
-					title={String.menuListOS}>
+					title={String.menuListOS}
+				>
 					<ItemIcoMenu src={list_alt_solid} />
 					{String.menuListOS_small}
 				</ContainerHeaderOn_LatPcMenu>
@@ -75,7 +74,8 @@ class Button_UserP extends React.Component {
 					{...this.props.screen == 5 && { active: true }}
 					onClick={this.props.switchScreensFromEvent}
 					alt={String.munuSearchOS}
-					title={String.munuSearchOS}>
+					title={String.munuSearchOS}
+				>
 					<ItemIcoMenu src={search_solid} />
 					{String.munuSearchOS}
 				</ContainerHeaderOn_LatPcMenu>
@@ -85,7 +85,8 @@ class Button_UserP extends React.Component {
 					name="6"
 					{...this.props.screen == 6 && { active: true }}
 					onClick={this.props.switchScreensFromEvent}
-					title={String.menuExit}>
+					title={String.menuExit}
+				>
 					<ItemIcoMenu src={sign_out_alt_solid} />
 					{String.menuExit}
 				</ContainerHeaderOn_LatPcMenu>

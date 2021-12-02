@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import String from '../../../assets/values/string.json'
 
-import { Card, CardTitle, CardText, Button, Row, Col } from 'reactstrap';
+import { Card, CardTitle, CardText, Row, Col } from 'reactstrap';
 import { ParagrafLeftGeral, ProfilePhoto } from '../../../assets/values/styles';
 
 import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
@@ -52,12 +52,6 @@ export default class ViewOS extends Component {
                         </ParagrafLeftGeral>
                     </Col>
                 </Row>
-
-                {this.props.service_order_id !== "" &&
-                    <Button onClick={e => this.props.enableValidaPassword()}>
-                        {String.service_view}
-                    </Button>
-                }
             </Card>
         )
     }

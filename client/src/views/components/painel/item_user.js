@@ -6,11 +6,9 @@ import { ItemColAvatar, ItemColText, ItemDiv, ItemMsgUser, ProfilePhoto } from '
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Col, Row, Container, Table } from 'reactstrap';
+import { Col, Row, Container } from 'reactstrap';
 import TableListaOS from "./listaOS/index";
 import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
-
-import avatarTMP from '../../../assets/images/tmp/avartar_tmp.jpg';
 
 
 class ItemUser extends React.Component {

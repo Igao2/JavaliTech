@@ -2,13 +2,17 @@
 import React from 'react';
 import String from '../../../assets/values/string.json';
 
-import { AlertDelet, ItemAvatar, ItemColAvatar, ItemColText, ItemColTextOS, ItemDiv, ItemMsgUser, QuadrosOS } from '../../../assets/values/styles';
+import { AlertDelet, ItemColAvatar, ProfilePhoto, ItemColTextOS, ItemDiv, QuadrosOS } from '../../../assets/values/styles';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Col, Row, Container, Table, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
+import { Col, Row, Container, Button } from 'reactstrap';
 
-import avatarTMP from '../../../assets/images/tmp/avartar_tmp.jpg';
+import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
+
+import { PDFDownloadLink } from '@react-pdf/renderer';
+
+import OsPdf from './pdfFactory';
 
 
 class ViewOpenOs_on extends React.Component {
@@ -16,35 +20,46 @@ class ViewOpenOs_on extends React.Component {
         return (
             <Container>
                 <br />
-                {/* danger: vermelho | warning: amarelo | info: azul | dark: cinza*/}
-						<Alert color="warning" dismissible>{String.osOsProcessView}: {String.trespontos}</Alert>
-						
                 <QuadrosOS>
                     <h6>{String.osInfoBasic}: </h6>
                     <Row md="3" sm="3" xs="1">
                         <Col>
                             <ItemColAvatar>
-                                <ItemAvatar src={avatarTMP} />
+                                <ProfilePhoto imgUrl={avatarBackground}>
+                                    <img
+                                        src={this.props.user_photo[0]}
+                                        alt="Imagem"
+                                        style={{
+                                            left: this.props.user_photo[1].left + "px",
+                                            top: this.props.user_photo[1].top + "px",
+                                            width: this.props.user_photo[1].width + "%"
+                                        }}
+                                    />
+                                </ProfilePhoto>
 
                             </ItemColAvatar>
                         </Col>
                         <Col>
                             <ItemColTextOS>
                                 <p>
-                                    <h2>{String.itemInfo01_tmp}</h2>
-                                    {String.itemInfo02_tmp}
+                                    <h2>{this.props.user_name}</h2>
+                                    {this.props.user_address.rua}, {this.props.user_address.bairro}, {this.props.user_address.cidade}, {this.props.user_address.estado}
+                                    <br /><br />
+                                    {this.props.user_telephone}
                                     <br />
-                                    {String.itemInfo03_tmp}
-                                    <br />
-                                    {String.itemInfo04_tmp}
+                                    {this.props.user_email}
 
                                 </p>
                             </ItemColTextOS>
                         </Col>
                         <Col>
                             <ItemColAvatar>
+
+                                <h6>{String.osCodeAcess}:</h6>
+                                <h4>{this.props.service_order_id}</h4>
+
                                 <h6>{String.osPassAcess}:</h6>
-                                <h2>{String.osPassAcessTemp}</h2>
+                                <h4>{this.props.senha}</h4>
                             </ItemColAvatar>
                         </Col>
                     </Row>
@@ -53,49 +68,56 @@ class ViewOpenOs_on extends React.Component {
                     <h4>{String.osCATinfo}:</h4>
                     <ItemDiv />
 
-                    <h6>{String.owner_name}: {String.trespontos}</h6>
-                    <h6>{String.owner_information}: {String.trespontos}</h6>
+                    <h6>{String.owner_name}: {this.props.owner_name}</h6>
+                    <h6>{String.owner_information}: {this.props.owner_information}</h6>
 
                 </QuadrosOS>
                 <QuadrosOS>
                     <h4>{String.osInfoService}: </h4>
                     <ItemDiv />
 
-                    <h6>{String.description}:</h6>
-                    <h6>{String.lorem}</h6>
+                    <h6>{String.device_name}: {this.props.device_name}</h6>
                     <ItemDiv />
-                    <h6>{String.device_name}:</h6>
-                    <h6>{String.lorem}</h6>
+                    <h6>{String.description}:</h6>
+                    <h6>{this.props.description}</h6>
                     <ItemDiv />
                     <Container>
                         <Row md="2" sm="2" xs="1">
                             <Col>
                                 <AlertDelet>
-                                    <h6>{String.delivery_date}: {String.dateTemp}</h6>
+                                    <h6>{String.delivery_date}: {this.props.delivery_date ? this.props.delivery_date.replace(/([0-9]+)-([0-9]+)-([0-9]+)T(\S+)/, "$3/$2/$1") : null}</h6>
                                 </AlertDelet>
                             </Col>
                             <Col>
                                 <AlertDelet>
-                                    <h6>{String.completion_date}: {String.dateTemp} </h6>
+                                    <h6>{String.completion_date}: {this.props.completion_date ? this.props.completion_date.replace(/([0-9]+)-([0-9]+)-([0-9]+)T(\S+)/, "$3/$2/$1") : null}</h6>
                                 </AlertDelet>
                             </Col>
                         </Row>
                     </Container>
-                    
+
                     <ItemDiv />
-                    <h6>{String.service_value}:</h6>
-                    <h6><b>{String.tipoMoeda} {String.valortemp}</b></h6>
+                    <h6>{String.service_value}:  <b>{String.tipoMoeda} {this.props.service_value}</b></h6>
 
                 </QuadrosOS>
-                
                 <QuadrosOS>
                     <h6>{String.osPDF}</h6>
-                    <Button
-                        block
-                        color="dark"
-                    >
-                        {String.creatPDF}
-                    </Button>
+                    <PDFDownloadLink document={<OsPdf {...(this.props)} />} fileName="somename.pdf">
+                        {
+                            ({ loading }) => loading ?
+                                <Button
+                                    block
+                                    color="dark"
+                                >
+                                    <img alt="loading.gif" style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" />
+                                </Button> : <Button
+                                    block
+                                    color="dark"
+                                >
+                                    {String.creatPDF}
+                                </Button>
+                        }
+                    </PDFDownloadLink>
                 </QuadrosOS>
 
 

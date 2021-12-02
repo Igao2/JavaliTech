@@ -1,20 +1,21 @@
-/* eslint-disable react/jsx-pascal-case */
 import React, { useState, useEffect } from 'react';
-import Helmet from 'react-helmet';
-import String from '../../assets/values/string.json';
-import { BodyOff, ContainerOff, FooterOff, HeaderOff } from '../../assets/values/styles';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import String from '../../../assets/values/string.json'
 
-import HeaderContainerOff from '../components/headers/header_off';
-import osInfosResultManager from '../../dispatcher/osInfosRequest';
 
 import { Redirect, useParams } from "react-router-dom";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Footer_off from '../components/footers/footers_off';
-import ViewOpenOs_on from '../components/painel/view_openOs_on';
+import { Button, Row, Col, Container } from 'reactstrap';
+import osInfosResultManager from '../../../dispatcher/osInfosRequest';
 
-function App() {
-    const { osId, osPass } = useParams();
+
+import ViewOpenOs_on from './view_openOs_on';
+
+
+function App(props) {
+    let { item1, item2 } = useParams();
+    const osId = item1;
+    const osPass = item2;
 
     /** const useState para o redirecionamento de tela. */
     const redirect400 = useState(0);
@@ -73,37 +74,35 @@ function App() {
         });
 
     }, []);
+
+    const backToEditUserScreen = () => props.switchScreensFromProps(9);
+
     return (
-        <div>
+        <Container>
             {redirect400[0] ? <Redirect to='/alert/T400/D400' /> : null}
             {redirect500[0] ? <Redirect to='/alert/T500/D500' /> : null}
-            <Helmet>
-                <title>{String.nomeApp_sistema}</title>
-                <meta name="title" content={String.nomeApp_sistema} />
-                <meta property="og:title" content={String.nomeApp_sistema} />
-                <meta property="og:site_name" content={String.nomeApp_sistema} />
-                <meta property="og:description" content={String.nomeApp_descricao} />
-            </Helmet>
+            <br />
+            <h2>{String.painelViewOs}:</h2>
 
-            <ContainerOff>
-                <HeaderOff>
-
-                    <HeaderContainerOff />
-
-                </HeaderOff>
-                <BodyOff>
-
+            <Row md="2" sm="2" xs="1">
+                <Col style={{ width: "75%" }}>
                     <ViewOpenOs_on {...(dados)} />
-
-                </BodyOff>
-                <FooterOff>
-
-                    <Footer_off />
-
-                </FooterOff>
-            </ContainerOff>
-        </div >
-    );
+                </Col>
+                <Col style={{ width: "25%" }}>
+                    <br />
+                    <br />
+                    <Button
+                        block
+                        color="dark"
+                        onClick={backToEditUserScreen}
+                        href="#9"
+                    >
+                        {String.editOs}
+                    </Button>
+                </Col>
+            </Row>
+        </Container>
+    )
 }
 
 export default App;

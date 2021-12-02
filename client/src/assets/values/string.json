@@ -15,8 +15,10 @@
 		"login_init": "Entre com os dados do Login:",
 		"search": "Buscar",
 		"search_OS": "Procure por uma Ordem de Serviço:",
+		"search_OS_pass": "Digite a senha da Ordem de Serviço ",
 		"search_OS_button": "Buscar a minha Ordem de Serviço",
 		"cod_OS": "Entre com o Codigo",
+		"pass_OS": "Entre com a Senha desta Ordem de Serviço",
 		"menu": "Menu",
 		"alete00": "As mensagens de alerta apareceram aqui!",
 		"alete01": "Codigo não corresponde a uma ordem de serviço existente!",
@@ -26,6 +28,7 @@
 		"menuUser": "Usuario",
 		"menuUserWellcome": "Seja Bem-vindo: ",
 		"menuEditUser": "Editar Perfil",
+		"painelViewOs": "Visualizar Ordem de Serviço",
 		"menuExit": "Sair",
 		"menuAddOS": "Adicionar Ordem de Serviço",
 		"menuListOS": "Lista de Ordem de Serviço",
@@ -34,6 +37,7 @@
 		"menuListOS_small": "Lista de OS",
 		"send": "Enviar",
 		"save": "Salvar",
+		"delete": "Deletar",
 		"enter": "Entrar",
 		"update": "Atualizar",
 		"creatPDF": "Baixar PDF",
@@ -66,6 +70,7 @@
 		"osInfoBasic": "Informações basicas",
 		"osInfoService": "Informações sobre o serviço",
 		"osCod": "Codigo da Ordem de Serviço",
+		"osCodeAcess": "Codigo de Acesso",
 		"osPassAcess": "Senha de Acesso",
 		"osValor": "Valor",
 		"osCATinfo": "Informações do Cliente",
@@ -130,16 +135,16 @@
 		"filtro_service_order_id": "Codigo da Ordem de Serviço",
 		"filtro_senha": "Senha de Acesso",
 		"filtro_owner_information": "Dados do Cliente",
-		"filtro_owner_name": "Filtrar por nome do Cliente",
-		"filtro_device_name": "Fados do Aparalho",
-		"filtro_delivery_date": "Data de Entrada",
-		"filtro_completion_date": "Data de Entrega",
-		"filtro_status": "Processo",
-		"filtro_service_value": "Valor",
+		"filtro_owner_name": "Filtrar por nome do cliente",
+		"filtro_device_name": "Filtrar por dados do aparalho",
+		"filtro_delivery_date": "Filtrar por data de entraga",
+		"filtro_status": "Filtrar por status do processo",
+		"filtro_service_value": "Filtrar por valor do serviço",
 		"quest_loginoff": "Deseja sair?",
 		"quest_loginoff_text": "Ao confirmar, você será deslogado de sua conta. Você tem certeza que deseja sair?",
 		"quest_delete": "Dejeja apagar?",
 		"error500": "Ocorreu um erro de sistema. Por favor, tente novamente mais tarde.",
+		"editOs": "Editar Orden de serviço",
 		"osColumns": {
 			"service_order_id": "Codigo",
 			"senha": "Senha",
@@ -151,10 +156,19 @@
 			"service_value": "Preço"
 		},
 		"statusType": [
-			"Inicializado",
-			"Pausado",
 			"Aguardando",
-			"Paradado",
-			"Finalizado"
-		]
+			"Finalizado",
+			"Inicializado",
+			"Pausado"
+		],
+		"cancel": "cancelar",
+		"OS_error_senha": "Senha errada",
+		"titlesAlert": {
+			"T400": "Solicitação inválida",
+			"T500": "Erro de sistema"
+		},
+		"describesAlert": {
+			"D400": "O link acessado têm carência de parâmetros corretos, retorne a página principal clicando no botão abaixo e refaça o processo que levou a este alerta.",
+			"D500": "Ocorreu um erro interno em nosso sistema. Mais tarde, retorne a página principal clicando no botão abaixo e tente fazer novamente o mesmo processo que levou a este alerta."
+		}
 	}

@@ -2,21 +2,19 @@
 import React from 'react';
 import String from '../../../assets/values/string.json';
 
-import { AlertDelet, ItemAvatar, ItemColAvatar, ItemColText, ItemDiv, ItemMsgUser } from '../../../assets/values/styles';
+import { ItemDiv } from '../../../assets/values/styles';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Col, Row, Container, Table, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Container } from 'reactstrap';
 
-import avatarTMP from '../../../assets/images/tmp/avartar_tmp.jpg';
-import ViewOS from './view_os';
 
 import TableListaOS from "./listaOS/index";
 
 
 class ItemListOs_On extends React.Component {
     render() {
-        const breakOfPages = 7;
+        const breakOfPages = 10;
         const filterType = 0;
         const tableColumn = ["service_order_id", "senha", "owner_name", "device_name", "delivery_date", "completion_date", "status", "service_value"];
 

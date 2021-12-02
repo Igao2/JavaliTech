@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import String from '../../../assets/values/string.json';
 
 import { ItemColAvatar, ItemColTextOS, QuadrosOS, ProfilePhoto } from '../../../assets/values/styles';
@@ -8,13 +8,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Col, Row, Container, Alert, Form, FormGroup, Input, Button } from 'reactstrap';
 import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
-import createOsManager from '../../../dispatcher/createOs';
+import editOsManager from '../../../dispatcher/editOs';
 
+import { Redirect, useParams } from "react-router-dom";
+
+import osInfosResultManager from '../../../dispatcher/osInfosRequest';
 
 
 const tokenManager = require('../../../dispatcher/tokenManager');
 
 function App(props) {
+    let { item1, item2 } = useParams();
+    const osId = item1;
+    const osPass = item2;
+
     /** const useState para alertar errors, warnings, informs e etc... */
     const [announcement, setAnnouncement] = useState({
         enabled: 0,
@@ -22,19 +29,20 @@ function App(props) {
         massage: ""
     })
 
+    /** const useState para o redirecionamento de tela. */
+    const redirect400 = useState(0);
+
+    /** const useState para o redirecionamento de tela. */
+    const redirect500 = useState(0);
+
     /** const useState ativar e desativar a gif de loading do botão de cadastrar-se. */
     const [loading, setLoading] = useState(0);
-
-    let senha = "";
-    let possible = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (let i = 0; i < 6; i++)
-        senha += possible.charAt(Math.floor(Math.random() * possible.length));
 
 
     /** const useState para os Inputs do formulario de cadatro  */
     const [osInfos, setOsInfos] = useState({
-        senha: senha,
+        serviceOrderId: osId,
+        senha: osPass,
         ownerInformation: "",
         ownerName: "",
         description: "",
@@ -56,6 +64,50 @@ function App(props) {
         status: 0,
         serviceValue: 0
     });
+
+    useEffect(() => {
+
+        osInfosResultManager(osId, osPass).then(res => {
+            switch (res.data) {
+                case 500: redirect500[1](1); break;
+
+                case 400: redirect400[1](1); break;
+
+                case 401: redirect400[1](1); break;
+
+                case 417: redirect400[1](1); break;
+
+                case 204: redirect400[1](1); break;
+
+                default: {
+                    var dataFomater = (data) => {
+                        if (data != "") {
+                            return data.replace(/([0-9]+)-([0-9]+)-([0-9]+)T(\S+)/, "$1-$2-$3");
+                        } else return null;
+                    }
+                    setOsInfos({
+                        serviceOrderId: osId,
+                        senha: osPass,
+                        ownerInformation: res.data.owner_information,
+                        ownerName: res.data.owner_name,
+                        description: res.data.description,
+                        deviceName: res.data.device_name,
+                        deliveryDate: dataFomater(res.data.delivery_date),
+                        completionDate: dataFomater(res.data.completion_date),
+                        status: res.data.status,
+                        serviceValue: "R$ " + res.data.service_value
+                    })
+                }
+            }
+        }).catch(error => {
+            redirect500[1](1);
+        });
+
+    }, []);
+
+
+    /** const useState para o redirecionamento de tela. */
+    const redirect = useState(0);
 
     const onChangeEvent = event => {
         var value = event.target.value;
@@ -95,21 +147,21 @@ function App(props) {
     * @param {string} event.target.value - valor do input.
     * @param {string} event.target.name - nome do input.
     */
-    const createOs = event => {
+    const editOs = event => {
         event.preventDefault();
         setLoading(1);
 
         var valid = true;
 
         const inputNames = {
-            "ownerInformation": "\"" + String.owner_information + "\"",
-            "ownerName": "\"" + String.owner_name + "\"",
+            "ownerInformation": "\"" + String.ownerInformation + "\"",
+            "ownerName": "\"" + String.ownerName + "\"",
             "description": "\"" + String.description + "\"",
-            "deviceName": "\"" + String.device_name + "\"",
-            "deliveryDate": "\"" + String.delivery_date + "\"",
-            "completionDate": "\"" + String.completion_date + "\"",
+            "deviceName": "\"" + String.deviceName + "\"",
+            "deliveryDate": "\"" + String.deliveryDate + "\"",
+            "completionDate": "\"" + String.completionDate + "\"",
             "status": "\"" + String.osOsProcess + "\"",
-            "serviceValue": "\"" + String.service_value + "\""
+            "serviceValue": "\"" + String.serviceValue + "\""
         }
 
         function turnToError() {
@@ -150,6 +202,7 @@ function App(props) {
         if (valid) {
 
             var request = {
+                serviceOrderId: "",
                 senha: "",
                 ownerInformation: "",
                 ownerName: "",
@@ -169,7 +222,7 @@ function App(props) {
             * @param {object} request - Dados do novo usuarido.
             * @param {object} res - Resposta da API.
             */
-            createOsManager(request, headers).then(res => {
+            editOsManager(request, headers).then(res => {
 
                 if (res.data.erro) {
                     switch (res.data.code) {
@@ -225,17 +278,14 @@ function App(props) {
             });
 
         } else setLoading(0)
-
-        console.log(inputNames)
-
-
     }
 
 
     return (
         <Container>
+            {redirect400[0] ? <Redirect to='/alert/T400/D400' /> : null}
+            {redirect500[0] ? <Redirect to='/alert/T500/D500' /> : null}
             <br />
-
             {/* danger: vermelho | warning: amarelo | info: azul | dark: cinza*/}
             {announcement.enabled ? <Alert color={announcement.type} dismissible>{announcement.massage}</Alert> : null}
 
@@ -275,13 +325,15 @@ function App(props) {
                     </Col>
                     <Col>
                         <ItemColAvatar>
+                            <h6>{String.osCodeAcess}:</h6>
+                            <h4>{osId}</h4>
                             <h6>{String.osPassAcess}:</h6>
-                            <h2>{osInfos.senha}</h2>
+                            <h4>{osPass}</h4>
                         </ItemColAvatar>
                     </Col>
                 </Row>
             </QuadrosOS>
-            <Form onSubmit={createOs}>
+            <Form onSubmit={editOs}>
                 <QuadrosOS>
                     <h6>{String.osCATinfo}:</h6>
                     <FormGroup>
@@ -355,7 +407,7 @@ function App(props) {
                                     })(inputState.deliveryDate)}
                                     id="deliveryDate"
                                     name="deliveryDate"
-                                    type="text"
+                                    type="date"
                                     value={osInfos.deliveryDate}
                                     onFocus={e => { e.currentTarget.type = "date"; }}
                                     placeholder={String.delivery_date}
@@ -372,7 +424,8 @@ function App(props) {
                                     })(inputState.completionDate)}
                                     id="completionDate"
                                     name="completionDate"
-                                    type="text"
+                                    type="date"
+                                    locate="pt-br"
                                     value={osInfos.completionDate}
                                     onFocus={e => { e.currentTarget.type = "date"; }}
                                     placeholder={String.completion_date}

@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import String from '../../assets/values/string.json';
 import {
     BodyOff, ContainerOff, FooterOff, HeaderOff,
-    AlertDelet, ItemColAvatar, ItemDiv, ProfilePhoto, QuadrosOS
+    AlertDelet, ItemColAvatar, ItemDiv, ProfilePhoto, QuadrosOS, LocateButton
 } from '../../assets/values/styles';
 
 
@@ -42,7 +42,7 @@ function App() {
     });
 
     /** const useState para definir os status dos campos. */
-    const [inputState, setInputState] = useState({
+    const [inputState,] = useState({
         name: 0,
         email: 0,
         password: 0,
@@ -168,8 +168,8 @@ function App() {
         }
 
         for (let i = 0; i < (event.target.length - 1); i++) {
-            if (event.target[i].name != "numero" && event.target[i].name != "complemento") {
-                if (event.target[i].value == "") {
+            if (event.target[i].name !== "numero" && event.target[i].name !== "complemento") {
+                if (event.target[i].value === "") {
                     if (!valid)
                         setAnnouncement({
                             enabled: 1,
@@ -188,7 +188,7 @@ function App() {
                     valid = false;
                 }
             }
-            if (i == 0) i = 6;
+            if (i === 0) i = 6;
         }
 
         if (valid) {
@@ -226,7 +226,7 @@ function App() {
             * @param {object} res - Resposta da API.
             */
             registerProfileManager(request).then(res => {
-                
+
                 if (res.data.erro) {
                     switch (res.data.code) {
                         case 500:
@@ -335,9 +335,9 @@ function App() {
                                             {/* Atualizar foto de Perfil */}
                                             <Input
                                                 className={(state => {
-                                                    if (state == 0) return ("")
-                                                    else if (state == 1) return ("is-valid")
-                                                    else if (state == 2) return ("is-invalid")
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
                                                 })(inputState.image)}
                                                 type="file"
                                                 placeholder={String.userAvaterSend}
@@ -346,14 +346,14 @@ function App() {
                                                 onChange={e => setImage(e.target.files[0])}
                                             />
                                             <ItemDiv />
-                                            {/* Deve-se manter esta formatação para que seja obedecido o espaçamento entre os botões */}
-                                            <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(1) }) }}> {String.left}
-                                            </Button> <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(3) }) }}> {String.up}
-                                            </Button>  <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(4) }) }}> {String.down}
-                                            </Button> <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(2) }) }}> {String.right}
-                                            </Button> <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(5) }) }}> {String.zoomplus}
-                                            </Button> <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(6) }) }}> {String.zoomsmall}
-                                            </Button>
+                                            <LocateButton>
+                                                <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(1) }) }}>{String.left}</Button>
+                                                <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(3) }) }}>{String.up}</Button>
+                                                <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(4) }) }}>{String.down}</Button>
+                                                <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(2) }) }}>{String.right}</Button>
+                                                <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(5) }) }}>{String.zoomplus}</Button>
+                                                <Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(6) }) }}>{String.zoomsmall}</Button>
+                                            </LocateButton>
                                         </Col>
                                     </Row>
                                 </QuadrosOS>
@@ -366,9 +366,9 @@ function App() {
                                             <br />
                                             <Input
                                                 className={(state => {
-                                                    if (state == 0) return ("")
-                                                    else if (state == 1) return ("is-valid")
-                                                    else if (state == 2) return ("is-invalid")
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
                                                 })(inputState.name)}
                                                 type="text"
                                                 maxLength="150"
@@ -382,9 +382,9 @@ function App() {
                                             <br />
                                             <Input
                                                 className={(state => {
-                                                    if (state == 0) return ("")
-                                                    else if (state == 1) return ("is-valid")
-                                                    else if (state == 2) return ("is-invalid")
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
                                                 })(inputState.telephone)}
                                                 type="text"
                                                 maxLength="15"
@@ -400,9 +400,9 @@ function App() {
                                     <br />
                                     <Input
                                         className={(state => {
-                                            if (state == 0) return ("")
-                                            else if (state == 1) return ("is-valid")
-                                            else if (state == 2) return ("is-invalid")
+                                            if (state === 0) return ("")
+                                            else if (state === 1) return ("is-valid")
+                                            else if (state === 2) return ("is-invalid")
                                         })(inputState.email)}
                                         type="email"
                                         placeholder={String.userEmailNew}
@@ -413,9 +413,9 @@ function App() {
                                     <br />
                                     <Input
                                         className={(state => {
-                                            if (state == 0) return ("")
-                                            else if (state == 1) return ("is-valid")
-                                            else if (state == 2) return ("is-invalid")
+                                            if (state === 0) return ("")
+                                            else if (state === 1) return ("is-valid")
+                                            else if (state === 2) return ("is-invalid")
                                         })(inputState.password)}
                                         type="password"
                                         maxLength="60"
@@ -431,9 +431,9 @@ function App() {
                                             <br />
                                             <Input
                                                 className={(state => {
-                                                    if (state == 0) return ("")
-                                                    else if (state == 1) return ("is-valid")
-                                                    else if (state == 2) return ("is-invalid")
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
                                                 })(inputState.rua)}
                                                 type="text"
                                                 placeholder={String.endRua}
@@ -446,9 +446,9 @@ function App() {
                                             <br />
                                             <Input
                                                 className={(state => {
-                                                    if (state == 0) return ("")
-                                                    else if (state == 1) return ("is-valid")
-                                                    else if (state == 2) return ("is-invalid")
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
                                                 })(inputState.bairro)}
                                                 type="text"
                                                 placeholder={String.endBairro}
@@ -461,9 +461,9 @@ function App() {
                                             <br />
                                             <Input
                                                 className={(state => {
-                                                    if (state == 0) return ("")
-                                                    else if (state == 1) return ("is-valid")
-                                                    else if (state == 2) return ("is-invalid")
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
                                                 })(inputState.cidade)}
                                                 type="text"
                                                 placeholder={String.endCidad}
@@ -476,9 +476,9 @@ function App() {
                                             <br />
                                             <Input
                                                 className={(state => {
-                                                    if (state == 0) return ("")
-                                                    else if (state == 1) return ("is-valid")
-                                                    else if (state == 2) return ("is-invalid")
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
                                                 })(inputState.estado)}
                                                 type="text"
                                                 placeholder={String.endEstado}
@@ -493,9 +493,9 @@ function App() {
                                             <br />
                                             <Input
                                                 className={(state => {
-                                                    if (state == 0) return ("")
-                                                    else if (state == 1) return ("is-valid")
-                                                    else if (state == 2) return ("is-invalid")
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
                                                 })(inputState.numero)}
                                                 type="text"
                                                 placeholder={String.endNum}
@@ -508,9 +508,9 @@ function App() {
                                             <br />
                                             <Input
                                                 className={(state => {
-                                                    if (state == 0) return ("")
-                                                    else if (state == 1) return ("is-valid")
-                                                    else if (state == 2) return ("is-invalid")
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
                                                 })(inputState.complemento)}
                                                 type="text"
                                                 placeholder={String.endComplet}
@@ -523,9 +523,9 @@ function App() {
                                     <br />
                                     <Input
                                         className={(state => {
-                                            if (state == 0) return ("")
-                                            else if (state == 1) return ("is-valid")
-                                            else if (state == 2) return ("is-invalid")
+                                            if (state === 0) return ("")
+                                            else if (state === 1) return ("is-valid")
+                                            else if (state === 2) return ("is-invalid")
                                         })(inputState.cep)}
                                         type="text"
                                         maxLength="9"
@@ -538,7 +538,7 @@ function App() {
 
                                 <AlertDelet>
                                     {loading ?
-                                        <Button block color="dark" type="submit"><img style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" /></Button>
+                                        <Button block color="dark" type="submit"><img alt="loading.gif" style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" /></Button>
                                         :
                                         <Button block color="dark" type="submit">{String.registrerUserButtom}</Button>
                                     }

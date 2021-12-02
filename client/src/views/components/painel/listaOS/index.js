@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import listOSRequestManager from '../../../../dispatcher/listOSRequest';
 import ListFactory from './listFactory';
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { PaginationRed } from "../../../../assets/values/styles";
 
 const tokenManager = require('../../../../dispatcher/tokenManager');
 
@@ -10,6 +12,10 @@ function App(props) {
 
     const breakOfPages = props.breakOfPages;
     const filterType = props.filterType;
+    let tmpDado;
+    if (!props.filterData) tmpDado = "";
+    else tmpDado = props.filterData;
+    const dado = tmpDado;
     const tableColumn = props.tableColumn;
 
     let nullListItens = {
@@ -31,7 +37,7 @@ function App(props) {
     const [pages, setPages] = useState([]);
 
     const listarOS = () => {
-        var urlParams = new URLSearchParams({ filterType: filterType, break: breakOfPages });
+        var urlParams = new URLSearchParams({ filterType: filterType, break: breakOfPages, dado: dado });
 
         listOSRequestManager(currentPage, urlParams, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
             setListItens(res.data.liste);
@@ -50,16 +56,21 @@ function App(props) {
     useEffect(() => { listarOS(); }, [currentPage]);
 
     return (
-        <div>
+        <PaginationRed>
             <ListFactory {...({ listItens, tableColumn })} />
 
-            {pages.map(item => (
-                <ul>
-                    {item == currentPage && <li onClick={changeThePage} style={{ color: "red", cursor: "pointer" }}>{item}</li>}
-                    {item != currentPage && <li onClick={changeThePage} style={{ cursor: "pointer" }}>{item}</li>}
-                </ul>
-            ))}
-        </div>
+            <Pagination aria-label="Page navigation example">
+
+                {pages.map(item => (
+                    <PaginationItem active={item == currentPage && true} onClick={changeThePage}>
+                        <PaginationLink>
+                            {item}
+                        </PaginationLink>
+                    </PaginationItem>
+                ))}
+            </Pagination>
+
+        </PaginationRed>
     );
 }
 

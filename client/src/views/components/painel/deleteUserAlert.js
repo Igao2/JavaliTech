@@ -1,28 +1,31 @@
-/* eslint-disable react/jsx-pascal-case */
-import React from 'react';
-import String from '../../../assets/values/string.json';
-
-import { AlertDelet, ItemColAvatar } from '../../../assets/values/styles';
-
+import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import String from '../../../assets/values/string.json'
 
-import { Col, Row, Container, Button } from 'reactstrap';
+import { Button, Row, Col, Container } from 'reactstrap';
+import { ItemColAvatar, AlertDelet } from '../../../assets/values/styles';
 
+import updateInfosManager from '../../../dispatcher/updateInfos';
 
+const tokenManager = require('../../../dispatcher/tokenManager');
 
-class ItemLoginOff extends React.Component {
+export default class InfoAlert extends Component {
     render() {
 
-        const backToWelcomeScreen = () => this.props.switchScreensFromProps(1);
-        const logoutUser = () => this.props.logout();
+        const backToEditUserScreen = () => this.props.switchScreensFromProps(2);
+
+        const deleteUser = () => {
+            updateInfosManager(5, "", { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+                this.props.deleteUserRedirect();
+            })
+        };
         return (
             <Container>
-
                 <br />
                 <ItemColAvatar>
-                    <h1>{String.quest_loginoff}</h1>
+                    <h1>{this.props.titleAlert}</h1>
                     <AlertDelet>
-                        {String.quest_loginoff_text}
+                        {String.describeAlert}
                     </AlertDelet>
                     <Row md="2" sm="2" xs="1">
                         <Col>
@@ -30,7 +33,7 @@ class ItemLoginOff extends React.Component {
                             <Button
                                 block
                                 color="dark"
-                                onClick={logoutUser}
+                                onClick={deleteUser}
                             >
                                 {String.yes}
                             </Button>
@@ -40,19 +43,15 @@ class ItemLoginOff extends React.Component {
                             <Button
                                 block
                                 color="dark"
-                                onClick={backToWelcomeScreen}
-                                href="#1"
+                                onClick={backToEditUserScreen}
+                                href="#2"
                             >
                                 {String.no}
                             </Button>
                         </Col>
                     </Row>
                 </ItemColAvatar>
-
             </Container>
-
         )
     }
 }
-
-export default ItemLoginOff;

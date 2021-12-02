@@ -1,23 +1,19 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { useState } from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
+import { useParams } from "react-router-dom";
 import String from '../../assets/values/string.json';
-import { BodyOff, BodyOffIcon_home, BodyOff_buttom, BodyOff_top_off, ContainerOff, FooterOff, HeaderOff } from '../../assets/values/styles';
+import { BodyOff, ContainerOff, FooterOff, HeaderOff } from '../../assets/values/styles';
 
 import HeaderContainerOff from '../components/headers/header_off';
-import HeaderContainerOn from '../components/headers/header_on';
-import searchResultManager from '../../dispatcher/searchBarRequest';
 
-import logo from '../../assets/images/icons/logo_black.svg';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Input, Button, Form, FormGroup, Table, Container } from 'reactstrap';
 import Footer_off from '../components/footers/footers_off';
-import ViewOS from '../components/painel/view_os';
-import ViewOpenOs_on from '../components/painel/view_openOs_on';
 import InfoAlert from '../components/painel/info_alert';
 
 function App() {
+    const { title, describe } = useParams();
 
     return (
         <div>
@@ -36,11 +32,11 @@ function App() {
 
                 </HeaderOff>
                 <BodyOff>
-                    
-                        <InfoAlert
-                            titleAlert={String.titleAlert}
-                            describeAlert={String.describeAlert}
-                        />
+
+                    <InfoAlert
+                        titleAlert={String.titlesAlert[title]}
+                        describeAlert={String.describesAlert[describe]}
+                    />
 
                 </BodyOff>
                 <FooterOff>

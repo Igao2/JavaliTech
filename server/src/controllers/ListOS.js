@@ -26,12 +26,10 @@ class ListOS {
                 let getCondision = new advancedSearch(params);
                 var sqlCondision = getCondision.getSqlCondision;
 
-
                 connection.query(`select service_order_id from service_order where user_id=${userId} ${sqlCondision};`, (error, response) => {
-                    if (error) { console.log(error); reject(error500); }
+                    if (error) reject(error500);
                     else {
                         var amountResponse = response.length;
-
                         if (amountResponse >= 1) {
 
                             let pages = amountResponse / params.break;
@@ -51,7 +49,7 @@ class ListOS {
                                 connection.connect();
                                 let values = 'service_order_id, senha, owner_name, device_name, delivery_date, completion_date, status, service_value'
                                 connection.query(`select ${values} from service_order where user_id=${userId} ${sqlCondision} LIMIT ${gapInit},${gapEnd};`, (error, response) => {
-                                    if (error) { console.log(error); reject(error500); }
+                                    if (error) reject(error500);
                                     else {
                                         resolve([numberOfPages, parseInt(page), parseInt(params.break), parseInt(params.filterType), JSON.parse(JSON.stringify(response))])
                                     }

@@ -10,6 +10,8 @@ module.exports = class osCodeFactory {
             let code = "";
             let loop = true;
             do {
+                code = "";
+
                 for (var i = 0; i < 6; i++)
                     code += possible.charAt(Math.floor(Math.random() * possible.length));
 
@@ -23,7 +25,7 @@ module.exports = class osCodeFactory {
                         if (error) { resolve([false, "/javalitech"]) }
                         else {
                             if (response.length != 0) resolve([true, "/javalitech"]);
-                            else resolve(resolve([false, code]))
+                            else resolve([false, code]);
                         }
                     });
 

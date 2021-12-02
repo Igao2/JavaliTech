@@ -71,6 +71,7 @@ class UserInfos {
                 res.json(error)
             });
     }
+
     image(req, res) {
         const userId = req.userId.id;
         const formInputs = JSON.parse(req.body.formInputs);
@@ -176,6 +177,7 @@ class UserInfos {
             })
         }
     }
+
     email(req, res) {
         const userId = req.userId.id;
 
@@ -245,6 +247,7 @@ class UserInfos {
                 res.json(error)
             });
     }
+
     dados(req, res) {
         const userId = req.userId.id;
 
@@ -401,6 +404,91 @@ class UserInfos {
             });
     }
 
+    deleteUser(req, res) {
+        const userId = req.userId.id;
+
+        function dadosQuery() {
+            return new Promise((resolve, reject) => {
+
+
+                const connection = mysql.createConnection(mysqlConnection);
+
+                const error505 = {
+                    erro: true,
+                    code: 500,
+                    mensagem: "Ouve um erro em nosso sistema. Tente novamente mais tarde."
+                };
+
+                connection.connect();
+                connection.query((`SELECT photo FROM user WHERE id=${userId};`), (error, userInformation) => {
+                    if (error) reject(error505);
+                    else {
+                        userInformation = JSON.parse(JSON.stringify(userInformation));
+                        userInformation = JSON.parse(userInformation[0].photo)
+                        if (fs.existsSync("./public/userImages/" + userInformation.name)) {
+                            fs.unlinkSync("./public/userImages/" + userInformation.name)
+                        }
+
+                        const connection = mysql.createConnection(mysqlConnection);
+                        connection.connect();
+
+                        connection.query((`SELECT user_id FROM service_order WHERE user_id=${userId};`), (error, queryResolve) => {
+                            if (error) reject(error505);
+                            else {
+                                if (queryResolve.length != 0) {
+                                    const connection = mysql.createConnection(mysqlConnection);
+                                    connection.connect();
+                                    connection.query((`DELETE FROM service_order WHERE user_id=${userId};`), (error, queryResolve) => {
+                                        if (error) reject(error505);
+                                        else {
+                                            const connection = mysql.createConnection(mysqlConnection);
+                                            connection.connect();
+                                            connection.query((`DELETE FROM user WHERE id=${userId};`), (error, queryResolve) => {
+                                                if (error) { console.log(error); reject(error505); }
+                                                else {
+                                                    resolve()
+                                                }
+                                            });
+                                            connection.end();
+                                        }
+                                    });
+                                    connection.end();
+                                }
+                                else {
+                                    const connection = mysql.createConnection(mysqlConnection);
+                                    connection.connect();
+                                    connection.query((`DELETE FROM user WHERE id=${userId};`), (error, queryResolve) => {
+                                        if (error) reject(error505);
+                                        else {
+                                            resolve()
+                                        }
+                                    });
+                                    connection.end();
+                                }
+                            }
+                        });
+
+                        connection.end();
+                    }
+                });
+                connection.end();
+
+            });
+
+
+        }
+
+        dadosQuery()
+            .then(result => {
+                res.json({
+                    erro: false,
+                    code: 200,
+                    mensagem: "Alteração realizada com sucesso"
+                })
+            }).catch(error => {
+                res.json(error)
+            });
+    }
 
 }
 
