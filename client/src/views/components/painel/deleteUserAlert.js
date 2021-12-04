@@ -12,8 +12,10 @@ const tokenManager = require('../../../dispatcher/tokenManager');
 export default class InfoAlert extends Component {
     render() {
 
+        /** Esta arrow function redireciona o usuario para a tela de editar informaçoes do usuario. */
         const backToEditUserScreen = () => this.props.switchScreensFromProps(2);
 
+        /** Esta arrow function deleta a conta do usuario e chama a função "deleteUserRedirect". */
         const deleteUser = () => {
             updateInfosManager(5, "", { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
                 this.props.deleteUserRedirect();
@@ -25,7 +27,7 @@ export default class InfoAlert extends Component {
                 <ItemColAvatar>
                     <h1>{this.props.titleAlert}</h1>
                     <AlertDelet>
-                        {String.describeAlert}
+                        Você realmente deseja deletar essa conta?
                     </AlertDelet>
                     <Row md="2" sm="2" xs="1">
                         <Col>

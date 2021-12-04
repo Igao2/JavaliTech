@@ -6,14 +6,13 @@ import { BodyOff, BodyOff_buttom, BodyOff_top_off, ContainerOff, FooterOff, Head
 
 import HeaderContainerOff from '../components/headers/header_off';
 
-// import logo from '../../assets/images/icons/logo_black.svg';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Alert } from 'reactstrap';
 import Footer_off from '../components/footers/footers_off';
 import { NavLink } from "react-router-dom";
 
 function App() {
+
     /** const useState para alertar errors, warnings, informs e etc... */
     const [announcement, setAnnouncement] = useState({
         enabled: 0,
@@ -21,6 +20,7 @@ function App() {
         massage: ""
     })
 
+    /** useEffect de alerta = é executado quando a página carrega e mostra o alert se necessário */
     useEffect(() => {
         if (window.location.href.indexOf("#") >= 0) {
             if (window.location.href.slice(-3) === "500") {

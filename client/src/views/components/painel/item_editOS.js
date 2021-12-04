@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import String from '../../../assets/values/string.json';
 
-import { ItemColAvatar, ItemColTextOS, QuadrosOS, ProfilePhoto } from '../../../assets/values/styles';
+import { AlertDelet, ItemColAvatar, ItemColTextOS, QuadrosOS, ProfilePhoto } from '../../../assets/values/styles';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -13,11 +13,14 @@ import editOsManager from '../../../dispatcher/editOs';
 import { Redirect, useParams } from "react-router-dom";
 
 import osInfosResultManager from '../../../dispatcher/osInfosRequest';
+import deleteOsManager from '../../../dispatcher/deleteOs';
 
 
 const tokenManager = require('../../../dispatcher/tokenManager');
 
 function App(props) {
+
+    /** Parametros da OS */
     let { item1, item2 } = useParams();
     const osId = item1;
     const osPass = item2;
@@ -29,17 +32,17 @@ function App(props) {
         massage: ""
     })
 
-    /** const useState para o redirecionamento de tela. */
+    /** const useState para o redirecionamento para a tela de erro 400. */
     const redirect400 = useState(0);
 
-    /** const useState para o redirecionamento de tela. */
+    /** const useState para o redirecionamento para a tela de erro 500. */
     const redirect500 = useState(0);
 
-    /** const useState ativar e desativar a gif de loading do botão de cadastrar-se. */
+    /** const useState ativar e desativar a gif de loading do botão de submit. */
     const [loading, setLoading] = useState(0);
 
 
-    /** const useState para os Inputs do formulario de cadatro  */
+    /** const useState para os Inputs do formulario.  */
     const [osInfos, setOsInfos] = useState({
         serviceOrderId: osId,
         senha: osPass,
@@ -65,6 +68,7 @@ function App(props) {
         serviceValue: 0
     });
 
+    /** useEffect que obtém as informações da OS = é executado a página carrega, obtém as informações da OS a ser alterada. */
     useEffect(() => {
 
         osInfosResultManager(osId, osPass).then(res => {
@@ -80,8 +84,8 @@ function App(props) {
                 case 204: redirect400[1](1); break;
 
                 default: {
-                    var dataFomater = (data) => {
-                        if (data != "") {
+                    function dataFomater(data) {
+                        if (data != null) {
                             return data.replace(/([0-9]+)-([0-9]+)-([0-9]+)T(\S+)/, "$1-$2-$3");
                         } else return null;
                     }
@@ -105,10 +109,11 @@ function App(props) {
 
     }, []);
 
-
-    /** const useState para o redirecionamento de tela. */
-    const redirect = useState(0);
-
+    /** Esta arrow function pega o valor dos Inputs do form e armazena no useState "osInfos", ele tambem implementa mascara no campo serviceValue.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
     const onChangeEvent = event => {
         var value = event.target.value;
 
@@ -141,8 +146,7 @@ function App(props) {
         setAnnouncement({ ..."", enabled: 0 })
     }
 
-    /**
-    * Esta arrow function pega o valor dos Inputs do form e armazena no useState "register", ele tambem implementa mascaras nos inputs telephone e cep.
+    /** Esta arrow function pega o valor dos Inputs do form e altera a OS.
     * @param {object} event - Informações do evento onChange.
     * @param {string} event.target.value - valor do input.
     * @param {string} event.target.name - nome do input.
@@ -218,8 +222,8 @@ function App(props) {
 
             var headers = { headers: { authentication: "Bearer " + tokenManager.readToken() } };
 
-            /** Faz a requisição para a API com os dados do novo usuarido, para que ele possa ser cadastrado.
-            * @param {object} request - Dados do novo usuarido.
+            /** Faz a requisição para a API com os novos dados da OS.
+            * @param {object} request - Dados da OS.
             * @param {object} res - Resposta da API.
             */
             editOsManager(request, headers).then(res => {
@@ -280,6 +284,12 @@ function App(props) {
         } else setLoading(0)
     }
 
+    /** Esta arrow function deleta a OS. */
+    const DeleteOs = e => {
+        deleteOsManager(osId, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+            window.location.assign(window.location.href.split("#")[0].replace(`${window.location.pathname}`, "") + "/painel")
+        })
+    }
 
     return (
         <Container>
@@ -289,7 +299,7 @@ function App(props) {
             {/* danger: vermelho | warning: amarelo | info: azul | dark: cinza*/}
             {announcement.enabled ? <Alert color={announcement.type} dismissible>{announcement.massage}</Alert> : null}
 
-            <h3>{String.menuAddOS}</h3>
+            <h3>{String.menuEditOS}</h3>
             <QuadrosOS>
                 <h6>{String.osInfoBasic}: </h6>
                 <Row md="3" sm="3" xs="1">
@@ -333,6 +343,7 @@ function App(props) {
                     </Col>
                 </Row>
             </QuadrosOS>
+
             <Form onSubmit={editOs}>
                 <QuadrosOS>
                     <h6>{String.osCATinfo}:</h6>
@@ -488,6 +499,20 @@ function App(props) {
                     }
                 </QuadrosOS>
             </Form>
+
+            <QuadrosOS>
+                <AlertDelet>
+
+                    <h4>{String.userDelteCount}? </h4>
+                    <Button
+                        block
+                        color="danger"
+                        onClick={DeleteOs}
+                    >
+                        {String.delete}
+                    </Button>
+                </AlertDelet>
+            </QuadrosOS>
 
 
         </Container >

@@ -20,7 +20,7 @@ const tokenManager = require('../../../dispatcher/tokenManager');
 
 function App(props) {
 
-    /** const useState para o redirecionamento de tela. */
+    /** const useState para o redireciona a tela para a home. */
     const redirect = useState(0);
 
     /** const useState para alertar errors, warnings, informs e etc... */
@@ -30,7 +30,7 @@ function App(props) {
         massage: ""
     });
 
-    /** const useState ativar e desativar a gif de loading do botão de cadastrar-se. */
+    /** const useState ativar e desativar a gif de loading do botão de submit. */
     const [loading, setLoading] = useState([0, 0, 0, 0]);
 
     /** const useState para definir os status dos campos. */
@@ -49,17 +49,17 @@ function App(props) {
         image: 0
     });
 
-    /** const useState para o Input "image" */
+    /** const useState para o Input "image". */
     const [image, setImage] = useState('');
 
-    /** const useState para os imageSettings da imagem */
+    /** const useState para os imageSettings da imagem. */
     const [imagePreview, setPreview] = useState({
         left: props.userInfos.photo[1].left,
         top: props.userInfos.photo[1].top,
         width: props.userInfos.photo[1].width
     });
 
-    /** const useState para os Inputs do formulario altera email  */
+    /** const useState para os Inputs do formulario que altera email.  */
     const [email, setEmail] = useState(props.userInfos.email);
 
     const initDados = {
@@ -74,8 +74,10 @@ function App(props) {
         estado: props.userInfos.address.estado
     }
 
+    /** const useState para os Inputs do formulario que altera os dados basicos do usuario.  */
     const [dados, setDados] = useState(initDados);
 
+    /** const useState para os Inputs do formulario que altera a senha.  */
     const [password, setPassword] = useState({
         newPass: "",
         otherPass: ""
@@ -97,8 +99,89 @@ function App(props) {
         "rua": "\"Rua\""
     }
 
-    /**
-    * Essa função cria a dinâmica de ajuste da posição de imagem, podendo aumentar, diminuir, mover para a esquerda ou para a direita e também podendo movê-la para cima e para baixo.
+    /** Esta arrow function pega o valor dos Inputs do form e armazena no useState "dados", ele tambem implementa a mascara nos campos cep e telephone.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const dadosOnChangeEvent = event => {
+        var value = event.target.value;
+
+        function cleanMask(number) {
+            number = number.replace(/[A-Z]/gi, '');
+            number = number.replace(/[^a-z0-9]/gi, '');
+            number = number.replace(/\-/g, '');
+            number = number.replace(/ /g, '');
+            return number;
+        }
+
+
+        if (event.target.name === "cep") {
+            let cep = value;
+            cep = cep.replace(/\D/g, "")
+            cep = cep.replace(/(\d{5})(\d)/, "$1-$2")
+            event.target.value = cep;
+            setDados({ ...value });
+        } else if (event.target.name === "telephone") {
+            let phone = cleanMask(value);
+            let ddd, number;
+
+            if (phone.length >= 11) phone = "(" + phone.slice(0, 2) + ") " + phone.slice(2, 7) + "-" + phone.slice(7, 11);
+            else if (phone.length >= 3) {
+
+                ddd = phone.slice(0, 2);
+
+                if (phone.length >= 7) {
+                    number = phone.slice(2, 6);
+                    number += "-" + phone.slice(6, 10);
+                } else number = phone.slice(2);
+
+                phone = `(${ddd}) ${number}`;
+            }
+
+            event.target.value = phone;
+            setDados({ ...value });
+        } else {
+            setDados({ ...value });
+        }
+
+        clear();
+    }
+
+    /** Esta arrow function pega o valor dos Inputs do form e armazena no useState "password".
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const passwordOnChangeEvent = event => {
+        clear();
+        var value = event.target.value;
+
+        if (event.target.name == "otherPass") {
+
+            if (value.length >= password.newPass.length) {
+                if (password.newPass == value) {
+                    setInputState({ otherPass: 1 });
+                }
+                else {
+                    setAnnouncement({
+                        enabled: 1,
+                        type: "danger",
+                        massage: "A senha inserida no campo 'Repita a nova Senha' deve ser a mesma do campo 'Atualizar Senha'. "
+                    });
+                    setInputState({ otherPass: 2 });
+                }
+            }
+
+
+
+            setPassword({ ...password, otherPass: value });
+        } else {
+            setPassword({ ...password, newPass: value });
+        }
+    }
+
+    /** Essa função cria a dinâmica de ajuste da posição de imagem, podendo aumentar, diminuir, mover para a esquerda ou para a direita e também podendo movê-la para cima e para baixo.
     * @param {number} type - Determina qual será o ajuste de posição da imagem.
     */
     function previewImageChenge(type) {
@@ -113,11 +196,17 @@ function App(props) {
         return styleCharge;
     }
 
+    /** Essa função limpa os pop-up's de alertas e o a estados do campos */
     function clear() {
         setAnnouncement({ ..."", enabled: 0 });
         setInputState({ ...0 });
     }
 
+    /** Esta arrow function pega o valor dos Inputs do form e atualiza a foto de perfil do usuario.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
     const updateImage = event => {
 
         event.preventDefault();
@@ -239,6 +328,11 @@ function App(props) {
 
     }
 
+    /** Esta arrow function pega o valor dos Inputs do form e atualiza o email do usuario.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
     const updateEmail = event => {
 
         event.preventDefault();
@@ -308,56 +402,11 @@ function App(props) {
 
     }
 
-    /**
-    * Esta arrow function pega o valor dos Inputs do form e armazena no useState "register", ele tambem implementa mascaras nos inputs telephone e cep.
+    /** Esta arrow function pega o valor dos Inputs do form e atualiza os dados basicos do usuario.
     * @param {object} event - Informações do evento onChange.
     * @param {string} event.target.value - valor do input.
     * @param {string} event.target.name - nome do input.
     */
-    const dadosOnChangeEvent = event => {
-        var value = event.target.value;
-
-        function cleanMask(number) {
-            number = number.replace(/[A-Z]/gi, '');
-            number = number.replace(/[^a-z0-9]/gi, '');
-            number = number.replace(/\-/g, '');
-            number = number.replace(/ /g, '');
-            return number;
-        }
-
-
-        if (event.target.name === "cep") {
-            let cep = value;
-            cep = cep.replace(/\D/g, "")
-            cep = cep.replace(/(\d{5})(\d)/, "$1-$2")
-            event.target.value = cep;
-            setDados({ ...value });
-        } else if (event.target.name === "telephone") {
-            let phone = cleanMask(value);
-            let ddd, number;
-
-            if (phone.length >= 11) phone = "(" + phone.slice(0, 2) + ") " + phone.slice(2, 7) + "-" + phone.slice(7, 11);
-            else if (phone.length >= 3) {
-
-                ddd = phone.slice(0, 2);
-
-                if (phone.length >= 7) {
-                    number = phone.slice(2, 6);
-                    number += "-" + phone.slice(6, 10);
-                } else number = phone.slice(2);
-
-                phone = `(${ddd}) ${number}`;
-            }
-
-            event.target.value = phone;
-            setDados({ ...value });
-        } else {
-            setDados({ ...value });
-        }
-
-        clear();
-    }
-
     const updateDados = event => {
 
         event.preventDefault();
@@ -480,34 +529,11 @@ function App(props) {
         setLoading(0);
     }
 
-    const passwordOnChangeEvent = event => {
-        clear();
-        var value = event.target.value;
-
-        if (event.target.name == "otherPass") {
-
-            if (value.length >= password.newPass.length) {
-                if (password.newPass == value) {
-                    setInputState({ otherPass: 1 });
-                }
-                else {
-                    setAnnouncement({
-                        enabled: 1,
-                        type: "danger",
-                        massage: "A senha inserida no campo 'Repita a nova Senha' deve ser a mesma do campo 'Atualizar Senha'. "
-                    });
-                    setInputState({ otherPass: 2 });
-                }
-            }
-
-
-
-            setPassword({ ...password, otherPass: value });
-        } else {
-            setPassword({ ...password, newPass: value });
-        }
-    }
-
+    /** Esta arrow function pega o valor dos Inputs do form e atualiza a senha do usuario.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
     const updateSenha = event => {
 
         event.preventDefault();
@@ -613,7 +639,8 @@ function App(props) {
         setLoading(0);
     }
 
-    const goToDeleteUserScreen = () => props.switchScreensFromProps(7);
+    /** Esta arrow function redireciona o usuario para a tela que deleta a conta do usuario. */
+    const goToDeleteUserScreen = () => props.switchScreensFromProps(10);
 
     return (
         <Container>

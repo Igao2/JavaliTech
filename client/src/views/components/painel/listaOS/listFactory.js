@@ -8,8 +8,10 @@ class ListFactory extends React.Component {
         this.state = { hide: false };
     }
 
+    /** método que que inicia a renderização das linhas da tabela separadamente */
     renderLine(rows, tableColumn) { let password = rows.senha; return this.renderDefinitiveLine(rows, password, tableColumn); }
 
+    /** método que que inicia a renderização das linhas da tabela separadamente, porém com o campo de senha escondido */
     renderLineHiderPassword(rows, tableColumn) {
         let password;
         if (rows.senha) password = "••••••";
@@ -17,9 +19,15 @@ class ListFactory extends React.Component {
         return this.renderDefinitiveLine(rows, password, tableColumn);
     }
 
+    /** método que que renderiza cada linha */
     renderDefinitiveLine(rows, password, tableColumn) {
-        const dir = '/painel/' + rows.service_order_id + '/' + rows.senha + "#8";
+        var dir;
+
+        if (rows.service_order_id == "") dir = '/painel';
+        else dir = '/painel/' + rows.service_order_id + '/' + rows.senha + "#8";
+
         const redirect = () => { window.location.assign(window.location.href.split("#")[0].replace(`${window.location.pathname}`, "") + dir) };
+
         return (
             <tr onClick={redirect}>
                 {tableColumn.map(item => {
@@ -36,7 +44,6 @@ class ListFactory extends React.Component {
                     else if (item === "service_value") {
                         var service_value = rows[item] + ".00";
 
-                        // rows[item]([0 - 9a - zA - Z,] +).(\d{2})
                         return (<th>R$: {rows[item] ? service_value.replace(/([0-9a-zA-Z,]+).(\d{2})(\S+)/, "$1.$2") : null}</th>)
                     }
                     else return (<th>{rows[item]}</th>)
@@ -45,6 +52,7 @@ class ListFactory extends React.Component {
         )
     }
 
+    /** método que que renderiza a tabela */
     render() {
         let line = [];
 

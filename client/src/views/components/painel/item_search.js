@@ -12,9 +12,16 @@ import TableListaOS from "./listaOS/index";
 
 function App() {
 
+    /** const que armazena o número de linhas que a tabela vai ter. */
     const breakOfPages = 3;
+
+    /** const useState que armazena o tipo de filtro que irá ser usado para selecionar as OS's presentes na tabela. */
     var [filterType, setFilterType] = useState(0);
+
+    /** const useState que armazena o valor referente ao dado que ira ser utilizado na filtragem de OS's presentes na tabela. */
     var [filterData, setFilterData] = useState("");
+
+    /** const que armazena um array com as colinas presentes na tabela. */
     const tableColumn = ["service_order_id", "senha", "owner_name", "device_name", "delivery_date", "status"];
 
     /** const useState para definir os status dos campos. */
@@ -31,16 +38,23 @@ function App() {
     })
 
 
-    /** const useState ativar e desativar a gif de loading do botão de cadastrar-se. */
+    /** const useState ativar e desativar a gif de loading do botão de submit. */
     const [loading, setLoading] = useState(0);
 
-    /** const useState ativar e desativar a gif de loading do botão de cadastrar-se. */
+    /** const useState ativar e desativar a gif de loading da tabela */
     const [loadingTable, setLoadingTable] = useState(0);
 
-    /** const useState para os Inputs do formulario de cadatro  */
+    /** const useState para o Inputs[select] do formulario de busca OS.  */
     const [select, setSelect] = useState(0);
+
+    /** const useState para os Inputs de dados de filtro do formulario de busca OS.  */
     const [dado, setDado] = useState("");
 
+    /** Esta arrow function pega o valor dos Inputs do form e armazena no useState "dado", ele tambem implementa mascara no campo serviceValue.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
     const onChangeEvent = event => {
         var value = event.target.value;
 
@@ -77,6 +91,11 @@ function App() {
 
     }
 
+    /** Esta arrow function resliza a busca da OS usando os filtros passados.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
     const searchOs = event => {
         event.preventDefault();
         setLoading(1);

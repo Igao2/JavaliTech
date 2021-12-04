@@ -1,6 +1,6 @@
 {
     "projectName": "JavaliTech",
-    "projectServerUrl": "http://localhost:3001/",
+    "projectServerUrl": "https://javaliTechServer.droanle.repl.co/",
     "bcryptSalt": 6,
     "jwtKey": "SusScrofa"
 }

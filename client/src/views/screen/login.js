@@ -53,7 +53,7 @@ function App() {
 	}
 
 	/**
-	* Esta arrow function é o evento de submit do form, ela pega os valores dos Inputs do form, verifica se os campos foram preenchidos, se sim ele manda os dados para API para que o login seja realizado
+	* Esta arrow function é o evento de submit do form, ela pega os valores dos Inputs do form e verifica se os campos foram preenchidos, se sim ele manda os dados para API para que o login seja realizado
 	* @param {object} event - Informações do evento onChange.
 	* @param {object[]} event.target - Array com as informações de cada input.
 	* @param {string} event.target[].value - valor do input.
@@ -71,6 +71,7 @@ function App() {
 			"password": ["Senha", "passwordState"]
 		}
 
+		/** verifica se os campos foram preenchidos. */
 		for (let i = 0; i < (event.target.length - 2); i++) {
 			if (event.target[i].value === "") {
 				if (!valid)

@@ -13,8 +13,12 @@ import { Col, Row, Container, Button } from 'reactstrap';
 class ItemLoginOff extends React.Component {
     render() {
 
+        /** redireciona o usuário para a tela de bem vindo do painel */
         const backToWelcomeScreen = () => this.props.switchScreensFromProps(1);
+
+        /** desloga o usuário */
         const logoutUser = () => this.props.logout();
+
         return (
             <Container>
 

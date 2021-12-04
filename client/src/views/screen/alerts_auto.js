@@ -13,6 +13,8 @@ import Footer_off from '../components/footers/footers_off';
 import InfoAlert from '../components/painel/info_alert';
 
 function App() {
+
+    /** Parametros do alert */
     const { title, describe } = useParams();
 
     return (

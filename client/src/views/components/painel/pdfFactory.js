@@ -116,6 +116,7 @@ const OsPdf = (props) => {
     return (
         <Document>
             <Page size="A4" style={styles.page}>
+            
                 <View style={[styles.head, styles.QuadrosOS]}>
                     <View style={styles.ItemColAvatar}>
                         <View style={styles.ProfilePhoto}>
@@ -168,7 +169,6 @@ const OsPdf = (props) => {
                         <Text style={[styles.h6, styles.marginBottom5]}>{String.owner_information}: {props.owner_information}</Text>
                     </View>
                 </View>
-
                 <View style={styles.QuadrosOS}>
 
                     <Text style={[styles.h4, styles.fontWeight, styles.marginBottom10]}>{String.osInfoService}:</Text>

@@ -7,10 +7,13 @@ import { ParagrafLeftGeral, ProfilePhoto } from '../../../assets/values/styles';
 
 import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
 export default class ViewOS extends Component {
+
+    /** método que limita o número de letras presentes na descrição da OS */
     descriptionLimit(description) {
         let newDescription = description.split(0, 50);
         return ({ newDescription });
     }
+
     render() {
         return (
             <Card body>

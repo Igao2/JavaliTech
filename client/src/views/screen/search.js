@@ -17,8 +17,6 @@ import Footer_off from '../components/footers/footers_off';
 import ViewOS from '../components/painel/view_os';
 import ViewOSClear from '../components/painel/view_os_clear';
 
-import './intemporarycss.css';
-
 function App() {
 
 	/** const useState para alertar errors, warnings, informs e etc... */

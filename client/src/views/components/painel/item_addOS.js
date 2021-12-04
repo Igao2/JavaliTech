@@ -10,11 +10,10 @@ import { Col, Row, Container, Alert, Form, FormGroup, Input, Button } from 'reac
 import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
 import createOsManager from '../../../dispatcher/createOs';
 
-
-
 const tokenManager = require('../../../dispatcher/tokenManager');
 
 function App(props) {
+
     /** const useState para alertar errors, warnings, informs e etc... */
     const [announcement, setAnnouncement] = useState({
         enabled: 0,
@@ -22,7 +21,7 @@ function App(props) {
         massage: ""
     })
 
-    /** const useState ativar e desativar a gif de loading do botão de cadastrar-se. */
+    /** const useState ativar e desativar a gif de loading do botão de submit. */
     const [loading, setLoading] = useState(0);
 
     let senha = "";
@@ -32,7 +31,7 @@ function App(props) {
         senha += possible.charAt(Math.floor(Math.random() * possible.length));
 
 
-    /** const useState para os Inputs do formulario de cadatro  */
+    /** const useState para os Inputs do formulario de cadatro de uma nova OS  */
     const [osInfos, setOsInfos] = useState({
         senha: senha,
         ownerInformation: "",
@@ -57,8 +56,13 @@ function App(props) {
         serviceValue: 0
     });
 
+    /** Esta arrow function pega o valor dos Inputs do form e armazena no useState "osInfos", ele tambem implementa mascara no campo serviceValue.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
     const onChangeEvent = event => {
-        var value = event.target.value;
+        var value = event.target.value.replace(/\'/g, '');
 
         function cleanMask(number) {
             if (number == "") return "0";
@@ -89,8 +93,7 @@ function App(props) {
         setAnnouncement({ ..."", enabled: 0 })
     }
 
-    /**
-    * Esta arrow function pega o valor dos Inputs do form e armazena no useState "register", ele tambem implementa mascaras nos inputs telephone e cep.
+    /** Esta arrow function pega o valor dos Inputs do form e cria a OS.
     * @param {object} event - Informações do evento onChange.
     * @param {string} event.target.value - valor do input.
     * @param {string} event.target.name - nome do input.

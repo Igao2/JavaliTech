@@ -74,7 +74,7 @@ class OsInfos {
                     resultJson.user_photo = [userPhoto.name, userPhoto.imageSetting];
                 } else {
                     userPhoto.name = definitions.projectServerUrl + "userImages/standard_photo.png";
-                    userPhoto.imageSetting = "";
+                    userPhoto.imageSetting = { top: 0, left: 0, width: 100 };
                     resultJson.user_photo = [userPhoto.name, userPhoto.imageSetting];
                 }
 

@@ -11,6 +11,7 @@ const CreateOs = require('./controllers/CreateOs');
 const OsValidate = require('./controllers/OsValidate');
 const OsInfos = require('./controllers/OsInfos');
 const EditOs = require('./controllers/EditOs');
+const DeleteOs = require('./controllers/DeleteOs');
 
 const uploadUserImage = require('./middleware/uploadImage');
 const validateToken = require('./middleware/validateToken')
@@ -27,11 +28,15 @@ router.post("/login", Login.loginQuery)
 
 router.post("/createOs", validateToken, CreateOs.createOsQuery)
 router.post("/editOs", validateToken, EditOs.editOsQuery)
+
+
+router.delete("/deleteOs/:osId", validateToken, DeleteOs.deleteOsQuery)
+
 router.post("/updateInfos/imageSetting", validateToken, UpdateInfos.imageSetting)
 router.post("/updateInfos/image", validateToken, uploadUserImage.single('image'), UpdateInfos.image)
 router.post("/updateInfos/email", validateToken, UpdateInfos.email)
 router.post("/updateInfos/dados", validateToken, UpdateInfos.dados)
 router.post("/updateInfos/senha", validateToken, UpdateInfos.senha)
-router.post("/updateInfos/delete", validateToken, UpdateInfos.deleteUser)
+router.delete("/updateInfos/delete", validateToken, UpdateInfos.deleteUser)
 
 module.exports = router;

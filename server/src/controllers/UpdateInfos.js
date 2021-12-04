@@ -111,7 +111,7 @@ class UserInfos {
 
                                 userPhoto.imageSetting = formInputs.imageSetting;
 
-                                let targetPath = '../server/public/userImages/' + userPhoto.name;
+                                let targetPath = './public/userImages/' + userPhoto.name;
 
                                 const connection = mysql.createConnection(mysqlConnection);
 
@@ -407,7 +407,7 @@ class UserInfos {
     deleteUser(req, res) {
         const userId = req.userId.id;
 
-        function dadosQuery() {
+        function deleteQuery() {
             return new Promise((resolve, reject) => {
 
 
@@ -478,7 +478,7 @@ class UserInfos {
 
         }
 
-        dadosQuery()
+        deleteQuery()
             .then(result => {
                 res.json({
                     erro: false,

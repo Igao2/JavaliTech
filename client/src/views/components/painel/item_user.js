@@ -13,8 +13,13 @@ import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png'
 
 class ItemUser extends React.Component {
     render() {
+        /** const que armazena o número de linhas que a tabela vai ter. */
         const breakOfPages = 3;
+
+        /** const que armazena o tipo de filtro que irá ser usado para selecionar as OS's presentes na tabela. */
         const filterType = 1;
+
+        /** const que armazena um array com as colinas presentes na tabela. */
         const tableColumn = ["service_order_id", "owner_name", "device_name", "delivery_date", "status", "service_value"];
 
         return (

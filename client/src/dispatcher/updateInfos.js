@@ -8,7 +8,7 @@ const updateInfosRequestManager = async (type, info, header) => {
     if (type == 2) url = '/updateInfos/email';
     if (type == 3) url = '/updateInfos/dados';
     if (type == 4) url = '/updateInfos/senha';
-    if (type == 5) url = '/updateInfos/delete';
+    if (type == 5) return await api.delete('/updateInfos/delete', info, header);;
 
     return await api.post(url, info, header);
 }

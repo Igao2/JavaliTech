@@ -14,14 +14,17 @@ import Footer_off from '../components/footers/footers_off';
 import ViewOpenOs_on from '../components/painel/view_openOs_on';
 
 function App() {
+
+    /** Parametros da os */
     const { osId, osPass } = useParams();
 
-    /** const useState para o redirecionamento de tela. */
+    /** const useState para o redirecionamento para a tela de alert com o erro 400. */
     const redirect400 = useState(0);
 
-    /** const useState para o redirecionamento de tela. */
+    /** const useState para o redirecionamento para a tela de alert com o erro 500. */
     const redirect500 = useState(0);
 
+    /** const quedefine a estrutura base da os. */
     const initDados = {
         service_order_id: '',
         owner_name: '',
@@ -50,8 +53,10 @@ function App() {
         ]
     }
 
+    /** const useState armazena a estrutura dos dados da OS. */
     const [dados, setDados] = useState(initDados);
 
+    /** useEffect de obtenção de dados = é executado quando a página carrega, odtem os dados da OS em questão */
     useEffect(() => {
 
         osInfosResultManager(osId, osPass).then(res => {
@@ -73,6 +78,7 @@ function App() {
         });
 
     }, []);
+
     return (
         <div>
             {redirect400[0] ? <Redirect to='/alert/T400/D400' /> : null}

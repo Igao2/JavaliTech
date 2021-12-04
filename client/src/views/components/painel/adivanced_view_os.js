@@ -13,14 +13,16 @@ import ViewOpenOs_on from './view_openOs_on';
 
 
 function App(props) {
+
+    /** Parametros da OS */
     let { item1, item2 } = useParams();
     const osId = item1;
     const osPass = item2;
 
-    /** const useState para o redirecionamento de tela. */
+    /** const useState para o redirecionamento para a tela de erro 400. */
     const redirect400 = useState(0);
 
-    /** const useState para o redirecionamento de tela. */
+    /** const useState para o redirecionamento para a tela de erro 500. */
     const redirect500 = useState(0);
 
     const initDados = {
@@ -46,13 +48,18 @@ function App(props) {
         },
         user_telephone: '',
         user_photo: [
-            String.urlApi + '/userImages/standard_photo.png',
-            { top: 0, left: 0, width: 0 }
+            String.urlApi + 'userImages/standard_photo.png',
+            { top: 0, left: 0, width: 100 }
         ]
     }
 
+    /** const useState que armazena dados para o view OS. */
     const [dados, setDados] = useState(initDados);
 
+    /** const useState que autoriza a renderização do componente "ViewOpenOs_on". */
+    const dadosSearch = useState(0);
+
+    /** useEffect que obtém as informações da OS = é executado a página carrega, obtém as informações da OS a ser ilustrada. */
     useEffect(() => {
 
         osInfosResultManager(osId, osPass).then(res => {
@@ -67,7 +74,11 @@ function App(props) {
 
                 case 204: redirect400[1](1); break;
 
-                default: setDados(res.data)
+                default:
+                    setDados(res.data)
+                    setInterval(() => {
+                        dadosSearch[1](1);
+                    }, 200);
             }
         }).catch(error => {
             redirect500[1](1);
@@ -75,6 +86,7 @@ function App(props) {
 
     }, []);
 
+    /** Esta arrow function redireciona o usuario para a tela de editar OS. */
     const backToEditUserScreen = () => props.switchScreensFromProps(9);
 
     return (
@@ -86,7 +98,8 @@ function App(props) {
 
             <Row md="2" sm="2" xs="1">
                 <Col style={{ width: "75%" }}>
-                    <ViewOpenOs_on {...(dados)} />
+                    {dadosSearch[0] ? <ViewOpenOs_on {...(dados)} /> : null}
+
                 </Col>
                 <Col style={{ width: "25%" }}>
                     <br />
