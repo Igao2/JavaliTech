@@ -1,5 +1,13 @@
 import api from './api'
 
+/**
+ * @async
+ * @function AppDispatcher-updateInfosRequestManager
+ * @description Requisição para alterar/atualizar dados do usuário
+ * @param {number} type Contém o tipo de alteração
+ * @param {JSON} info Contém dados a serem alterados
+ * @param {JSON} header Contém o JWT com o id de identificação
+ */
 const updateInfosRequestManager = async (type, info, header) => {
     var url;
 

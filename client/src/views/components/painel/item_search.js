@@ -8,8 +8,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Container, Form, FormGroup, Input, Button, Alert } from 'reactstrap';
 
-import TableListaOS from "./listaOS/index";
+import TableListaOS from "./table_list_os";
 
+/**
+ * @function Components-Painel-search
+ * @description Componente que gera uma tela de busca por OS através de filtro
+ */
 function App() {
 
     /** const que armazena o número de linhas que a tabela vai ter. */

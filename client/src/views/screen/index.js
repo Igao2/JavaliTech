@@ -11,6 +11,10 @@ import { Button, Alert } from 'reactstrap';
 import Footer_off from '../components/footers/footers_off';
 import { NavLink } from "react-router-dom";
 
+/**
+ * @function AppScreen-Index
+ * @description Constrói a tela inicial do site
+ */
 function App() {
 
     /** const useState para alertar errors, warnings, informs e etc... */

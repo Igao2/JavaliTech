@@ -9,6 +9,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'reactstrap';
 import { NavLink } from "react-router-dom";
 
+/**
+ * @class
+ * @description Componente que gera o nav padrão do site
+ */
 class HeaderContainerOff extends React.Component {
 	render() {
 		return (

@@ -15,7 +15,10 @@ import Footer_off from '../components/footers/footers_off';
 
 const tokenManager = require('../../dispatcher/tokenManager');
 
-
+/**
+ * @function AppScreen-Login
+ * @description Constrói a tela de login do site
+ */
 function App() {
 
 	/** const useState para alertar errors, warnings, informs e etc... */

@@ -7,10 +7,13 @@ import { ItemColAvatar, ItemColText, ItemDiv, ItemMsgUser, ProfilePhoto } from '
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Col, Row, Container } from 'reactstrap';
-import TableListaOS from "./listaOS/index";
+import TableListaOS from "./table_list_os";
 import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
 
-
+/**
+ * @class
+ * @description Componente que gera uma tela de bem vindo ao usuario
+ */
 class ItemUser extends React.Component {
     render() {
         /** const que armazena o número de linhas que a tabela vai ter. */

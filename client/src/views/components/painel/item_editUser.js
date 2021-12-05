@@ -18,6 +18,10 @@ import { Redirect } from "react-router-dom";
 
 const tokenManager = require('../../../dispatcher/tokenManager');
 
+/**
+ * @function Components-Painel-Edit_user
+ * @description Componente que gera o formulário para editar as informações do usuario
+ */
 function App(props) {
 
     /** const useState para o redireciona a tela para a home. */

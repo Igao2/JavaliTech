@@ -1,14 +1,20 @@
 ﻿import React from 'react';
 import String from '../../../assets/values/string.json';
 
-function Footer_off() {
-	return (
-		<div>
+/**
+ * @class
+ * @description Componente que gera o footer
+ */
+class Footer_off extends React.Component {
+	render() {
+		return (
+			<div>
 
-			<p>{String.devs}</p>
+				<p>{String.devs}</p>
 
-		</div>
-	);
+			</div>
+		);
+	}
 }
 
 export default Footer_off;

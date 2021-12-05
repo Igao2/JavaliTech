@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/screen/painel_user.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/screen/painel_user.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/jsx-pascal-case */
+import React, { useEffect, useState } from 'react';
+import Helmet from 'react-helmet';
+import String from '../../assets/values/string.json';
+import {
+	BodyOn, ContainerOn, FooterOn,
+	HeaderOn, AreaBodyLeft, AreaBodyRight,
+	HeaderOn_Nav, HeaderIcon_Nav_complet, BodyOn_Nav
+} from '../../assets/values/styles';
+
+import HeaderContainerOn from '../components/headers/header_on';
+import userInfosRequestManager from '../../dispatcher/userInfosRequest';
+
+import { Redirect, NavLink } from "react-router-dom";
+
+import logo from '../../assets/images/icons/logo_white.svg';
+import Button_UserP from '../components/painel/button_userP';
+import Footer_off from '../components/footers/footers_off';
+
+/** Tela de bem vindo */
+import ItemUser from '../components/painel/item_user';
+
+/** Tela de editar informações do usuario */
+import ItemEditUser from '../components/painel/item_editUser';
+
+/** Tela de adicionar nova OS */
+import ItemAddOs from '../components/painel/item_addOS';
+
+/** Tela de lista de OS's */
+import ItemListOs_On from '../components/painel/item_listOS_on';
+
+/** Tela de busca avançada de OS */
+import ItemSearch from '../components/painel/item_search';
+
+/** Tela de login */
+import ItemLoginOff from '../components/painel/item_loginOff';
+
+/** Tela de deletar usuario */
+import DeleteUser from '../components/painel/deleteUserAlert';
+
+/** Tela de visualização avançada de OS */
+import AdivancedViewOs from '../components/painel/adivanced_view_os';
+
+/** Tela de editar OS */
+import EditOs from '../components/painel/item_editOS';
+
+const tokenManager = require('../../dispatcher/tokenManager');
+
+/**
+ * @function AppScreen-Painel_user
+ * @description Constrói a tela do painel do usuário
+ */
+function App() {
+
+	/** const useState para o redirecionamento de tela. */
+	const redirect = useState(0);
+
+	/** const useState para o redirecionamento para a tela inicial com a mensagens de "conta deletada com susseco". */
+	const deleteRedirect = useState(0);
+
+	/** const useState define a tela atual. */
+	const [screen, setScreen] = useState(0);
+
+	/** const useState armazena as informações do usuário. */
+	const [userInfos, setUserInfos] = useState({
+		"name": "",
+		"email": "",
+		"address": {},
+		"telephone": "",
+		"photo": []
+	})
+
+	/** useEffect de obtenção de dados do usuario = é executado quando a página carrega, odtem os dados do user em questão */
+	useEffect(() => {
+		userInfosRequestManager({ headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+
+			if (typeof res.data.erro === 'undefined') {
+				switch (res.data) {
+					case 500: tokenManager.deleteToken(); redirect[1](1); break;
+
+					case 400: tokenManager.deleteToken(); redirect[1](1); break;
+
+					case 401: tokenManager.deleteToken(); redirect[1](1); break;
+
+					case 417: tokenManager.deleteToken(); redirect[1](1); break;
+
+					default:
+						setUserInfos(res.data)
+						if (window.location.href.indexOf("#") >= 0) setScreen(window.location.href.slice(-1));
+						else setScreen(1);
+				}
+			} else { tokenManager.deleteToken(); redirect[1](1); }
+		});
+	}, []);
+
+	/** Esta arrow function desloga o usuario e manda ele para a home. */
+	const logout = () => { tokenManager.deleteToken(); redirect[1](1); }
+
+	/** Esta arrow function encerra a session do usuario e manda ele para a home. */
+	const deleteUserRedirect = () => { tokenManager.deleteToken(); deleteRedirect[1](1); }
+
+	/** Esta arrow function troca o conteudo da tela de acordo com o valor da prorpiedade "name" do prorpio elemento que a chama. */
+	const switchScreensFromEvent = event => setScreen(event.target.name);
+
+	/** Esta arrow function troca o conteudo da tela de acordo com o valor da parametro "screenNumber". 
+	* @param {number} screenNumber - número de identificação do novo conteúdo da tela.
+	*/
+	const switchScreensFromProps = (screenNumber) => setScreen(screenNumber);
+
+	return (
+		&lt;div>
+			{redirect[0] ? &lt;Redirect to='/' /> : null}
+			{deleteRedirect[0] ? &lt;Redirect to='/#1' /> : null}
+			&lt;Helmet>
+				&lt;title>{String.nomeApp_sistema}&lt;/title>
+				&lt;meta name="title" content={String.nomeApp_sistema} />
+				&lt;meta property="og:title" content={String.nomeApp_sistema} />
+				&lt;meta property="og:site_name" content={String.nomeApp_sistema} />
+				&lt;meta property="og:description" content={String.nomeApp_descricao} />
+			&lt;/Helmet>
+
+			&lt;ContainerOn>
+				&lt;AreaBodyLeft>
+
+					&lt;HeaderOn_Nav>
+						&lt;NavLink to="/">
+							&lt;HeaderIcon_Nav_complet src={logo} alt="logo" />
+						&lt;/NavLink>
+
+					&lt;/HeaderOn_Nav>
+					&lt;BodyOn_Nav>
+						&lt;Button_UserP {...({ userInfos, switchScreensFromEvent, screen })} />
+					&lt;/BodyOn_Nav>
+					{/* &lt;FooterOn_Nav>
+					&lt;/FooterOn_Nav> */}
+
+				&lt;/AreaBodyLeft>
+				&lt;AreaBodyRight>
+					&lt;HeaderOn>
+
+						&lt;HeaderContainerOn {...({ userInfos, switchScreensFromEvent, screen })} />
+
+					&lt;/HeaderOn>
+					&lt;BodyOn>
+						{screen == "1" &amp;&amp; &lt;ItemUser {...({ userInfos, switchScreensFromProps })} />}
+						{screen == "2" &amp;&amp; &lt;ItemEditUser {...({ userInfos, switchScreensFromProps })} />}
+						{screen == "3" &amp;&amp; &lt;ItemAddOs {...({ userInfos, switchScreensFromProps })} />}
+						{screen == "4" &amp;&amp; &lt;ItemListOs_On {...({ userInfos, switchScreensFromProps })} />}
+						{screen == "5" &amp;&amp; &lt;ItemSearch {...({ userInfos, switchScreensFromProps })} />}
+						{screen == "6" &amp;&amp; &lt;ItemLoginOff {...({ userInfos, switchScreensFromProps, logout })} />}
+						{screen == "7" &amp;&amp; &lt;DeleteUser {...({ userInfos, switchScreensFromProps, deleteUserRedirect })} />}
+						{screen == "8" &amp;&amp; &lt;AdivancedViewOs {...({ userInfos, switchScreensFromProps })} />}
+						{screen == "9" &amp;&amp; &lt;EditOs {...({ userInfos, switchScreensFromProps })} />}
+
+
+						{/* &lt;ItemUser /> */}
+						{/* &lt;ItemEditUser /> */}
+						{/* &lt;ItemAddOs /> */}
+						{/* &lt;ItemListOs_On /> */}
+						{/* &lt;ItemSearch /> */}
+						{/* &lt;ItemLoginOff /> */}
+
+						{/* *** Outros itens *** */}
+						{/* &lt;ViewOpenOs_on /> */}
+						{/* &lt;InfoAlert
+							titleAlert={String.titleAlert}
+							describeAlert={String.describeAlert}
+						/> */}
+
+					&lt;/BodyOn>
+					&lt;FooterOn>
+
+						&lt;Footer_off />
+
+					&lt;/FooterOn>
+				&lt;/AreaBodyRight>
+			&lt;/ContainerOn>
+		&lt;/div >
+	);
+}
+
+export default App;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Classes</h3><ul><li><a href="Button_UserP.html">Button_UserP</a></li><li><a href="deleteUserAlert.html">deleteUserAlert</a></li><li><a href="Footer_off.html">Footer_off</a></li><li><a href="Footer_on.html">Footer_on</a></li><li><a href="HeaderContainerOff.html">HeaderContainerOff</a></li><li><a href="HeaderContainerOn.html">HeaderContainerOn</a></li><li><a href="InfoAlert.html">InfoAlert</a></li><li><a href="ItemListOs_On.html">ItemListOs_On</a></li><li><a href="ItemLoginOff.html">ItemLoginOff</a></li><li><a href="ItemUser.html">ItemUser</a></li><li><a href="ListFactory.html">ListFactory</a></li><li><a href="ViewOpenOs_on.html">ViewOpenOs_on</a></li><li><a href="ViewOS.html">ViewOS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppDispatcher-api">AppDispatcher-api</a></li><li><a href="global.html#AppDispatcher-createOsManager">AppDispatcher-createOsManager</a></li><li><a href="global.html#AppDispatcher-deleteOsManager">AppDispatcher-deleteOsManager</a></li><li><a href="global.html#AppDispatcher-editOsManager">AppDispatcher-editOsManager</a></li><li><a href="global.html#AppDispatcher-listOSRequestManager">AppDispatcher-listOSRequestManager</a></li><li><a href="global.html#AppDispatcher-loginManager">AppDispatcher-loginManager</a></li><li><a href="global.html#AppDispatcher-osInfosResultManager">AppDispatcher-osInfosResultManager</a></li><li><a href="global.html#AppDispatcher-osValidateManager">AppDispatcher-osValidateManager</a></li><li><a href="global.html#AppDispatcher-registerProfileManager">AppDispatcher-registerProfileManager</a></li><li><a href="global.html#AppDispatcher-searchResultManager">AppDispatcher-searchResultManager</a></li><li><a href="global.html#AppDispatcher-tokenManager-addDays">AppDispatcher-tokenManager-addDays</a></li><li><a href="global.html#AppDispatcher-tokenManager-checkToken">AppDispatcher-tokenManager-checkToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-createToken">AppDispatcher-tokenManager-createToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-deleteToken">AppDispatcher-tokenManager-deleteToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-readToken">AppDispatcher-tokenManager-readToken</a></li><li><a href="global.html#AppDispatcher-updateInfosRequestManager">AppDispatcher-updateInfosRequestManager</a></li><li><a href="global.html#AppDispatcher-userInfosRequestManager">AppDispatcher-userInfosRequestManager</a></li><li><a href="global.html#AppScreen-Index">AppScreen-Index</a></li><li><a href="global.html#AppScreen-Login">AppScreen-Login</a></li><li><a href="global.html#AppScreen-Open_os">AppScreen-Open_os</a></li><li><a href="global.html#AppScreen-Painel_user">AppScreen-Painel_user</a></li><li><a href="global.html#AppScreen-Registrar">AppScreen-Registrar</a></li><li><a href="global.html#AppScreen-Search">AppScreen-Search</a></li><li><a href="global.html#Components-Painel-Add_OS">Components-Painel-Add_OS</a></li><li><a href="global.html#Components-Painel-Adivanced_view_os">Components-Painel-Adivanced_view_os</a></li><li><a href="global.html#Components-Painel-Edit_OS">Components-Painel-Edit_OS</a></li><li><a href="global.html#Components-Painel-Edit_user">Components-Painel-Edit_user</a></li><li><a href="global.html#Components-Painel-logout">Components-Painel-logout</a></li><li><a href="global.html#Components-Painel-search">Components-Painel-search</a></li><li><a href="global.html#Element-Pdf_Factory">Element-Pdf_Factory</a></li><li><a href="global.html#Element-Private_Route">Element-Private_Route</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 09:06:56 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

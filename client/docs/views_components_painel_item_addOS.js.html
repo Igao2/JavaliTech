@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/components/painel/item_addOS.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/components/painel/item_addOS.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/jsx-pascal-case */
+import React, { useState } from 'react';
+import String from '../../../assets/values/string.json';
+
+import { ItemColAvatar, ItemColTextOS, QuadrosOS, ProfilePhoto } from '../../../assets/values/styles';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Col, Row, Container, Alert, Form, FormGroup, Input, Button } from 'reactstrap';
+import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
+import createOsManager from '../../../dispatcher/createOs';
+
+const tokenManager = require('../../../dispatcher/tokenManager');
+
+/**
+ * @function Components-Painel-Add_OS
+ * @description Componente que gera o formulário para adicionar uma nova OS
+ */
+function App(props) {
+
+    /** const useState para alertar errors, warnings, informs e etc... */
+    const [announcement, setAnnouncement] = useState({
+        enabled: 0,
+        type: "",
+        massage: ""
+    })
+
+    /** const useState ativar e desativar a gif de loading do botão de submit. */
+    const [loading, setLoading] = useState(0);
+
+    let senha = "";
+    let possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (let i = 0; i &lt; 6; i++)
+        senha += possible.charAt(Math.floor(Math.random() * possible.length));
+
+
+    /** const useState para os Inputs do formulario de cadatro de uma nova OS  */
+    const [osInfos, setOsInfos] = useState({
+        senha: senha,
+        ownerInformation: "",
+        ownerName: "",
+        description: "",
+        deviceName: "",
+        deliveryDate: "",
+        completionDate: "",
+        status: 1,
+        serviceValue: ""
+    });
+
+    /** const useState para definir os status dos campos. */
+    const [inputState, setInputState] = useState({
+        ownerInformation: 0,
+        ownerName: 0,
+        description: 0,
+        deviceName: 0,
+        deliveryDate: 0,
+        completionDate: 0,
+        status: 0,
+        serviceValue: 0
+    });
+
+    /** Esta arrow function pega o valor dos Inputs do form e armazena no useState "osInfos", ele tambem implementa mascara no campo serviceValue.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const onChangeEvent = event => {
+        var value = event.target.value.replace(/\'/g, '');
+
+        function cleanMask(number) {
+            if (number == "") return "0";
+            number = number.replace(/[A-Z]/gi, '');
+            number = number.replace(/[^a-z0-9]/gi, '');
+            number = number.replace(/\-/g, '');
+            number = number.replace(/ /g, '');
+            return number;
+        }
+
+        if (event.target.name == "serviceValue") {
+            value = parseInt(cleanMask(value)) + "";
+
+            if (value.length > 3)
+                value = "R$ " + value.slice(0, - 2) + "." + value.slice(-2);
+            else if (value.length == 3)
+                value = "R$ 0" + value.slice(0, - 2) + "." + value.slice(-2);
+            else if (value.length == 2)
+                value = "R$ 00." + value;
+            else
+                value = "R$ 00.0" + value;
+
+            setOsInfos({ ...osInfos, [event.target.name]: value });
+        }
+        setInputState({ ...0 })
+        setOsInfos({ ...osInfos, [event.target.name]: value });
+
+        setAnnouncement({ ..."", enabled: 0 })
+    }
+
+    /** Esta arrow function pega o valor dos Inputs do form e cria a OS.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const createOs = event => {
+        event.preventDefault();
+        setLoading(1);
+
+        var valid = true;
+
+        const inputNames = {
+            "ownerInformation": "\"" + String.owner_information + "\"",
+            "ownerName": "\"" + String.owner_name + "\"",
+            "description": "\"" + String.description + "\"",
+            "deviceName": "\"" + String.device_name + "\"",
+            "deliveryDate": "\"" + String.delivery_date + "\"",
+            "completionDate": "\"" + String.completion_date + "\"",
+            "status": "\"" + String.osOsProcess + "\"",
+            "serviceValue": "\"" + String.service_value + "\""
+        }
+
+        function turnToError() {
+            let inputState = {};
+            for (let i = 0; i &lt; (event.target.length - 1); i++)
+                inputState[event.target[i].name] = 2;
+            setInputState(inputState)
+        }
+
+        function turnToSuccess() {
+            let inputState = {};
+            for (let i = 0; i &lt; (event.target.length - 1); i++)
+                inputState[event.target[i].name] = 1;
+            setInputState(inputState)
+        }
+
+        for (let i = 0; i &lt; (event.target.length - 1); i++) {
+            if (event.target[i].name != "completionDate" &amp;&amp; event.target[i].name != "deliveryDate") {
+                if (event.target[i].value == "") {
+                    if (!valid)
+                        setAnnouncement({
+                            enabled: 1,
+                            type: "warning",
+                            massage: "Alguns campos estão vazios"
+                        })
+                    else
+                        setAnnouncement({
+                            enabled: 1,
+                            type: "warning",
+                            massage: "O campo " + inputNames[event.target[i].name] + " esta vazio"
+                        })
+                    inputState[event.target[i].name] = 2;
+                    valid = false;
+                }
+            }
+        }
+
+        if (valid) {
+
+            var request = {
+                senha: "",
+                ownerInformation: "",
+                ownerName: "",
+                description: "",
+                deviceName: "",
+                deliveryDate: "",
+                completionDate: "",
+                status: "",
+                serviceValue: ""
+            }
+            request = { ...osInfos };
+            request.serviceValue = parseFloat(request.serviceValue.slice(3));
+
+            var headers = { headers: { authentication: "Bearer " + tokenManager.readToken() } };
+
+            /** Faz a requisição para a API com os dados do novo usuarido, para que ele possa ser cadastrado.
+            * @param {object} request - Dados do novo usuarido.
+            * @param {object} res - Resposta da API.
+            */
+            createOsManager(request, headers).then(res => {
+
+                if (res.data.erro) {
+                    switch (res.data.code) {
+                        case 500:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: String.error500
+                            })
+                            turnToError();
+                            break;
+
+                        case 400:
+                            for (let i = 0; i &lt; res.data.erroDetails.length; i++) {
+                                setAnnouncement({
+                                    enabled: 1,
+                                    type: "warning",
+                                    massage: res.data.erroDetails[i].mensagem
+                                })
+                                inputState[res.data.erroDetails[i].campo] = 2;
+                            }
+                            break;
+
+                        default:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: String.error500
+                            })
+                            turnToError();
+
+                    }
+                } else {
+                    setAnnouncement({
+                        enabled: 1,
+                        type: "info",
+                        massage: res.data.mensagem
+                    })
+                    setInputState({ ...1 })
+
+                    turnToSuccess();
+                }
+
+                setLoading(0)
+            }).catch(error => {
+                setAnnouncement({
+                    enabled: 1,
+                    type: "danger",
+                    massage: String.error500
+                })
+                setLoading(0)
+                turnToError();
+            });
+
+        } else setLoading(0)
+
+        console.log(inputNames)
+
+
+    }
+
+
+    return (
+        &lt;Container>
+            &lt;br />
+
+            {/* danger: vermelho | warning: amarelo | info: azul | dark: cinza*/}
+            {announcement.enabled ? &lt;Alert color={announcement.type} dismissible>{announcement.massage}&lt;/Alert> : null}
+
+            &lt;h3>{String.menuAddOS}&lt;/h3>
+            &lt;QuadrosOS>
+                &lt;h6>{String.osInfoBasic}: &lt;/h6>
+                &lt;Row md="3" sm="3" xs="1">
+                    &lt;Col>
+                        &lt;ItemColAvatar>
+                            &lt;ProfilePhoto imgUrl={avatarBackground}>
+
+                                &lt;img
+                                    src={props.userInfos.photo[0]}
+                                    alt="Imagem"
+                                    style={{
+                                        left: props.userInfos.photo[1].left + "px",
+                                        top: props.userInfos.photo[1].top + "px",
+                                        width: props.userInfos.photo[1].width + "%"
+                                    }}
+                                />
+
+                            &lt;/ProfilePhoto>
+
+                        &lt;/ItemColAvatar>
+                    &lt;/Col>
+                    &lt;Col>
+                        &lt;ItemColTextOS>
+                            &lt;p>
+                                &lt;h2>{props.userInfos.name}&lt;/h2>
+                                {props.userInfos.address.rua}, {props.userInfos.address.bairro}, {props.userInfos.address.cidade}, {props.userInfos.address.estado}
+                                &lt;br />&lt;br />
+                                {props.userInfos.telephone}
+                                &lt;br />
+                                {props.userInfos.email}
+                            &lt;/p>
+                        &lt;/ItemColTextOS>
+                    &lt;/Col>
+                    &lt;Col>
+                        &lt;ItemColAvatar>
+                            &lt;h6>{String.osPassAcess}:&lt;/h6>
+                            &lt;h2>{osInfos.senha}&lt;/h2>
+                        &lt;/ItemColAvatar>
+                    &lt;/Col>
+                &lt;/Row>
+            &lt;/QuadrosOS>
+            &lt;Form onSubmit={createOs}>
+                &lt;QuadrosOS>
+                    &lt;h6>{String.osCATinfo}:&lt;/h6>
+                    &lt;FormGroup>
+                        &lt;Input
+                            className={(state => {
+                                if (state == 0) return ("")
+                                else if (state == 1) return ("is-valid")
+                                else if (state == 2) return ("is-invalid")
+                            })(inputState.ownerName)}
+                            id="ownerName"
+                            name="ownerName"
+                            type="text"
+                            placeholder={String.owner_name}
+                            value={osInfos.ownerName}
+                            onChange={onChangeEvent}
+                        />
+                        &lt;br />
+                        &lt;Input
+                            className={(state => {
+                                if (state == 0) return ("")
+                                else if (state == 1) return ("is-valid")
+                                else if (state == 2) return ("is-invalid")
+                            })(inputState.ownerInformation)}
+                            id="ownerInformation"
+                            name="ownerInformation"
+                            type="textarea"
+                            value={osInfos.ownerInformation}
+                            placeholder={String.owner_information}
+                            onChange={onChangeEvent}
+                        />
+                    &lt;/FormGroup>
+                &lt;/QuadrosOS>
+                &lt;QuadrosOS>
+                    &lt;h6>{String.osInfoService}: &lt;/h6>
+                    &lt;FormGroup>
+                        &lt;Input
+                            className={(state => {
+                                if (state == 0) return ("")
+                                else if (state == 1) return ("is-valid")
+                                else if (state == 2) return ("is-invalid")
+                            })(inputState.description)}
+                            id="description"
+                            name="description"
+                            type="textarea"
+                            value={osInfos.description}
+                            placeholder={String.description}
+                            onChange={onChangeEvent}
+                        />
+                        &lt;br />
+                        &lt;Input
+                            className={(state => {
+                                if (state == 0) return ("")
+                                else if (state == 1) return ("is-valid")
+                                else if (state == 2) return ("is-invalid")
+                            })(inputState.deviceName)}
+                            id="deviceName"
+                            name="deviceName"
+                            type="text"
+                            placeholder={String.device_name}
+                            value={osInfos.deviceName}
+                            onChange={onChangeEvent}
+                        />
+                        &lt;Row md="2" sm="2" xs="1">
+                            &lt;Col>
+                                &lt;br />
+                                &lt;Input
+                                    className={(state => {
+                                        if (state == 0) return ("")
+                                        else if (state == 1) return ("is-valid")
+                                        else if (state == 2) return ("is-invalid")
+                                    })(inputState.deliveryDate)}
+                                    id="deliveryDate"
+                                    name="deliveryDate"
+                                    type="text"
+                                    value={osInfos.deliveryDate}
+                                    onFocus={e => { e.currentTarget.type = "date"; }}
+                                    placeholder={String.delivery_date}
+                                    onChange={onChangeEvent}
+                                />
+                            &lt;/Col>
+                            &lt;Col>
+                                &lt;br />
+                                &lt;Input
+                                    className={(state => {
+                                        if (state == 0) return ("")
+                                        else if (state == 1) return ("is-valid")
+                                        else if (state == 2) return ("is-invalid")
+                                    })(inputState.completionDate)}
+                                    id="completionDate"
+                                    name="completionDate"
+                                    type="text"
+                                    value={osInfos.completionDate}
+                                    onFocus={e => { e.currentTarget.type = "date"; }}
+                                    placeholder={String.completion_date}
+                                    onChange={onChangeEvent}
+                                />
+                            &lt;/Col>
+                        &lt;/Row>
+                        &lt;br />
+                        &lt;Input
+                            className={(state => {
+                                if (state == 0) return ("")
+                                else if (state == 1) return ("is-valid")
+                                else if (state == 2) return ("is-invalid")
+                            })(inputState.serviceValue)}
+                            id="serviceValue"
+                            name="serviceValue"
+                            type="text"
+                            value={osInfos.serviceValue}
+                            placeholder={String.service_value}
+                            onChange={onChangeEvent}
+                        />
+                    &lt;/FormGroup>
+                &lt;/QuadrosOS>
+                &lt;QuadrosOS>
+                    &lt;h6>{String.osOsProcess}: &lt;/h6>
+                    &lt;FormGroup>
+                        &lt;Input
+                            className={(state => {
+                                if (state == 0) return ("mb-3")
+                                else if (state == 1) return ("mb-3 is-valid")
+                                else if (state == 2) return ("mb-3 is-invalid")
+                            })(inputState.status)}
+                            type="select"
+                            onChange={onChangeEvent}
+                            name="status"
+                            value={osInfos.status}
+                        >
+                            &lt;option value="0">
+                                {String.stauts_wait}
+                            &lt;/option>
+                            &lt;option value="1">
+                                {String.status_finish}
+                            &lt;/option>
+                            &lt;option value="2">
+                                {String.status_init}
+                            &lt;/option>
+                            &lt;option value="3">
+                                {String.status_pause}
+                            &lt;/option>
+                        &lt;/Input>
+
+                    &lt;/FormGroup>
+                &lt;/QuadrosOS>
+                &lt;QuadrosOS>
+                    &lt;h6>{String.osAdd}&lt;/h6>
+                    {loading ?
+                        &lt;Button block color="dark" type="submit">&lt;img style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" />&lt;/Button>
+                        :
+                        &lt;Button block color="dark" type="submit">{String.save}&lt;/Button>
+                    }
+                &lt;/QuadrosOS>
+            &lt;/Form>
+
+
+        &lt;/Container >
+
+    )
+}
+
+
+export default App;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Classes</h3><ul><li><a href="Button_UserP.html">Button_UserP</a></li><li><a href="deleteUserAlert.html">deleteUserAlert</a></li><li><a href="Footer_off.html">Footer_off</a></li><li><a href="Footer_on.html">Footer_on</a></li><li><a href="HeaderContainerOff.html">HeaderContainerOff</a></li><li><a href="HeaderContainerOn.html">HeaderContainerOn</a></li><li><a href="InfoAlert.html">InfoAlert</a></li><li><a href="ItemListOs_On.html">ItemListOs_On</a></li><li><a href="ItemLoginOff.html">ItemLoginOff</a></li><li><a href="ItemUser.html">ItemUser</a></li><li><a href="ListFactory.html">ListFactory</a></li><li><a href="ViewOpenOs_on.html">ViewOpenOs_on</a></li><li><a href="ViewOS.html">ViewOS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppDispatcher-api">AppDispatcher-api</a></li><li><a href="global.html#AppDispatcher-createOsManager">AppDispatcher-createOsManager</a></li><li><a href="global.html#AppDispatcher-deleteOsManager">AppDispatcher-deleteOsManager</a></li><li><a href="global.html#AppDispatcher-editOsManager">AppDispatcher-editOsManager</a></li><li><a href="global.html#AppDispatcher-listOSRequestManager">AppDispatcher-listOSRequestManager</a></li><li><a href="global.html#AppDispatcher-loginManager">AppDispatcher-loginManager</a></li><li><a href="global.html#AppDispatcher-osInfosResultManager">AppDispatcher-osInfosResultManager</a></li><li><a href="global.html#AppDispatcher-osValidateManager">AppDispatcher-osValidateManager</a></li><li><a href="global.html#AppDispatcher-registerProfileManager">AppDispatcher-registerProfileManager</a></li><li><a href="global.html#AppDispatcher-searchResultManager">AppDispatcher-searchResultManager</a></li><li><a href="global.html#AppDispatcher-tokenManager-addDays">AppDispatcher-tokenManager-addDays</a></li><li><a href="global.html#AppDispatcher-tokenManager-checkToken">AppDispatcher-tokenManager-checkToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-createToken">AppDispatcher-tokenManager-createToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-deleteToken">AppDispatcher-tokenManager-deleteToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-readToken">AppDispatcher-tokenManager-readToken</a></li><li><a href="global.html#AppDispatcher-updateInfosRequestManager">AppDispatcher-updateInfosRequestManager</a></li><li><a href="global.html#AppDispatcher-userInfosRequestManager">AppDispatcher-userInfosRequestManager</a></li><li><a href="global.html#AppScreen-Index">AppScreen-Index</a></li><li><a href="global.html#AppScreen-Login">AppScreen-Login</a></li><li><a href="global.html#AppScreen-Open_os">AppScreen-Open_os</a></li><li><a href="global.html#AppScreen-Painel_user">AppScreen-Painel_user</a></li><li><a href="global.html#AppScreen-Registrar">AppScreen-Registrar</a></li><li><a href="global.html#AppScreen-Search">AppScreen-Search</a></li><li><a href="global.html#Components-Painel-Add_OS">Components-Painel-Add_OS</a></li><li><a href="global.html#Components-Painel-Adivanced_view_os">Components-Painel-Adivanced_view_os</a></li><li><a href="global.html#Components-Painel-Edit_OS">Components-Painel-Edit_OS</a></li><li><a href="global.html#Components-Painel-Edit_user">Components-Painel-Edit_user</a></li><li><a href="global.html#Components-Painel-logout">Components-Painel-logout</a></li><li><a href="global.html#Components-Painel-search">Components-Painel-search</a></li><li><a href="global.html#Element-Pdf_Factory">Element-Pdf_Factory</a></li><li><a href="global.html#Element-Private_Route">Element-Private_Route</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 09:06:56 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -46,6 +46,10 @@ import EditOs from '../components/painel/item_editOS';
 
 const tokenManager = require('../../dispatcher/tokenManager');
 
+/**
+ * @function AppScreen-Painel_user
+ * @description Constrói a tela do painel do usuário
+ */
 function App() {
 
 	/** const useState para o redirecionamento de tela. */

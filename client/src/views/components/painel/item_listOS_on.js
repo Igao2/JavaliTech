@@ -9,9 +9,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from 'reactstrap';
 
 
-import TableListaOS from "./listaOS/index";
+import TableListaOS from "./table_list_os";
 
-
+/**
+ * @class
+ * @description Componente que gera a tabela de OS's da tela de lista OS
+ */
 class ItemListOs_On extends React.Component {
     render() {
 

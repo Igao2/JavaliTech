@@ -18,6 +18,10 @@ import deleteOsManager from '../../../dispatcher/deleteOs';
 
 const tokenManager = require('../../../dispatcher/tokenManager');
 
+/**
+ * @function Components-Painel-Edit_OS
+ * @description Componente que gera o formulário para editar ou deletar uma OS existente
+ */
 function App(props) {
 
     /** Parametros da OS */

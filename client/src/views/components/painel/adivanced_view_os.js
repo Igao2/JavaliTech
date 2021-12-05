@@ -11,7 +11,10 @@ import osInfosResultManager from '../../../dispatcher/osInfosRequest';
 
 import ViewOpenOs_on from './view_openOs_on';
 
-
+/**
+ * @function Components-Painel-Adivanced_view_os
+ * @description Componente que gera a visualização de dados através do painel do usuário
+ */
 function App(props) {
 
     /** Parametros da OS */

@@ -6,7 +6,11 @@ import { ItemColAvatar, AlertDelet } from '../../../assets/values/styles';
 
 import { NavLink } from "react-router-dom";
 
-export default class InfoAlert extends Component {
+/**
+ * @class
+ * @description  Esta class organiza as informações do alert
+ */
+class InfoAlert extends Component {
     render() {
         return (
             <Container>
@@ -29,3 +33,5 @@ export default class InfoAlert extends Component {
         )
     }
 }
+
+export default InfoAlert;

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/components/painel/button_userP.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/components/painel/button_userP.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/jsx-pascal-case */
+import React from 'react';
+import String from '../../../assets/values/string.json';
+
+import { ContainerHeaderOn_LatPcMenu, ItemIcoMenu } from '../../../assets/values/styles';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import calendar_plus_solid from '../../../assets/images/fontwesome/calendar_plus_solid.svg';
+import list_alt_solid from '../../../assets/images/fontwesome/list_alt_solid.svg';
+import search_solid from '../../../assets/images/fontwesome/search_solid.svg';
+import sign_out_alt_solid from '../../../assets/images/fontwesome/sign_out_alt_solid.svg';
+import user_edit_solid from '../../../assets/images/fontwesome/user_edit_solid.svg';
+import user_solid from '../../../assets/images/fontwesome/user_solid.svg';
+
+/**
+ * @class
+ * @description Componente que gera a menu de navegação do painel do usuário
+ */
+class Button_UserP extends React.Component {
+	render() {
+		return (
+			&lt;div>
+				&lt;ContainerHeaderOn_LatPcMenu
+					href="#1"
+					name="1"
+					{...this.props.screen == 1 &amp;&amp; { active: true }}
+					onClick={this.props.switchScreensFromEvent}
+					alt={String.menuUser}
+					title={String.menuUser}
+				>
+					&lt;ItemIcoMenu src={user_solid} />
+					{String.menuUser}
+				&lt;/ContainerHeaderOn_LatPcMenu>
+
+				&lt;ContainerHeaderOn_LatPcMenu
+					href="#2"
+					name="2"
+					{...this.props.screen == 2 &amp;&amp; { active: true }}
+					onClick={this.props.switchScreensFromEvent}
+					alt={String.menuEditUser}
+					title={String.menuEditUser}
+				>
+					&lt;ItemIcoMenu src={user_edit_solid} />
+					{String.menuEditUser}
+				&lt;/ContainerHeaderOn_LatPcMenu>
+
+				&lt;ContainerHeaderOn_LatPcMenu
+					href="#3"
+					name="3"
+					{...this.props.screen == 3 &amp;&amp; { active: true }}
+					onClick={this.props.switchScreensFromEvent}
+					alt={String.menuAddOS}
+					title={String.menuAddOS}
+				>
+					&lt;ItemIcoMenu src={calendar_plus_solid} />
+					{String.menuAddOS_small}
+				&lt;/ContainerHeaderOn_LatPcMenu>
+
+				&lt;ContainerHeaderOn_LatPcMenu
+					href="#4"
+					name="4"
+					{...this.props.screen == 4 &amp;&amp; { active: true }}
+					onClick={this.props.switchScreensFromEvent}
+					alt={String.menuListOS}
+					title={String.menuListOS}
+				>
+					&lt;ItemIcoMenu src={list_alt_solid} />
+					{String.menuListOS_small}
+				&lt;/ContainerHeaderOn_LatPcMenu>
+
+				&lt;ContainerHeaderOn_LatPcMenu
+					href="#5"
+					name="5"
+					{...this.props.screen == 5 &amp;&amp; { active: true }}
+					onClick={this.props.switchScreensFromEvent}
+					alt={String.munuSearchOS}
+					title={String.munuSearchOS}
+				>
+					&lt;ItemIcoMenu src={search_solid} />
+					{String.munuSearchOS}
+				&lt;/ContainerHeaderOn_LatPcMenu>
+
+				&lt;ContainerHeaderOn_LatPcMenu
+					href="#6"
+					name="6"
+					{...this.props.screen == 6 &amp;&amp; { active: true }}
+					onClick={this.props.switchScreensFromEvent}
+					title={String.menuExit}
+				>
+					&lt;ItemIcoMenu src={sign_out_alt_solid} />
+					{String.menuExit}
+				&lt;/ContainerHeaderOn_LatPcMenu>
+			&lt;/div>
+
+		)
+	}
+}
+
+export default Button_UserP;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Classes</h3><ul><li><a href="Button_UserP.html">Button_UserP</a></li><li><a href="deleteUserAlert.html">deleteUserAlert</a></li><li><a href="Footer_off.html">Footer_off</a></li><li><a href="Footer_on.html">Footer_on</a></li><li><a href="HeaderContainerOff.html">HeaderContainerOff</a></li><li><a href="HeaderContainerOn.html">HeaderContainerOn</a></li><li><a href="InfoAlert.html">InfoAlert</a></li><li><a href="ItemListOs_On.html">ItemListOs_On</a></li><li><a href="ItemLoginOff.html">ItemLoginOff</a></li><li><a href="ItemUser.html">ItemUser</a></li><li><a href="ListFactory.html">ListFactory</a></li><li><a href="ViewOpenOs_on.html">ViewOpenOs_on</a></li><li><a href="ViewOS.html">ViewOS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppDispatcher-api">AppDispatcher-api</a></li><li><a href="global.html#AppDispatcher-createOsManager">AppDispatcher-createOsManager</a></li><li><a href="global.html#AppDispatcher-deleteOsManager">AppDispatcher-deleteOsManager</a></li><li><a href="global.html#AppDispatcher-editOsManager">AppDispatcher-editOsManager</a></li><li><a href="global.html#AppDispatcher-listOSRequestManager">AppDispatcher-listOSRequestManager</a></li><li><a href="global.html#AppDispatcher-loginManager">AppDispatcher-loginManager</a></li><li><a href="global.html#AppDispatcher-osInfosResultManager">AppDispatcher-osInfosResultManager</a></li><li><a href="global.html#AppDispatcher-osValidateManager">AppDispatcher-osValidateManager</a></li><li><a href="global.html#AppDispatcher-registerProfileManager">AppDispatcher-registerProfileManager</a></li><li><a href="global.html#AppDispatcher-searchResultManager">AppDispatcher-searchResultManager</a></li><li><a href="global.html#AppDispatcher-tokenManager-addDays">AppDispatcher-tokenManager-addDays</a></li><li><a href="global.html#AppDispatcher-tokenManager-checkToken">AppDispatcher-tokenManager-checkToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-createToken">AppDispatcher-tokenManager-createToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-deleteToken">AppDispatcher-tokenManager-deleteToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-readToken">AppDispatcher-tokenManager-readToken</a></li><li><a href="global.html#AppDispatcher-updateInfosRequestManager">AppDispatcher-updateInfosRequestManager</a></li><li><a href="global.html#AppDispatcher-userInfosRequestManager">AppDispatcher-userInfosRequestManager</a></li><li><a href="global.html#AppScreen-Index">AppScreen-Index</a></li><li><a href="global.html#AppScreen-Login">AppScreen-Login</a></li><li><a href="global.html#AppScreen-Open_os">AppScreen-Open_os</a></li><li><a href="global.html#AppScreen-Painel_user">AppScreen-Painel_user</a></li><li><a href="global.html#AppScreen-Registrar">AppScreen-Registrar</a></li><li><a href="global.html#AppScreen-Search">AppScreen-Search</a></li><li><a href="global.html#Components-Painel-Add_OS">Components-Painel-Add_OS</a></li><li><a href="global.html#Components-Painel-Adivanced_view_os">Components-Painel-Adivanced_view_os</a></li><li><a href="global.html#Components-Painel-Edit_OS">Components-Painel-Edit_OS</a></li><li><a href="global.html#Components-Painel-Edit_user">Components-Painel-Edit_user</a></li><li><a href="global.html#Components-Painel-logout">Components-Painel-logout</a></li><li><a href="global.html#Components-Painel-search">Components-Painel-search</a></li><li><a href="global.html#Element-Pdf_Factory">Element-Pdf_Factory</a></li><li><a href="global.html#Element-Private_Route">Element-Private_Route</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 09:06:56 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -14,7 +14,10 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 
 import OsPdf from './pdfFactory';
 
-
+/**
+ * @class
+ * @description Componente que gera uma tela de visualização da OS
+ */
 class ViewOpenOs_on extends React.Component {
     render() {
         return (

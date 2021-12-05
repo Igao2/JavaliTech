@@ -13,6 +13,10 @@ import search_solid from '../../../assets/images/fontwesome/search_solid.svg';
 import sign_out_alt_solid from '../../../assets/images/fontwesome/sign_out_alt_solid.svg';
 import user_edit_solid from '../../../assets/images/fontwesome/user_edit_solid.svg';
 
+/**
+ * @class
+ * @description Componente que gera a menu de navegação vertical
+ */
 class HeaderContainerOn extends React.Component {
 	render() {
 		return (

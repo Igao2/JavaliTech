@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/components/painel/item_editUser.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/components/painel/item_editUser.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/jsx-pascal-case */
+import React, { useState } from 'react';
+import String from '../../../assets/values/string.json';
+
+import {
+    AlertDelet, ItemColAvatar,
+    ItemDiv, ProfilePhoto, LocateButton
+} from '../../../assets/values/styles';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import updateInfosManager from '../../../dispatcher/updateInfos';
+
+import { Col, Row, Container, Form, FormGroup, Input, Button, Alert } from 'reactstrap';
+
+
+import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
+import { Redirect } from "react-router-dom";
+
+const tokenManager = require('../../../dispatcher/tokenManager');
+
+/**
+ * @function Components-Painel-Edit_user
+ * @description Componente que gera o formulário para editar as informações do usuario
+ */
+function App(props) {
+
+    /** const useState para o redireciona a tela para a home. */
+    const redirect = useState(0);
+
+    /** const useState para alertar errors, warnings, informs e etc... */
+    const [announcement, setAnnouncement] = useState({
+        enabled: 0,
+        type: "",
+        massage: ""
+    });
+
+    /** const useState ativar e desativar a gif de loading do botão de submit. */
+    const [loading, setLoading] = useState([0, 0, 0, 0]);
+
+    /** const useState para definir os status dos campos. */
+    const [inputState, setInputState] = useState({
+        name: 0,
+        email: 0,
+        newPass: 0,
+        otherPass: 0,
+        telephone: 0,
+        cep: 0,
+        numero: 0,
+        complemento: 0,
+        bairro: 0,
+        cidade: 0,
+        estado: 0,
+        image: 0
+    });
+
+    /** const useState para o Input "image". */
+    const [image, setImage] = useState('');
+
+    /** const useState para os imageSettings da imagem. */
+    const [imagePreview, setPreview] = useState({
+        left: props.userInfos.photo[1].left,
+        top: props.userInfos.photo[1].top,
+        width: props.userInfos.photo[1].width
+    });
+
+    /** const useState para os Inputs do formulario que altera email.  */
+    const [email, setEmail] = useState(props.userInfos.email);
+
+    const initDados = {
+        name: props.userInfos.name,
+        telephone: props.userInfos.telephone,
+        rua: props.userInfos.address.rua,
+        cep: props.userInfos.address.cep,
+        numero: props.userInfos.address.numero,
+        complemento: props.userInfos.address.complemento,
+        bairro: props.userInfos.address.bairro,
+        cidade: props.userInfos.address.cidade,
+        estado: props.userInfos.address.estado
+    }
+
+    /** const useState para os Inputs do formulario que altera os dados basicos do usuario.  */
+    const [dados, setDados] = useState(initDados);
+
+    /** const useState para os Inputs do formulario que altera a senha.  */
+    const [password, setPassword] = useState({
+        newPass: "",
+        otherPass: ""
+    });
+
+    const inputNames = {
+        "name": "\"Nome\"",
+        "email": "\"Email\"",
+        "newPass": "\"Nova senha\"",
+        "otherPass": "\"Repetir senha\"",
+        "telephone": "\"Telefone\"",
+        "image": "\"Imagem\"",
+        "cep": "\"Cep\"",
+        "numero": "\"Numero\"",
+        "complemento": "\"Complemento\"",
+        "bairro": "\"Bairro\"",
+        "cidade": "\"Cidade\"",
+        "estado": "\"Estado\"",
+        "rua": "\"Rua\""
+    }
+
+    /** Esta arrow function pega o valor dos Inputs do form e armazena no useState "dados", ele tambem implementa a mascara nos campos cep e telephone.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const dadosOnChangeEvent = event => {
+        var value = event.target.value;
+
+        function cleanMask(number) {
+            number = number.replace(/[A-Z]/gi, '');
+            number = number.replace(/[^a-z0-9]/gi, '');
+            number = number.replace(/\-/g, '');
+            number = number.replace(/ /g, '');
+            return number;
+        }
+
+
+        if (event.target.name === "cep") {
+            let cep = value;
+            cep = cep.replace(/\D/g, "")
+            cep = cep.replace(/(\d{5})(\d)/, "$1-$2")
+            event.target.value = cep;
+            setDados({ ...value });
+        } else if (event.target.name === "telephone") {
+            let phone = cleanMask(value);
+            let ddd, number;
+
+            if (phone.length >= 11) phone = "(" + phone.slice(0, 2) + ") " + phone.slice(2, 7) + "-" + phone.slice(7, 11);
+            else if (phone.length >= 3) {
+
+                ddd = phone.slice(0, 2);
+
+                if (phone.length >= 7) {
+                    number = phone.slice(2, 6);
+                    number += "-" + phone.slice(6, 10);
+                } else number = phone.slice(2);
+
+                phone = `(${ddd}) ${number}`;
+            }
+
+            event.target.value = phone;
+            setDados({ ...value });
+        } else {
+            setDados({ ...value });
+        }
+
+        clear();
+    }
+
+    /** Esta arrow function pega o valor dos Inputs do form e armazena no useState "password".
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const passwordOnChangeEvent = event => {
+        clear();
+        var value = event.target.value;
+
+        if (event.target.name == "otherPass") {
+
+            if (value.length >= password.newPass.length) {
+                if (password.newPass == value) {
+                    setInputState({ otherPass: 1 });
+                }
+                else {
+                    setAnnouncement({
+                        enabled: 1,
+                        type: "danger",
+                        massage: "A senha inserida no campo 'Repita a nova Senha' deve ser a mesma do campo 'Atualizar Senha'. "
+                    });
+                    setInputState({ otherPass: 2 });
+                }
+            }
+
+
+
+            setPassword({ ...password, otherPass: value });
+        } else {
+            setPassword({ ...password, newPass: value });
+        }
+    }
+
+    /** Essa função cria a dinâmica de ajuste da posição de imagem, podendo aumentar, diminuir, mover para a esquerda ou para a direita e também podendo movê-la para cima e para baixo.
+    * @param {number} type - Determina qual será o ajuste de posição da imagem.
+    */
+    function previewImageChenge(type) {
+        let styleCharge = imagePreview;
+        let interval = 5;
+        if (type === 1) styleCharge.left -= interval;
+        else if (type === 2) styleCharge.left += interval;
+        else if (type === 3) styleCharge.top -= interval;
+        else if (type === 4) styleCharge.top += interval;
+        else if (type === 5) styleCharge.width += interval;
+        else if (type === 6) styleCharge.width -= interval;
+        return styleCharge;
+    }
+
+    /** Essa função limpa os pop-up's de alertas e o a estados do campos */
+    function clear() {
+        setAnnouncement({ ..."", enabled: 0 });
+        setInputState({ ...0 });
+    }
+
+    /** Esta arrow function pega o valor dos Inputs do form e atualiza a foto de perfil do usuario.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const updateImage = event => {
+
+        event.preventDefault();
+        setLoading([1, 0, 0, 0]);
+        setInputState({ ...0 })
+        setAnnouncement({ ..."", enabled: 0 })
+
+        if (event.target[0].value == "") {
+            const request = {
+                imageSetting: {
+                    left: imagePreview.left,
+                    top: imagePreview.top,
+                    width: imagePreview.width
+                }
+            };
+
+
+            updateInfosManager(0, request, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+
+                if (!res.data.erro) {
+                    setAnnouncement({
+                        enabled: 1,
+                        type: "info",
+                        massage: res.data.mensagem
+                    });
+                    setInputState({ ...0, image: 1 })
+                } else {
+                    switch (res.data.code) {
+                        case 500:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: String.error500
+                            })
+                            break;
+                        case 417:
+                            tokenManager.deleteToken();
+                            redirect[1](1);
+                            break;
+                        default:
+                            tokenManager.deleteToken();
+                            redirect[1](1);
+                            break;
+                    }
+                }
+
+                setLoading(0)
+            }).catch(error => {
+                setAnnouncement({
+                    enabled: 1,
+                    type: "danger",
+                    massage: String.error500
+                })
+                setLoading(0)
+            });
+
+        } else {
+            var formInputs = {
+                imageSetting: {
+                    left: imagePreview.left,
+                    top: imagePreview.top,
+                    width: imagePreview.width
+                }
+            };
+
+            const request = new FormData();
+            request.append('image', image);
+            request.append('formInputs', JSON.stringify(formInputs));
+
+            updateInfosManager(1, request, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+
+                if (!res.data.erro) {
+                    setAnnouncement({
+                        enabled: 1,
+                        type: "info",
+                        massage: res.data.mensagem
+                    });
+                    setInputState({ ...0, image: 1 })
+                } else {
+                    switch (res.data.code) {
+                        case 500:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: String.error500
+                            })
+                            break;
+                        case 417:
+                            tokenManager.deleteToken();
+                            redirect[1](1);
+                            break;
+                        case 400:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: res.data.mensagem
+                            })
+                            setInputState({ ...0, image: 2 })
+                            break;
+                        default:
+                            tokenManager.deleteToken();
+                            redirect[1](1);
+                            break;
+                    }
+                }
+
+
+                setLoading(0)
+            }).catch(error => {
+                setAnnouncement({
+                    enabled: 1,
+                    type: "danger",
+                    massage: String.error500
+                })
+                setLoading(0)
+            });
+        }
+
+
+    }
+
+    /** Esta arrow function pega o valor dos Inputs do form e atualiza o email do usuario.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const updateEmail = event => {
+
+        event.preventDefault();
+        setLoading([0, 1, 0, 0]);
+        setInputState({ ...0 })
+        setAnnouncement({ ..."", enabled: 0 })
+
+        if (event.target[0].value != "") {
+            const request = {
+                email: event.target[0].value
+            };
+
+
+            updateInfosManager(2, request, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+
+                if (!res.data.erro) {
+                    setAnnouncement({
+                        enabled: 1,
+                        type: "warning",
+                        massage: res.data.mensagem
+                    });
+                    setInputState({ ...0, email: 1 })
+                } else {
+                    switch (res.data.code) {
+                        case 500:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: String.error500
+                            })
+                            break;
+                        case 400:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: res.data.mensagem
+                            })
+                            setInputState({ ...0, email: 2 })
+                            break;
+                        default:
+                            tokenManager.deleteToken();
+                            redirect[1](1);
+                            break;
+                    }
+                }
+
+                setLoading(0)
+            }).catch(error => {
+                setAnnouncement({
+                    enabled: 1,
+                    type: "danger",
+                    massage: String.error500
+                })
+                setLoading(0)
+            });
+
+        } else {
+            setAnnouncement({
+                enabled: 1,
+                type: "warning",
+                massage: "O campo email esta vazio!"
+            })
+            setInputState({ ...0, email: 2 })
+            setLoading(0)
+        }
+
+
+    }
+
+    /** Esta arrow function pega o valor dos Inputs do form e atualiza os dados basicos do usuario.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const updateDados = event => {
+
+        event.preventDefault();
+        setLoading([0, 0, 1, 0]);
+        setInputState({ ...0 })
+        setAnnouncement({ ..."", enabled: 0 })
+
+        var valid = true;
+        var state = inputState;
+
+        for (let i = 0; i &lt; (event.target.length - 1); i++) {
+            if (event.target[i].name != "numero" &amp;&amp; event.target[i].name != "complemento") {
+                if (event.target[i].value == "") {
+                    if (!valid)
+                        setAnnouncement({
+                            enabled: 1,
+                            type: "warning",
+                            massage: "Alguns campos estão vazios"
+                        })
+                    else
+                        setAnnouncement({
+                            enabled: 1,
+                            type: "warning",
+                            massage: "O campo " + inputNames[event.target[i].name] + " esta vazio"
+                        })
+                    // inputState["name"] = 2;
+                    // alert(event.target[i].name)
+                    state[event.target[i].name] = 2;
+                    valid = false;
+                }
+            }
+        }
+
+        if (valid) {
+            const request = {
+                name: event.target[0].value,
+                address: {
+                    rua: event.target[1].value,
+                    bairro: event.target[2].value,
+                    cidade: event.target[3].value,
+                    estado: event.target[4].value,
+                    numero: event.target[5].value,
+                    complemento: event.target[6].value,
+                    cep: event.target[7].value
+                },
+                telephone: event.target[8].value
+            };
+
+
+            updateInfosManager(3, request, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+
+                if (!res.data.erro) {
+                    setAnnouncement({
+                        enabled: 1,
+                        type: "warning",
+                        massage: res.data.mensagem
+                    });
+                    setInputState({
+                        ...0,
+                        name: 1,
+                        telephone: 1,
+                        rua: 1,
+                        bairro: 1,
+                        cidade: 1,
+                        estado: 1,
+                        numero: 1,
+                        complemento: 1,
+                        cep: 1
+                    });
+                } else {
+                    switch (res.data.code) {
+                        case 500:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: String.error500
+                            })
+                            setInputState({
+                                name: 2,
+                                telephone: 2,
+                                rua: 2,
+                                bairro: 2,
+                                cidade: 2,
+                                estado: 2,
+                                numero: 2,
+                                complemento: 2,
+                                cep: 2
+                            });
+                            break;
+                        case 400:
+                            for (let i = 0; i &lt; res.data.erroDetails.length; i++) {
+                                setAnnouncement({
+                                    enabled: 1,
+                                    type: "warning",
+                                    massage: res.data.erroDetails[i].mensagem
+                                })
+                                state[res.data.erroDetails[i].campo] = 2;
+                            }
+                            setInputState(state)
+                            break;
+                        default:
+                            tokenManager.deleteToken();
+                            redirect[1](1);
+                            break;
+                    }
+                }
+
+                setLoading(0)
+            }).catch(error => {
+                setAnnouncement({
+                    enabled: 1,
+                    type: "danger",
+                    massage: String.error500
+                })
+                setLoading(0)
+            });
+
+        } else setInputState(state);
+
+        setLoading(0);
+    }
+
+    /** Esta arrow function pega o valor dos Inputs do form e atualiza a senha do usuario.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const updateSenha = event => {
+
+        event.preventDefault();
+        setLoading([0, 0, 0, 1]);
+        setInputState({ ...0 })
+        setAnnouncement({ ..."", enabled: 0 })
+
+        var valid = true;
+        var state = inputState;
+
+        for (let i = 0; i &lt; (event.target.length - 1); i++) {
+            if (event.target[i].name != "numero" &amp;&amp; event.target[i].name != "complemento") {
+                if (event.target[i].value == "") {
+                    if (!valid)
+                        setAnnouncement({
+                            enabled: 1,
+                            type: "warning",
+                            massage: "Alguns campos estão vazios"
+                        })
+                    else
+                        setAnnouncement({
+                            enabled: 1,
+                            type: "warning",
+                            massage: "O campo " + inputNames[event.target[i].name] + " esta vazio"
+                        })
+                    // inputState["name"] = 2;
+                    // alert(event.target[i].name)
+                    state[event.target[i].name] = 2;
+                    valid = false;
+                }
+            }
+        }
+
+
+        if (valid &amp;&amp; (event.target[0].value == event.target[1].value)) {
+            const request = {
+                password: event.target[1].value,
+            };
+
+            updateInfosManager(4, request, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+
+                if (!res.data.erro) {
+                    setAnnouncement({
+                        enabled: 1,
+                        type: "warning",
+                        massage: res.data.mensagem
+                    });
+                    setInputState({
+                        ...0,
+                        newPass: 1,
+                        otherPass: 1,
+                    });
+                } else {
+                    switch (res.data.code) {
+                        case 500:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: String.error500
+                            })
+                            setInputState({
+                                newPass: 2,
+                                otherPass: 2,
+                            });
+                            break;
+                        case 400:
+                            for (let i = 0; i &lt; res.data.erroDetails.length; i++) {
+                                setAnnouncement({
+                                    enabled: 1,
+                                    type: "warning",
+                                    massage: res.data.erroDetails[i].mensagem
+                                })
+                                state[res.data.erroDetails[i].campo] = 2;
+                            }
+                            setInputState(state)
+                            break;
+                        default:
+                            tokenManager.deleteToken();
+                            redirect[1](1);
+                            break;
+                    }
+                }
+
+                setLoading(0)
+            }).catch(error => {
+                setAnnouncement({
+                    enabled: 1,
+                    type: "danger",
+                    massage: String.error500
+                })
+                setLoading(0)
+            });
+
+        } else {
+            setAnnouncement({
+                enabled: 1,
+                type: "danger",
+                massage: "A senha inserida no campo 'Repita a nova Senha' deve ser a mesma do campo 'Atualizar Senha'. "
+            });
+            setInputState({ otherPass: 2 });
+        }
+
+        setLoading(0);
+    }
+
+    /** Esta arrow function redireciona o usuario para a tela que deleta a conta do usuario. */
+    const goToDeleteUserScreen = () => props.switchScreensFromProps(10);
+
+    return (
+        &lt;Container>
+            {redirect[0] ? &lt;Redirect to='/login' /> : null}
+
+            &lt;br />
+
+            {/* danger: vermelho | warning: amarelo | info: azul | dark: cinza*/}
+            {announcement.enabled ? &lt;Alert color={announcement.type} dismissible>{announcement.massage}&lt;/Alert> : null}
+
+            &lt;br />
+
+            &lt;h3>{String.menuEditUser}&lt;/h3>
+
+            &lt;ItemDiv />
+
+            &lt;Row md="2" sm="2" xs="1">
+                &lt;Col>
+                    &lt;ItemColAvatar>
+                        {/* Foto de Perfil */}
+                        {/* &lt;ItemAvatar src={avatarTMP} /> */}
+                        &lt;ProfilePhoto imgUrl={avatarBackground}>
+
+                            {image ?
+                                &lt;img
+                                    src={URL.createObjectURL(image)}
+                                    alt="Imagem"
+                                    style={{
+                                        left: imagePreview.left + "px",
+                                        top: imagePreview.top + "px",
+                                        width: imagePreview.width + "%"
+                                    }}
+                                />
+                                : &lt;img
+                                    src={props.userInfos.photo[0]}
+                                    alt="Imagem"
+                                    style={{
+                                        left: imagePreview.left + "px",
+                                        top: imagePreview.top + "px",
+                                        width: imagePreview.width + "%"
+                                    }}
+                                />
+                            }
+                        &lt;/ProfilePhoto>
+                    &lt;/ItemColAvatar>
+                &lt;/Col>
+
+                &lt;Col>
+                    &lt;h5>{String.userAvaterSend}: &lt;/h5>
+                    {/* Atualizar foto de Perfil */}
+                    &lt;Form onSubmit={updateImage}>
+                        &lt;FormGroup>
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.image)}
+                                type="file"
+                                placeholder={String.userAvaterSend}
+                                name='image'
+                                onChange={e => { clear(); setImage(e.target.files[0]); }}
+                            />
+                            &lt;br />
+                            {/* Deve-se manter esta formatação para que seja obedecido o espaçamento entre os botões */}
+
+                            &lt;LocateButton>
+                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(1) }) }}> {String.left}&lt;/Button>
+                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(3) }) }}> {String.up}&lt;/Button>
+                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(4) }) }}> {String.down}&lt;/Button>
+                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(2) }) }}> {String.right}&lt;/Button>
+                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(5) }) }}> {String.zoomplus}&lt;/Button>
+                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(6) }) }}> {String.zoomsmall}&lt;/Button>
+                            &lt;/LocateButton>
+
+                        &lt;/FormGroup>
+
+                        {loading[0] ?
+                            &lt;Button block color="dark" type="submit">&lt;img style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" />&lt;/Button>
+                            :
+                            &lt;Button block color="dark" type="submit">{String.save}&lt;/Button>
+                        }
+                    &lt;/Form>
+                &lt;/Col>
+            &lt;/Row>
+
+            &lt;ItemDiv />
+
+            &lt;Form onSubmit={updateEmail}>
+                &lt;h5>{String.email}: &lt;/h5>
+                &lt;FormGroup>
+                    &lt;Input
+                        className={(state => {
+                            if (state == 0) return ("")
+                            else if (state == 1) return ("is-valid")
+                            else if (state == 2) return ("is-invalid")
+                        })(inputState.email)}
+                        id="newEmail"
+                        name="email"
+                        placeholder={String.userEmailUpdate}
+                        type="email"
+                        value={email}
+                        onChange={e => { clear(); setEmail(e.target.value); }}
+                    />
+                &lt;/FormGroup>
+
+                {loading[1] ?
+                    &lt;Button block color="dark" type="submit">&lt;img style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" />&lt;/Button>
+                    :
+                    &lt;Button block color="dark" type="submit">{String.save}&lt;/Button>
+                }
+
+            &lt;/Form>
+
+            &lt;ItemDiv />
+
+            &lt;Form onSubmit={updateDados}>
+                &lt;FormGroup>
+                    {/* Atualizar Nome/Endereço/Numero de Telefone */}
+                    &lt;h5>{String.datas}: &lt;/h5>
+                    &lt;Row md="2" sm="2" xs="1" >
+
+                        &lt;Col size="200px">
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.name)}
+                                id="newLogin"
+                                name="name"
+                                maxLength="150"
+                                placeholder={String.userNameUpdate}
+                                type="text"
+                                value={dados.name}
+                                onChange={dadosOnChangeEvent}
+                            />
+                            &lt;br />
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.rua)}
+                                type="text"
+                                placeholder={String.endRuaUpdate}
+                                name='rua'
+                                value={dados.rua}
+                                onChange={dadosOnChangeEvent}
+                            />
+                            &lt;br />
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.bairro)}
+                                type="text"
+                                placeholder={String.endBairroUpdate}
+                                name='bairro'
+                                value={dados.bairro}
+                                onChange={dadosOnChangeEvent}
+                            />
+                            &lt;br />
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.cidade)}
+                                type="text"
+                                placeholder={String.endCidadUpdate}
+                                name='cidade'
+                                value={dados.cidade}
+                                onChange={dadosOnChangeEvent}
+                            />
+                            &lt;br />
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.estado)}
+                                type="text"
+                                placeholder={String.endEstadoUpdate}
+                                name='estado'
+                                value={dados.estado}
+                                onChange={dadosOnChangeEvent}
+                            />
+                            &lt;br />
+                        &lt;/Col>
+                        &lt;Col>
+
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.numero)}
+                                type="text"
+                                placeholder={String.endNumUpdate}
+                                name='numero'
+                                value={dados.numero}
+                                onChange={dadosOnChangeEvent}
+                            />
+                            &lt;br />
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.complemento)}
+                                type="text"
+                                placeholder={String.endCompletUpdate}
+                                name='complemento'
+                                value={dados.complemento}
+                                onChange={dadosOnChangeEvent}
+                            />
+                            &lt;br />
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.cep)}
+                                type="text"
+                                maxLength="9"
+                                placeholder={String.endCepUpdate}
+                                name='cep'
+                                value={dados.cep}
+                                onChange={dadosOnChangeEvent}
+                            />
+                            &lt;br />
+                            &lt;Input
+                                className={(state => {
+                                    if (state == 0) return ("")
+                                    else if (state == 1) return ("is-valid")
+                                    else if (state == 2) return ("is-invalid")
+                                })(inputState.telephone)}
+                                id="newTell"
+                                name="telephone"
+                                maxLength="15"
+                                placeholder={String.userTellUpdate}
+                                type="text"
+                                value={dados.telephone}
+                                onChange={dadosOnChangeEvent}
+                            />
+                            &lt;br />
+                            {loading[2] ?
+                                &lt;Button block color="dark" type="submit">&lt;img style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" />&lt;/Button>
+                                :
+                                &lt;Button block color="dark" type="submit">{String.save}&lt;/Button>
+                            }
+
+                        &lt;/Col>
+
+
+                    &lt;/Row >
+
+                &lt;/FormGroup>
+
+            &lt;/Form>
+
+            &lt;ItemDiv />
+
+            &lt;Row onSubmit={updateSenha}>
+                {/* Atualizar senha */}
+                &lt;h5>{String.pass}: &lt;/h5>
+                &lt;Form>
+                    &lt;FormGroup>
+                        &lt;Input
+                            id="newPass"
+                            className={(state => {
+                                if (state == 0) return ("")
+                                else if (state == 1) return ("is-valid")
+                                else if (state == 2) return ("is-invalid")
+                            })(inputState.newPass)}
+                            type="password"
+                            maxLength="60"
+                            placeholder={String.userPassUpdate}
+                            name='newPass'
+                            value={password.newPass}
+                            onChange={passwordOnChangeEvent}
+                        />
+                        &lt;br />
+                        &lt;Input
+                            id="newPassRepet"
+                            className={(state => {
+                                if (state == 0) return ("")
+                                else if (state == 1) return ("is-valid")
+                                else if (state == 2) return ("is-invalid")
+                            })(inputState.otherPass)}
+                            type="password"
+                            maxLength="60"
+                            placeholder={String.userPassRepet}
+                            name='otherPass'
+                            value={password.otherPass}
+                            onChange={passwordOnChangeEvent}
+                        />
+                    &lt;/FormGroup>
+
+                    {loading[3] ?
+                        &lt;Button block color="dark" type="submit">&lt;img style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" />&lt;/Button>
+                        :
+                        &lt;Button block color="dark" type="submit">{String.save}&lt;/Button>
+                    }
+
+                &lt;/Form>
+            &lt;/Row>
+
+            &lt;ItemDiv />
+
+            &lt;Form>
+                &lt;AlertDelet>
+
+                    &lt;h4>{String.userDelteCount}? &lt;/h4>
+                    &lt;Button
+                        block
+                        color="danger"
+                        onClick={goToDeleteUserScreen}
+                    >
+                        {String.delete}
+                    &lt;/Button>
+                &lt;/AlertDelet>
+            &lt;/Form>
+            &lt;br />
+
+        &lt;/Container >
+
+    )
+}
+
+
+export default App;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Classes</h3><ul><li><a href="Button_UserP.html">Button_UserP</a></li><li><a href="deleteUserAlert.html">deleteUserAlert</a></li><li><a href="Footer_off.html">Footer_off</a></li><li><a href="Footer_on.html">Footer_on</a></li><li><a href="HeaderContainerOff.html">HeaderContainerOff</a></li><li><a href="HeaderContainerOn.html">HeaderContainerOn</a></li><li><a href="InfoAlert.html">InfoAlert</a></li><li><a href="ItemListOs_On.html">ItemListOs_On</a></li><li><a href="ItemLoginOff.html">ItemLoginOff</a></li><li><a href="ItemUser.html">ItemUser</a></li><li><a href="ListFactory.html">ListFactory</a></li><li><a href="ViewOpenOs_on.html">ViewOpenOs_on</a></li><li><a href="ViewOS.html">ViewOS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppDispatcher-api">AppDispatcher-api</a></li><li><a href="global.html#AppDispatcher-createOsManager">AppDispatcher-createOsManager</a></li><li><a href="global.html#AppDispatcher-deleteOsManager">AppDispatcher-deleteOsManager</a></li><li><a href="global.html#AppDispatcher-editOsManager">AppDispatcher-editOsManager</a></li><li><a href="global.html#AppDispatcher-listOSRequestManager">AppDispatcher-listOSRequestManager</a></li><li><a href="global.html#AppDispatcher-loginManager">AppDispatcher-loginManager</a></li><li><a href="global.html#AppDispatcher-osInfosResultManager">AppDispatcher-osInfosResultManager</a></li><li><a href="global.html#AppDispatcher-osValidateManager">AppDispatcher-osValidateManager</a></li><li><a href="global.html#AppDispatcher-registerProfileManager">AppDispatcher-registerProfileManager</a></li><li><a href="global.html#AppDispatcher-searchResultManager">AppDispatcher-searchResultManager</a></li><li><a href="global.html#AppDispatcher-tokenManager-addDays">AppDispatcher-tokenManager-addDays</a></li><li><a href="global.html#AppDispatcher-tokenManager-checkToken">AppDispatcher-tokenManager-checkToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-createToken">AppDispatcher-tokenManager-createToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-deleteToken">AppDispatcher-tokenManager-deleteToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-readToken">AppDispatcher-tokenManager-readToken</a></li><li><a href="global.html#AppDispatcher-updateInfosRequestManager">AppDispatcher-updateInfosRequestManager</a></li><li><a href="global.html#AppDispatcher-userInfosRequestManager">AppDispatcher-userInfosRequestManager</a></li><li><a href="global.html#AppScreen-Index">AppScreen-Index</a></li><li><a href="global.html#AppScreen-Login">AppScreen-Login</a></li><li><a href="global.html#AppScreen-Open_os">AppScreen-Open_os</a></li><li><a href="global.html#AppScreen-Painel_user">AppScreen-Painel_user</a></li><li><a href="global.html#AppScreen-Registrar">AppScreen-Registrar</a></li><li><a href="global.html#AppScreen-Search">AppScreen-Search</a></li><li><a href="global.html#Components-Painel-Add_OS">Components-Painel-Add_OS</a></li><li><a href="global.html#Components-Painel-Adivanced_view_os">Components-Painel-Adivanced_view_os</a></li><li><a href="global.html#Components-Painel-Edit_OS">Components-Painel-Edit_OS</a></li><li><a href="global.html#Components-Painel-Edit_user">Components-Painel-Edit_user</a></li><li><a href="global.html#Components-Painel-logout">Components-Painel-logout</a></li><li><a href="global.html#Components-Painel-search">Components-Painel-search</a></li><li><a href="global.html#Element-Pdf_Factory">Element-Pdf_Factory</a></li><li><a href="global.html#Element-Private_Route">Element-Private_Route</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 09:06:56 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

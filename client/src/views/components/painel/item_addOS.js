@@ -12,6 +12,10 @@ import createOsManager from '../../../dispatcher/createOs';
 
 const tokenManager = require('../../../dispatcher/tokenManager');
 
+/**
+ * @function Components-Painel-Add_OS
+ * @description Componente que gera o formulário para adicionar uma nova OS
+ */
 function App(props) {
 
     /** const useState para alertar errors, warnings, informs e etc... */

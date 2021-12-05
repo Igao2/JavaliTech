@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-import listOSRequestManager from '../../../../dispatcher/listOSRequest';
+import listOSRequestManager from '../../../dispatcher/listOSRequest';
 import ListFactory from './listFactory';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { PaginationRed } from "../../../../assets/values/styles";
+import { PaginationRed } from "../../../assets/values/styles";
 
-const tokenManager = require('../../../../dispatcher/tokenManager');
+const tokenManager = require('../../../dispatcher/tokenManager');
 
-
+/**
+ * @function Components-Painel-logout
+ * @description Componente que define as configurações da tabela de OS's
+ */
 function App(props) {
 
     /** const que recebe a propriedade "breakOfPages" do componente, esta propriedade armazena o número de linhas que a tabela vai ter. */

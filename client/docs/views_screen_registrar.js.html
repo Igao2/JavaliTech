@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/screen/registrar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/screen/registrar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/jsx-pascal-case */
+import React, { useState } from 'react';
+import Helmet from 'react-helmet';
+import String from '../../assets/values/string.json';
+import {
+    BodyOff, ContainerOff, FooterOff, HeaderOff,
+    AlertDelet, ItemColAvatar, ItemDiv, ProfilePhoto, QuadrosOS, LocateButton
+} from '../../assets/values/styles';
+
+
+import HeaderContainerOff from '../components/headers/header_off';
+import registerProfileManager from '../../dispatcher/register';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Col, Row, Form, FormGroup, Input, Button, Alert } from 'reactstrap';
+import Footer_off from '../components/footers/footers_off';
+import avatarBackground from '../../assets/images/icons/backgroundAvatar.png';
+import avatarTemp from '../../assets/images/icons/avatarTemp.png';
+import { Redirect } from "react-router-dom";
+
+/**
+ * @function AppScreen-Registrar
+ * @description Constrói a tela que registra o usuário
+ */
+function App() {
+
+    /** const useState para alertar errors, warnings, informs e etc... */
+    const [announcement, setAnnouncement] = useState({
+        enabled: 0,
+        type: "",
+        massage: ""
+    })
+
+    /** const useState para os Inputs do formulario de cadatro  */
+    const [register, setValue] = useState({
+        name: "",
+        email: "",
+        password: "",
+        telephone: "",
+        cep: "",
+        numero: "",
+        complemento: "",
+        bairro: "",
+        cidade: "",
+        estado: ""
+    });
+
+    /** const useState para definir os status dos campos. */
+    const [inputState,] = useState({
+        name: 0,
+        email: 0,
+        password: 0,
+        telephone: 0,
+        cep: 0,
+        numero: 0,
+        complemento: 0,
+        bairro: 0,
+        cidade: 0,
+        estado: 0,
+        image: 0
+    });
+
+    /** const useState para o Input "image" */
+    const [image, setImage] = useState('');
+
+    /** const useState para os imageSettings da imagem */
+    const [imagePreview, setPreview] = useState({
+        "left": 0,
+        "top": 0,
+        "width": 100
+    });
+
+    /** const useState ativar e desativar a gif de loading do botão de cadastrar-se. */
+    const [loading, setLoading] = useState(0);
+
+    /** const useState para o redirecionamento de tela. */
+    const redirect = useState(0);
+
+    /**
+    * Essa função cria a dinâmica de ajuste da posição de imagem, podendo aumentar, diminuir, mover para a esquerda ou para a direita e também podendo movê-la para cima e para baixo.
+    * @param {number} type - Determina qual será o ajuste de posição da imagem.
+    */
+    function previewImageChenge(type) {
+        let styleCharge = imagePreview;
+        let interval = 5;
+        if (type === 1) styleCharge.left -= interval;
+        else if (type === 2) styleCharge.left += interval;
+        else if (type === 3) styleCharge.top -= interval;
+        else if (type === 4) styleCharge.top += interval;
+        else if (type === 5) styleCharge.width += interval;
+        else if (type === 6) styleCharge.width -= interval;
+        return styleCharge;
+    }
+
+    /**
+    * Esta arrow function pega o valor dos Inputs do form e armazena no useState "register", ele tambem implementa mascaras nos inputs telephone e cep.
+    * @param {object} event - Informações do evento onChange.
+    * @param {string} event.target.value - valor do input.
+    * @param {string} event.target.name - nome do input.
+    */
+    const onChangeEvent = event => {
+        var value = event.target.value;
+
+        function cleanMask(number) {
+            number = number.replace(/[A-Z]/gi, '');
+            number = number.replace(/[^a-z0-9]/gi, '');
+            number = number.replace(/\-/g, '');
+            number = number.replace(/ /g, '');
+            return number;
+        }
+
+
+        if (event.target.name === "cep") {
+            let cep = value;
+            cep = cep.replace(/\D/g, "")
+            cep = cep.replace(/(\d{5})(\d)/, "$1-$2")
+            event.target.value = cep;
+            setValue({ ...value });
+        } else if (event.target.name === "telephone") {
+            let phone = cleanMask(value);
+            let ddd, number;
+
+            if (phone.length >= 11) phone = "(" + phone.slice(0, 2) + ") " + phone.slice(2, 7) + "-" + phone.slice(7, 11);
+            else if (phone.length >= 3) {
+
+                ddd = phone.slice(0, 2);
+
+                if (phone.length >= 7) {
+                    number = phone.slice(2, 6);
+                    number += "-" + phone.slice(6, 10);
+                } else number = phone.slice(2);
+
+                phone = `(${ddd}) ${number}`;
+            }
+
+            event.target.value = phone;
+            setValue({ ...value });
+        } else {
+            setValue({ ...value });
+        }
+
+        setAnnouncement({ ..."", enabled: 0 })
+    }
+
+    /**
+    * Esta arrow function é o evento de submit do form, ela pega os valores dos Inputs do form, verifica se os campos foram preenchidos, se sim ele manda os dados para API para que o cadastro seja realizado
+    * @param {object} event - Informações do evento onChange.
+    * @param {object[]} event.target - Array com as informações de cada input.
+    * @param {string} event.target[].value - valor do input.
+    * @param {string} event.target[].name - nome do input.
+    */
+    const registerProfile = event => {
+
+        event.preventDefault();
+        setLoading(1);
+
+        var valid = true;
+
+        const inputNames = {
+            "name": "\"Nome\"",
+            "email": "\"Email\"",
+            "password": "\"Senha\"",
+            "telephone": "\"Telefone\"",
+            "image": "\"Imagem\"",
+            "cep": "\"Cep\"",
+            "numero": "\"Numero\"",
+            "complemento": "\"Complemento\"",
+            "bairro": "\"Bairro\"",
+            "cidade": "\"Cidade\"",
+            "estado": "\"Estado\"",
+            "rua": "\"Rua\""
+        }
+
+        for (let i = 0; i &lt; (event.target.length - 1); i++) {
+            if (event.target[i].name !== "numero" &amp;&amp; event.target[i].name !== "complemento") {
+                if (event.target[i].value === "") {
+                    if (!valid)
+                        setAnnouncement({
+                            enabled: 1,
+                            type: "warning",
+                            massage: "Alguns campos estão vazios"
+                        })
+                    else
+                        setAnnouncement({
+                            enabled: 1,
+                            type: "warning",
+                            massage: "O campo " + inputNames[event.target[i].name] + " esta vazio"
+                        })
+                    // inputState["name"] = 2;
+                    // alert(event.target[i].name)
+                    inputState[event.target[i].name] = 2;
+                    valid = false;
+                }
+            }
+            if (i === 0) i = 6;
+        }
+
+        if (valid) {
+
+            let formInputs = {
+                name: event.target[7].value,
+                telephone: event.target[8].value,
+                email: event.target[9].value,
+                password: event.target[10].value,
+                address: {
+                    rua: event.target[11].value,
+                    bairro: event.target[12].value,
+                    cidade: event.target[13].value,
+                    estado: event.target[14].value,
+                    numero: event.target[15].value,
+                    complemento: event.target[16].value,
+                    cep: event.target[17].value,
+                },
+                imageSetting: {
+                    left: imagePreview.left,
+                    top: imagePreview.top,
+                    width: imagePreview.width
+                }
+
+            }
+
+
+            const request = new FormData();
+            request.append('image', image);
+            request.append('formInputs', JSON.stringify(formInputs));
+
+
+            /** Faz a requisição para a API com os dados do novo usuarido, para que ele possa ser cadastrado.
+            * @param {object} request - Dados do novo usuarido.
+            * @param {object} res - Resposta da API.
+            */
+            registerProfileManager(request).then(res => {
+
+                if (res.data.erro) {
+                    switch (res.data.code) {
+                        case 500:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: String.error500
+                            })
+                            break;
+
+                        case 400:
+                            for (let i = 0; i &lt; res.data.erroDetails.length; i++) {
+                                setAnnouncement({
+                                    enabled: 1,
+                                    type: "warning",
+                                    massage: res.data.erroDetails[i].mensagem
+                                })
+                                inputState[res.data.erroDetails[i].campo] = 2;
+                            }
+                            break;
+
+                        default:
+                            setAnnouncement({
+                                enabled: 1,
+                                type: "danger",
+                                massage: String.error500
+                            })
+                    }
+                } else {
+                    redirect[1](1);
+                }
+
+                setLoading(0)
+            }).catch(error => {
+                setAnnouncement({
+                    enabled: 1,
+                    type: "danger",
+                    massage: String.error500
+                })
+                setLoading(0)
+            });
+
+        } else setLoading(0)
+
+    }
+
+    return (
+        &lt;div>
+            {redirect[0] ? &lt;Redirect to='/login' /> : null}
+            &lt;Helmet>
+                &lt;title>{String.nomeApp_sistema}&lt;/title>
+                &lt;meta name="title" content={String.nomeApp_sistema} />
+                &lt;meta property="og:title" content={String.nomeApp_sistema} />
+                &lt;meta property="og:site_name" content={String.nomeApp_sistema} />
+                &lt;meta property="og:description" content={String.nomeApp_descricao} />
+            &lt;/Helmet>
+
+            &lt;ContainerOff>
+                &lt;HeaderOff>
+
+                    &lt;HeaderContainerOff />
+
+                &lt;/HeaderOff>
+                &lt;BodyOff>
+
+                    &lt;QuadrosOS>
+                        {/* danger: vermelho | warning: amarelo | info: azul | dark: cinza*/}
+                        {announcement.enabled ? &lt;Alert color={announcement.type} dismissible>{announcement.massage}&lt;/Alert> : null}
+
+                        &lt;Form onSubmit={registerProfile}>
+                            &lt;FormGroup>
+                                &lt;h3>{String.registrerUser}&lt;/h3>
+                                &lt;QuadrosOS>
+                                    &lt;Row md="2" sm="2" xs="1">
+                                        &lt;Col>
+                                            &lt;ItemColAvatar>
+                                                {/* Foto de Perfil */}
+                                                {/* &lt;ItemAvatar src={avatarTMP} /> */}
+                                                &lt;ProfilePhoto imgUrl={avatarBackground}>
+                                                    {image ?
+                                                        &lt;img
+                                                            src={URL.createObjectURL(image)}
+                                                            alt="Imagem"
+                                                            style={{
+                                                                left: imagePreview.left + "px",
+                                                                top: imagePreview.top + "px",
+                                                                width: imagePreview.width + "%"
+                                                            }}
+                                                        />
+                                                        : &lt;img
+                                                            src={avatarTemp}
+                                                            alt="Imagem"
+                                                            style={{
+                                                                left: imagePreview.left + "px",
+                                                                top: imagePreview.top + "px",
+                                                                width: imagePreview.width + "%"
+                                                            }}
+                                                        />
+                                                    }
+                                                &lt;/ProfilePhoto>
+                                            &lt;/ItemColAvatar>
+                                        &lt;/Col>
+
+                                        &lt;Col>
+                                            &lt;h5>{String.userAvaterSend}: &lt;/h5>
+                                            {/* Atualizar foto de Perfil */}
+                                            &lt;Input
+                                                className={(state => {
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
+                                                })(inputState.image)}
+                                                type="file"
+                                                placeholder={String.userAvaterSend}
+                                                name='image'
+                                                value={register.image}
+                                                onChange={e => setImage(e.target.files[0])}
+                                            />
+                                            &lt;ItemDiv />
+                                            &lt;LocateButton>
+                                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(1) }) }}>{String.left}&lt;/Button>
+                                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(3) }) }}>{String.up}&lt;/Button>
+                                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(4) }) }}>{String.down}&lt;/Button>
+                                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(2) }) }}>{String.right}&lt;/Button>
+                                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(5) }) }}>{String.zoomplus}&lt;/Button>
+                                                &lt;Button color="dark" onClick={() => { setPreview({ ...previewImageChenge(6) }) }}>{String.zoomsmall}&lt;/Button>
+                                            &lt;/LocateButton>
+                                        &lt;/Col>
+                                    &lt;/Row>
+                                &lt;/QuadrosOS>
+                                &lt;QuadrosOS>
+
+                                    &lt;h6>{String.osInfoBasic}: &lt;/h6>
+
+                                    &lt;Row md="2" sm="2" xs="1">
+                                        &lt;Col>
+                                            &lt;br />
+                                            &lt;Input
+                                                className={(state => {
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
+                                                })(inputState.name)}
+                                                type="text"
+                                                maxLength="150"
+                                                placeholder={String.userNameNew}
+                                                name="name"
+                                                value={register.name}
+                                                onChange={onChangeEvent}
+                                            />
+                                        &lt;/Col>
+                                        &lt;Col>
+                                            &lt;br />
+                                            &lt;Input
+                                                className={(state => {
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
+                                                })(inputState.telephone)}
+                                                type="text"
+                                                maxLength="15"
+                                                placeholder={String.userTellNew}
+                                                name='telephone'
+                                                value={register.telephone}
+                                                onChange={onChangeEvent}
+                                            // data-mask="(00) 0000-0000"
+                                            // data-mask-selectonfocus="true"
+                                            />
+                                        &lt;/Col>
+                                    &lt;/Row>
+                                    &lt;br />
+                                    &lt;Input
+                                        className={(state => {
+                                            if (state === 0) return ("")
+                                            else if (state === 1) return ("is-valid")
+                                            else if (state === 2) return ("is-invalid")
+                                        })(inputState.email)}
+                                        type="email"
+                                        placeholder={String.userEmailNew}
+                                        name='email'
+                                        value={register.email}
+                                        onChange={onChangeEvent}
+                                    />
+                                    &lt;br />
+                                    &lt;Input
+                                        className={(state => {
+                                            if (state === 0) return ("")
+                                            else if (state === 1) return ("is-valid")
+                                            else if (state === 2) return ("is-invalid")
+                                        })(inputState.password)}
+                                        type="password"
+                                        maxLength="60"
+                                        placeholder={String.userPassNew}
+                                        name='password'
+                                        value={register.password}
+                                        onChange={onChangeEvent}
+                                    />
+                                    &lt;br />
+                                    &lt;h6>{String.itemInfo02}&lt;/h6>
+                                    &lt;Row md="3" sm="3" xs="1">
+                                        &lt;Col>
+                                            &lt;br />
+                                            &lt;Input
+                                                className={(state => {
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
+                                                })(inputState.rua)}
+                                                type="text"
+                                                placeholder={String.endRua}
+                                                name='rua'
+                                                value={register.rua}
+                                                onChange={onChangeEvent}
+                                            />
+                                        &lt;/Col>
+                                        &lt;Col>
+                                            &lt;br />
+                                            &lt;Input
+                                                className={(state => {
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
+                                                })(inputState.bairro)}
+                                                type="text"
+                                                placeholder={String.endBairro}
+                                                name='bairro'
+                                                value={register.bairro}
+                                                onChange={onChangeEvent}
+                                            />
+                                        &lt;/Col>
+                                        &lt;Col>
+                                            &lt;br />
+                                            &lt;Input
+                                                className={(state => {
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
+                                                })(inputState.cidade)}
+                                                type="text"
+                                                placeholder={String.endCidad}
+                                                name='cidade'
+                                                value={register.cidade}
+                                                onChange={onChangeEvent}
+                                            />
+                                        &lt;/Col>
+                                        &lt;Col>
+                                            &lt;br />
+                                            &lt;Input
+                                                className={(state => {
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
+                                                })(inputState.estado)}
+                                                type="text"
+                                                placeholder={String.endEstado}
+                                                name='estado'
+                                                value={register.estado}
+                                                onChange={onChangeEvent}
+                                            />
+                                        &lt;/Col>
+                                    &lt;/Row>
+                                    &lt;Row md="2" sm="2" xs="1">
+                                        &lt;Col>
+                                            &lt;br />
+                                            &lt;Input
+                                                className={(state => {
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
+                                                })(inputState.numero)}
+                                                type="text"
+                                                placeholder={String.endNum}
+                                                name='numero'
+                                                value={register.numero}
+                                                onChange={onChangeEvent}
+                                            />
+                                        &lt;/Col>
+                                        &lt;Col>
+                                            &lt;br />
+                                            &lt;Input
+                                                className={(state => {
+                                                    if (state === 0) return ("")
+                                                    else if (state === 1) return ("is-valid")
+                                                    else if (state === 2) return ("is-invalid")
+                                                })(inputState.complemento)}
+                                                type="text"
+                                                placeholder={String.endComplet}
+                                                name='complemento'
+                                                value={register.complemento}
+                                                onChange={onChangeEvent}
+                                            />
+                                        &lt;/Col>
+                                    &lt;/Row>
+                                    &lt;br />
+                                    &lt;Input
+                                        className={(state => {
+                                            if (state === 0) return ("")
+                                            else if (state === 1) return ("is-valid")
+                                            else if (state === 2) return ("is-invalid")
+                                        })(inputState.cep)}
+                                        type="text"
+                                        maxLength="9"
+                                        placeholder={String.endCep}
+                                        name='cep'
+                                        value={register.cep}
+                                        onChange={onChangeEvent}
+                                    />
+                                &lt;/QuadrosOS>
+
+                                &lt;AlertDelet>
+                                    {loading ?
+                                        &lt;Button block color="dark" type="submit">&lt;img alt="loading.gif" style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" />&lt;/Button>
+                                        :
+                                        &lt;Button block color="dark" type="submit">{String.registrerUserButtom}&lt;/Button>
+                                    }
+                                &lt;/AlertDelet>
+                                &lt;br />
+                            &lt;/FormGroup>
+                        &lt;/Form>
+
+                    &lt;/QuadrosOS >
+
+                &lt;/BodyOff>
+                &lt;FooterOff>
+
+                    &lt;Footer_off />
+
+                &lt;/FooterOff>
+            &lt;/ContainerOff>
+        &lt;/div >
+    );
+}
+
+export default App;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Classes</h3><ul><li><a href="Button_UserP.html">Button_UserP</a></li><li><a href="deleteUserAlert.html">deleteUserAlert</a></li><li><a href="Footer_off.html">Footer_off</a></li><li><a href="Footer_on.html">Footer_on</a></li><li><a href="HeaderContainerOff.html">HeaderContainerOff</a></li><li><a href="HeaderContainerOn.html">HeaderContainerOn</a></li><li><a href="InfoAlert.html">InfoAlert</a></li><li><a href="ItemListOs_On.html">ItemListOs_On</a></li><li><a href="ItemLoginOff.html">ItemLoginOff</a></li><li><a href="ItemUser.html">ItemUser</a></li><li><a href="ListFactory.html">ListFactory</a></li><li><a href="ViewOpenOs_on.html">ViewOpenOs_on</a></li><li><a href="ViewOS.html">ViewOS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppDispatcher-api">AppDispatcher-api</a></li><li><a href="global.html#AppDispatcher-createOsManager">AppDispatcher-createOsManager</a></li><li><a href="global.html#AppDispatcher-deleteOsManager">AppDispatcher-deleteOsManager</a></li><li><a href="global.html#AppDispatcher-editOsManager">AppDispatcher-editOsManager</a></li><li><a href="global.html#AppDispatcher-listOSRequestManager">AppDispatcher-listOSRequestManager</a></li><li><a href="global.html#AppDispatcher-loginManager">AppDispatcher-loginManager</a></li><li><a href="global.html#AppDispatcher-osInfosResultManager">AppDispatcher-osInfosResultManager</a></li><li><a href="global.html#AppDispatcher-osValidateManager">AppDispatcher-osValidateManager</a></li><li><a href="global.html#AppDispatcher-registerProfileManager">AppDispatcher-registerProfileManager</a></li><li><a href="global.html#AppDispatcher-searchResultManager">AppDispatcher-searchResultManager</a></li><li><a href="global.html#AppDispatcher-tokenManager-addDays">AppDispatcher-tokenManager-addDays</a></li><li><a href="global.html#AppDispatcher-tokenManager-checkToken">AppDispatcher-tokenManager-checkToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-createToken">AppDispatcher-tokenManager-createToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-deleteToken">AppDispatcher-tokenManager-deleteToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-readToken">AppDispatcher-tokenManager-readToken</a></li><li><a href="global.html#AppDispatcher-updateInfosRequestManager">AppDispatcher-updateInfosRequestManager</a></li><li><a href="global.html#AppDispatcher-userInfosRequestManager">AppDispatcher-userInfosRequestManager</a></li><li><a href="global.html#AppScreen-Index">AppScreen-Index</a></li><li><a href="global.html#AppScreen-Login">AppScreen-Login</a></li><li><a href="global.html#AppScreen-Open_os">AppScreen-Open_os</a></li><li><a href="global.html#AppScreen-Painel_user">AppScreen-Painel_user</a></li><li><a href="global.html#AppScreen-Registrar">AppScreen-Registrar</a></li><li><a href="global.html#AppScreen-Search">AppScreen-Search</a></li><li><a href="global.html#Components-Painel-Add_OS">Components-Painel-Add_OS</a></li><li><a href="global.html#Components-Painel-Adivanced_view_os">Components-Painel-Adivanced_view_os</a></li><li><a href="global.html#Components-Painel-Edit_OS">Components-Painel-Edit_OS</a></li><li><a href="global.html#Components-Painel-Edit_user">Components-Painel-Edit_user</a></li><li><a href="global.html#Components-Painel-logout">Components-Painel-logout</a></li><li><a href="global.html#Components-Painel-search">Components-Painel-search</a></li><li><a href="global.html#Element-Pdf_Factory">Element-Pdf_Factory</a></li><li><a href="global.html#Element-Private_Route">Element-Private_Route</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 09:06:56 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -13,6 +13,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer_off from '../components/footers/footers_off';
 import ViewOpenOs_on from '../components/painel/view_openOs_on';
 
+/**
+ * @function AppScreen-Open_os
+ * @description Constrói a tela de visualização da OS
+ */
 function App() {
 
     /** Parametros da os */

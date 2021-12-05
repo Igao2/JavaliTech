@@ -112,11 +112,15 @@ Font.register({
     src: `https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap`,
 });
 
+/**
+ * @name Element-Pdf_Factory
+ * @description Define a estrutura do pdf
+ */
 const OsPdf = (props) => {
     return (
         <Document>
             <Page size="A4" style={styles.page}>
-            
+
                 <View style={[styles.head, styles.QuadrosOS]}>
                     <View style={styles.ItemColAvatar}>
                         <View style={styles.ProfilePhoto}>

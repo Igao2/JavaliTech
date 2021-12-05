@@ -9,7 +9,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Row, Container, Button } from 'reactstrap';
 
 
-
+/**
+ * @class
+ * @description Componente que gera uma tela de alerta que pergunta de o usuário realmente quer deslogar da sua conta
+ */
 class ItemLoginOff extends React.Component {
     render() {
 

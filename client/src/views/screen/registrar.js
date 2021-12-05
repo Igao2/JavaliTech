@@ -18,6 +18,10 @@ import avatarBackground from '../../assets/images/icons/backgroundAvatar.png';
 import avatarTemp from '../../assets/images/icons/avatarTemp.png';
 import { Redirect } from "react-router-dom";
 
+/**
+ * @function AppScreen-Registrar
+ * @description Constrói a tela que registra o usuário
+ */
 function App() {
 
     /** const useState para alertar errors, warnings, informs e etc... */

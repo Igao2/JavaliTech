@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/components/painel/table_list_os.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/components/painel/table_list_os.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+
+import listOSRequestManager from '../../../dispatcher/listOSRequest';
+import ListFactory from './listFactory';
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { PaginationRed } from "../../../assets/values/styles";
+
+const tokenManager = require('../../../dispatcher/tokenManager');
+
+/**
+ * @function Components-Painel-logout
+ * @description Componente que define as configurações da tabela de OS's
+ */
+function App(props) {
+
+    /** const que recebe a propriedade "breakOfPages" do componente, esta propriedade armazena o número de linhas que a tabela vai ter. */
+    const breakOfPages = props.breakOfPages;
+
+    /** const que recebe a propriedade "filterType" do componente, esta propriedade armazena o tipo de filtro que irá ser usado para selecionar as OS's presentes na tabela. */
+    const filterType = props.filterType;
+
+    let tmpDado;
+    if (!props.filterData) tmpDado = "";
+    else tmpDado = props.filterData;
+
+    /** const que armazena o valor referente ao dado que ira ser utilizado na filtragem de OS's presentes na tabela. */
+    const dado = tmpDado;
+
+    /** const que recebe a propriedade "tableColumn" do componente, esta propriedade armazena um array com as colinas presentes na tabela. */
+    const tableColumn = props.tableColumn;
+
+    let nullListItens = {
+        service_order_id: "",
+        senha: "",
+        owner_name: "",
+        device_name: "",
+        delivery_date: "",
+        completion_date: "",
+        status: "",
+        service_value: ""
+    }
+    let initListItens = [];
+
+    for (let i = 0; i &lt; breakOfPages; i++) initListItens[i] = nullListItens;
+
+    /** const useState para os valores da tabela. */
+    const [listItens, setListItens] = useState(initListItens)
+
+    /** const useState que indica a pagina atual da tabela. */
+    const [currentPage, setCurrentPage] = useState(1);
+
+    /** const useState que indica a quantidade de paginas tem a tabela. */
+    const [pages, setPages] = useState([]);
+
+    /** Esta arrow function obtém a informações da OS pela API e insere elas na tabela. */
+    const listarOS = () => {
+        var urlParams = new URLSearchParams({ filterType: filterType, break: breakOfPages, dado: dado });
+
+        listOSRequestManager(currentPage, urlParams, { headers: { authentication: "Bearer " + tokenManager.readToken() } }).then(res => {
+            setListItens(res.data.liste);
+
+            let newPages = []
+
+            for (let i = 1; i &lt;= res.data.numberOfPages; i++) newPages[i] = i;
+
+
+            setPages(newPages);
+        });
+    }
+
+    /** Esta arrow function altera a página da tabela. */
+    const changeThePage = e => { setCurrentPage(parseInt(e.target.innerText)); }
+
+    /** useEffect para a inserção de dados na tabela = é executado quando o valor dentro de currentPage é definido ou redefinido, quando isso acontece as informações da tabela são atualizadas. */
+    useEffect(() => { listarOS(); }, [currentPage]);
+
+    return (
+        &lt;PaginationRed>
+            &lt;ListFactory {...({ listItens, tableColumn })} />
+
+            &lt;Pagination aria-label="Page navigation example">
+
+                {pages.map(item => (
+                    &lt;PaginationItem active={item == currentPage &amp;&amp; true} onClick={changeThePage}>
+                        &lt;PaginationLink>
+                            {item}
+                        &lt;/PaginationLink>
+                    &lt;/PaginationItem>
+                ))}
+            &lt;/Pagination>
+
+        &lt;/PaginationRed>
+    );
+}
+
+export default App;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Classes</h3><ul><li><a href="Button_UserP.html">Button_UserP</a></li><li><a href="deleteUserAlert.html">deleteUserAlert</a></li><li><a href="Footer_off.html">Footer_off</a></li><li><a href="Footer_on.html">Footer_on</a></li><li><a href="HeaderContainerOff.html">HeaderContainerOff</a></li><li><a href="HeaderContainerOn.html">HeaderContainerOn</a></li><li><a href="InfoAlert.html">InfoAlert</a></li><li><a href="ItemListOs_On.html">ItemListOs_On</a></li><li><a href="ItemLoginOff.html">ItemLoginOff</a></li><li><a href="ItemUser.html">ItemUser</a></li><li><a href="ListFactory.html">ListFactory</a></li><li><a href="ViewOpenOs_on.html">ViewOpenOs_on</a></li><li><a href="ViewOS.html">ViewOS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppDispatcher-api">AppDispatcher-api</a></li><li><a href="global.html#AppDispatcher-createOsManager">AppDispatcher-createOsManager</a></li><li><a href="global.html#AppDispatcher-deleteOsManager">AppDispatcher-deleteOsManager</a></li><li><a href="global.html#AppDispatcher-editOsManager">AppDispatcher-editOsManager</a></li><li><a href="global.html#AppDispatcher-listOSRequestManager">AppDispatcher-listOSRequestManager</a></li><li><a href="global.html#AppDispatcher-loginManager">AppDispatcher-loginManager</a></li><li><a href="global.html#AppDispatcher-osInfosResultManager">AppDispatcher-osInfosResultManager</a></li><li><a href="global.html#AppDispatcher-osValidateManager">AppDispatcher-osValidateManager</a></li><li><a href="global.html#AppDispatcher-registerProfileManager">AppDispatcher-registerProfileManager</a></li><li><a href="global.html#AppDispatcher-searchResultManager">AppDispatcher-searchResultManager</a></li><li><a href="global.html#AppDispatcher-tokenManager-addDays">AppDispatcher-tokenManager-addDays</a></li><li><a href="global.html#AppDispatcher-tokenManager-checkToken">AppDispatcher-tokenManager-checkToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-createToken">AppDispatcher-tokenManager-createToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-deleteToken">AppDispatcher-tokenManager-deleteToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-readToken">AppDispatcher-tokenManager-readToken</a></li><li><a href="global.html#AppDispatcher-updateInfosRequestManager">AppDispatcher-updateInfosRequestManager</a></li><li><a href="global.html#AppDispatcher-userInfosRequestManager">AppDispatcher-userInfosRequestManager</a></li><li><a href="global.html#AppScreen-Index">AppScreen-Index</a></li><li><a href="global.html#AppScreen-Login">AppScreen-Login</a></li><li><a href="global.html#AppScreen-Open_os">AppScreen-Open_os</a></li><li><a href="global.html#AppScreen-Painel_user">AppScreen-Painel_user</a></li><li><a href="global.html#AppScreen-Registrar">AppScreen-Registrar</a></li><li><a href="global.html#AppScreen-Search">AppScreen-Search</a></li><li><a href="global.html#Components-Painel-Add_OS">Components-Painel-Add_OS</a></li><li><a href="global.html#Components-Painel-Adivanced_view_os">Components-Painel-Adivanced_view_os</a></li><li><a href="global.html#Components-Painel-Edit_OS">Components-Painel-Edit_OS</a></li><li><a href="global.html#Components-Painel-Edit_user">Components-Painel-Edit_user</a></li><li><a href="global.html#Components-Painel-logout">Components-Painel-logout</a></li><li><a href="global.html#Components-Painel-search">Components-Painel-search</a></li><li><a href="global.html#Element-Pdf_Factory">Element-Pdf_Factory</a></li><li><a href="global.html#Element-Private_Route">Element-Private_Route</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 09:06:56 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

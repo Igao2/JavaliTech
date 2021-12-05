@@ -12,10 +12,10 @@ import sign_out_alt_solid from '../../../assets/images/fontwesome/sign_out_alt_s
 import user_edit_solid from '../../../assets/images/fontwesome/user_edit_solid.svg';
 import user_solid from '../../../assets/images/fontwesome/user_solid.svg';
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faUserAlt ,faUserEdit, faEdit, faList, faSearch, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-
-
+/**
+ * @class
+ * @description Componente que gera a menu de navegação do painel do usuário
+ */
 class Button_UserP extends React.Component {
 	render() {
 		return (

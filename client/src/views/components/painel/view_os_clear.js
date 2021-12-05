@@ -6,7 +6,12 @@ import { Card, CardTitle, CardText, Row, Col } from 'reactstrap';
 import { ParagrafLeftGeral, ProfilePhoto } from '../../../assets/values/styles';
 
 import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
-export default class ViewOS extends Component {
+
+/**
+ * @class
+ * @description Componente que gera uma campo de visualização para as informações básicas da OS
+ */
+class ViewOS extends Component {
 
     /** método que limita o número de letras presentes na descrição da OS */
     descriptionLimit(description) {
@@ -59,3 +64,4 @@ export default class ViewOS extends Component {
         )
     }
 }
+export default ViewOS;

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/components/painel/pdfFactory.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/components/painel/pdfFactory.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+
+import String from '../../../assets/values/string.json';
+
+import { Document, Page, Text, View, Image, StyleSheet, Font } from '@react-pdf/renderer';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+// Create styles
+const styles = StyleSheet.create({
+    page: {
+        padding: "1cm"
+    },
+    head: {
+        flexDirection: 'row',
+        height: "20%",
+    },
+    section: {
+        width: "33.3%",
+        height: "100%",
+        padding: 10,
+        flexGrow: 1,
+        display: "grid",
+        justifyContent: "center",
+        justifyItems: "center"
+
+    },
+    sectionLine: {
+        width: "100%",
+        flexDirection: 'row',
+    },
+    ItemColAvatar: {
+        width: "25%",
+        textAlign: "center",
+        display: "grid",
+        justifyContent: "center",
+        justifyItems: "center",
+        padding: "10px",
+        backgroundColor: '#efefef',
+        height: "100%",
+        alignContent: "center",
+    },
+    ProfilePhoto: {
+        borderRadius: "10px",
+        overflow: "hidden",
+        position: "relative",
+        border: "1px solid #666",
+        width: "110px",
+        height: "110px",
+        margin: "auto",
+    },
+    userName: {
+        marginBottom: 10,
+    },
+    infosUser: {
+        marginBottom: 10,
+    },
+    osIndentification: {
+        backgroundColor: '#efefef',
+        textAlign: "center",
+        display: "grid",
+        justifyContent: "center",
+        justifyItems: "center",
+        height: "100%"
+    },
+    QuadrosOS: {
+        backgroundColor: "#fff",
+        padding: "10px",
+        border: "1px solid #abaeb1",
+        margin: "0px 0px 10px",
+        borderRadius: "5px"
+    },
+    fontWeight: { fontWeight: "500" },
+    h2: { fontSize: "16px", },
+    h4: { fontSize: "14px", },
+    h6: { fontSize: "12px", },
+    h8: { fontSize: "10px", },
+    marginBottom5: { marginBottom: 5, },
+    marginBottom10: { marginBottom: 10, },
+    marginLeft5: { marginLeft: 5, },
+    marginLeft10: { marginLeft: 10, },
+    textJustify: { textAlign: "justify" },
+    hr: {
+        height: "1px",
+        backgroundColor: "#c8c9ca",
+        margin: "5px 0 10px"
+    },
+    col: {
+        width: "50%",
+        paddingRight: "12px",
+        paddingLeft: "12px",
+    },
+    intoCol: {
+        padding: "20px",
+        textAlign: "center",
+        backgroundColor: '#efefef',
+    },
+    footer: {
+        width: "111%",
+        gridArea: "f",
+        backgroundColor: "#2228",
+        padding: "10px 20px",
+        color: "#fff",
+        textAlign: "center",
+        position: "absolute",
+        bottom: "0px"
+    }
+});
+
+Font.register({
+    family: 'Ubuntu',
+    src: `https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&amp;display=swap`,
+});
+
+/**
+ * @name Element-Pdf_Factory
+ * @description Define a estrutura do pdf
+ */
+const OsPdf = (props) => {
+    return (
+        &lt;Document>
+            &lt;Page size="A4" style={styles.page}>
+
+                &lt;View style={[styles.head, styles.QuadrosOS]}>
+                    &lt;View style={styles.ItemColAvatar}>
+                        &lt;View style={styles.ProfilePhoto}>
+                            &lt;Image
+                                style={{
+                                    position: "absolute",
+                                    left: props.user_photo[1].left + "px",
+                                    top: props.user_photo[1].top + "px",
+                                    width: props.user_photo[1].width + "%"
+                                }}
+                                src={props.user_photo[0]}
+                            />
+                        &lt;/View>
+                    &lt;/View>
+                    &lt;View style={styles.section}>
+
+                        &lt;Text style={[styles.userName, styles.h2, styles.fontWeight]}>
+                            {props.user_name}
+                        &lt;/Text>
+
+                        &lt;Text style={[styles.infosUser, styles.h6]}>
+                            {props.user_address.rua}, {props.user_address.bairro}, {props.user_address.cidade}, {props.user_address.estado}
+                        &lt;/Text>
+                        &lt;Text style={[styles.infosUser, styles.h6]}>
+                            {props.user_telephone}
+                        &lt;/Text>
+
+                        &lt;Text style={[styles.infosUser, styles.h6]}>
+                            {props.user_email}
+                        &lt;/Text>
+                    &lt;/View>
+                    &lt;View style={styles.section}>
+                        &lt;View style={styles.osIndentification}>
+                            &lt;Text style={styles.h6}>{String.osCodeAcess}:&lt;/Text>
+                            &lt;Text style={[styles.h4, styles.fontWeight]}>{props.service_order_id}&lt;/Text>
+                            &lt;Text style={styles.h6}>{String.osPassAcess}:&lt;/Text>
+                            &lt;Text style={[styles.h4, styles.fontWeight]}>{props.senha}&lt;/Text>
+                        &lt;/View>
+                    &lt;/View>
+                &lt;/View>
+
+                &lt;View style={styles.QuadrosOS}>
+                    &lt;Text style={[styles.h4, styles.fontWeight, styles.marginBottom10]}>{String.osCATinfo}:&lt;/Text>
+
+                    &lt;View style={styles.hr} />
+
+                    &lt;View style={styles.marginLeft10}>
+                        &lt;Text style={[styles.h6, styles.marginBottom5]}>{String.owner_name}: {props.owner_name}&lt;/Text>
+
+                        &lt;Text style={[styles.h6, styles.marginBottom5]}>{String.owner_information}: {props.owner_information}&lt;/Text>
+                    &lt;/View>
+                &lt;/View>
+                &lt;View style={styles.QuadrosOS}>
+
+                    &lt;Text style={[styles.h4, styles.fontWeight, styles.marginBottom10]}>{String.osInfoService}:&lt;/Text>
+                    &lt;View style={styles.hr} />
+
+                    &lt;Text style={[styles.h6, styles.marginBottom5]}>{String.device_name}: {props.device_name}&lt;/Text>
+                    &lt;View style={styles.hr} />
+
+                    &lt;Text style={styles.h6}>{String.description}:&lt;/Text>
+                    &lt;Text style={[styles.h6, styles.marginBottom5, styles.textJustify, styles.marginLeft5]}>{props.description}&lt;/Text>
+                    &lt;View style={styles.hr} />
+
+                    &lt;View style={styles.sectionLine}>
+                        &lt;View style={styles.col}>
+                            &lt;View style={styles.intoCol}>
+                                &lt;Text style={styles.h8}>{String.delivery_date}: {props.delivery_date ? props.delivery_date.replace(/([0-9]+)-([0-9]+)-([0-9]+)T(\S+)/, "$3/$2/$1") : null}&lt;/Text>
+                            &lt;/View>
+                        &lt;/View>
+                        &lt;View style={styles.col}>
+                            &lt;View style={styles.intoCol}>
+                                &lt;Text style={styles.h8}>{String.completion_date}: {props.completion_date ? props.completion_date.replace(/([0-9]+)-([0-9]+)-([0-9]+)T(\S+)/, "$3/$2/$1") : null}&lt;/Text>
+                            &lt;/View>
+                        &lt;/View>
+                    &lt;/View>
+                    &lt;View style={styles.hr} />
+
+                    &lt;Text style={styles.h6}>{String.service_value}:  &lt;Text style={styles.fontWeight}>{String.tipoMoeda} {props.service_value}&lt;/Text>&lt;/Text>
+                &lt;/View>
+
+                &lt;View style={styles.footer}>
+                    &lt;Text style={styles.h6}>{String.devs}&lt;/Text>
+                &lt;/View>
+            &lt;/Page>
+        &lt;/Document>
+    )
+};
+
+export default OsPdf;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Classes</h3><ul><li><a href="Button_UserP.html">Button_UserP</a></li><li><a href="deleteUserAlert.html">deleteUserAlert</a></li><li><a href="Footer_off.html">Footer_off</a></li><li><a href="Footer_on.html">Footer_on</a></li><li><a href="HeaderContainerOff.html">HeaderContainerOff</a></li><li><a href="HeaderContainerOn.html">HeaderContainerOn</a></li><li><a href="InfoAlert.html">InfoAlert</a></li><li><a href="ItemListOs_On.html">ItemListOs_On</a></li><li><a href="ItemLoginOff.html">ItemLoginOff</a></li><li><a href="ItemUser.html">ItemUser</a></li><li><a href="ListFactory.html">ListFactory</a></li><li><a href="ViewOpenOs_on.html">ViewOpenOs_on</a></li><li><a href="ViewOS.html">ViewOS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppDispatcher-api">AppDispatcher-api</a></li><li><a href="global.html#AppDispatcher-createOsManager">AppDispatcher-createOsManager</a></li><li><a href="global.html#AppDispatcher-deleteOsManager">AppDispatcher-deleteOsManager</a></li><li><a href="global.html#AppDispatcher-editOsManager">AppDispatcher-editOsManager</a></li><li><a href="global.html#AppDispatcher-listOSRequestManager">AppDispatcher-listOSRequestManager</a></li><li><a href="global.html#AppDispatcher-loginManager">AppDispatcher-loginManager</a></li><li><a href="global.html#AppDispatcher-osInfosResultManager">AppDispatcher-osInfosResultManager</a></li><li><a href="global.html#AppDispatcher-osValidateManager">AppDispatcher-osValidateManager</a></li><li><a href="global.html#AppDispatcher-registerProfileManager">AppDispatcher-registerProfileManager</a></li><li><a href="global.html#AppDispatcher-searchResultManager">AppDispatcher-searchResultManager</a></li><li><a href="global.html#AppDispatcher-tokenManager-addDays">AppDispatcher-tokenManager-addDays</a></li><li><a href="global.html#AppDispatcher-tokenManager-checkToken">AppDispatcher-tokenManager-checkToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-createToken">AppDispatcher-tokenManager-createToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-deleteToken">AppDispatcher-tokenManager-deleteToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-readToken">AppDispatcher-tokenManager-readToken</a></li><li><a href="global.html#AppDispatcher-updateInfosRequestManager">AppDispatcher-updateInfosRequestManager</a></li><li><a href="global.html#AppDispatcher-userInfosRequestManager">AppDispatcher-userInfosRequestManager</a></li><li><a href="global.html#AppScreen-Index">AppScreen-Index</a></li><li><a href="global.html#AppScreen-Login">AppScreen-Login</a></li><li><a href="global.html#AppScreen-Open_os">AppScreen-Open_os</a></li><li><a href="global.html#AppScreen-Painel_user">AppScreen-Painel_user</a></li><li><a href="global.html#AppScreen-Registrar">AppScreen-Registrar</a></li><li><a href="global.html#AppScreen-Search">AppScreen-Search</a></li><li><a href="global.html#Components-Painel-Add_OS">Components-Painel-Add_OS</a></li><li><a href="global.html#Components-Painel-Adivanced_view_os">Components-Painel-Adivanced_view_os</a></li><li><a href="global.html#Components-Painel-Edit_OS">Components-Painel-Edit_OS</a></li><li><a href="global.html#Components-Painel-Edit_user">Components-Painel-Edit_user</a></li><li><a href="global.html#Components-Painel-logout">Components-Painel-logout</a></li><li><a href="global.html#Components-Painel-search">Components-Painel-search</a></li><li><a href="global.html#Element-Pdf_Factory">Element-Pdf_Factory</a></li><li><a href="global.html#Element-Private_Route">Element-Private_Route</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 09:06:56 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

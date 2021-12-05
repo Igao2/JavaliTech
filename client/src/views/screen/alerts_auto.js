@@ -12,6 +12,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer_off from '../components/footers/footers_off';
 import InfoAlert from '../components/painel/info_alert';
 
+/**
+ * @function AppScreen-Index
+ * @description Constrói a tela de alertas
+ * 
+ */
 function App() {
 
     /** Parametros do alert */

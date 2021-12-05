@@ -1,21 +1,5 @@
 ﻿import styled from 'styled-components';
 
-/**
- *  JavaliTech Team
- * 
- *  Feito por:
- *  @author CARLOS EDUARDO SANTOS BARBOSA DE CARVALHO 
- *  @author CESAR APARECIDO LOURENCO
- *  @author DENILSON FABIANO DE ARAUJO
- *  @author ELEAZAR JOSE RIBEIRO
- *  @author IGOR DA SILVA COSTA
- *  @author LEANDRO DE MEIRELLES
- * 
- *  @version 1.0
- * 
- */
-
-//-------------------------------------------------------------
 export const Container = styled.div`
 	display: grid;
 	grid-template-columns: 1fr;

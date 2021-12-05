@@ -1,3 +1,4 @@
+// @ts-check
 import React from "react";
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -26,7 +27,10 @@ import Alert from './views/screen/alerts_auto';
 
 const tokenManager = require('./dispatcher/tokenManager');
 
-/** Esta arrow function cria um componente que protege as rotas que não podem ser acesa das por usuários que não estão logados */
+/**
+ * @name Element-Private_Route
+ * @description Esta arrow function cria um componente que protege as rotas que não podem ser acesa das por usuários que não estão logados 
+ */
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
         {...rest}

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/screen/search.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/screen/search.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/jsx-pascal-case */
+import React, { useState } from 'react';
+import Helmet from 'react-helmet';
+import String from '../../assets/values/string.json';
+import { BodyOff_buttom, BodyOff_top_off, BodyOff, ContainerOff, FooterOff, HeaderOff } from '../../assets/values/styles';
+
+import HeaderContainerOff from '../components/headers/header_off';
+import searchResultManager from '../../dispatcher/searchBarRequest';
+import osValidateManager from '../../dispatcher/osValidateRequest';
+
+
+import { Redirect } from "react-router-dom";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Input, Button, Alert, Form, FormGroup } from 'reactstrap';
+import Footer_off from '../components/footers/footers_off';
+import ViewOS from '../components/painel/view_os';
+import ViewOSClear from '../components/painel/view_os_clear';
+
+/**
+ * @function AppScreen-Search
+ * @description Constrói a tela que busca OS's
+ */
+function App() {
+
+	/** const useState para alertar errors, warnings, informs e etc... */
+	const [announcement, setAnnouncement] = useState({
+		enabled: 0,
+		type: "",
+		massage: ""
+	})
+
+	const [validaPassword, setValidaPassword] = useState(0)
+
+	/** const useState para o redirecionamento de tela. */
+	const redirect = useState(0);
+
+	/** const para inicializar os valores do campo de resultado de pesquisa OS */
+	const initValues = {
+		"service_order_id": "",
+		"owner_name": "",
+		"description": "",
+		"delivery_date": "0000-00-00T00:00:00.000Z",
+		"completion_date": "0000-00-00T00:00:00.000Z",
+		"status": "",
+		"service_value": "",
+		"user_name": "",
+		"user_photo": [(String.urlApi + "/userImages/standard_photo.png"), {
+			left: "0",
+			top: "0",
+			width: "100"
+		}]
+	};
+
+	const [inputState, setInputState] = useState({
+		osPass: 0,
+		searchText: 0
+	})
+
+
+	/** const useState para o resultado de pesquisa OS */
+	const [value, setValue] = useState(initValues);
+
+	const [osPass, setOsPass] = useState();
+	const [searchText, setSearchText] = useState();
+
+	/** const useState ativar e desativar a gif de loading do botão de cadastrar-se. */
+	const [loading, setLoading] = useState(0);
+
+	/**
+	* Esta arrow function pega o valor do Input "searchText" e armazena no useState “searchBar” e quando o número de caracteres digitados pelo usuário chega a 6, ele faz uma requisição ao server,  se o código da OS for válido o useState “value” é atualizado com as novas informações.
+	* @param {object} event - Informações do evento onChange.
+	* @param {string} event.target.value - valor do input.
+	* */
+	const onChangeEvent = event => {
+		let code = event.target.value.toUpperCase();
+		setSearchText(code);
+
+		setAnnouncement({ ..."", enabled: 0 })
+		setInputState({
+			osPass: 0,
+			searchText: 0
+		})
+
+		if (code.length === 6) {
+			searchResultManager(code).then(res => {
+				if (res.data === 204) {
+					setAnnouncement({
+						enabled: 1,
+						type: "warning",
+						massage: "Não existe nenhuma Ordem de Serviço com o código inserido!"
+					})
+					setInputState({
+						osPass: 0,
+						searchText: 2
+					})
+				}
+				else if (res.data === 417) {
+					setAnnouncement({
+						enabled: 1,
+						type: "dark",
+						massage: "Esta Ordem de Serviço pode ser acessada no momento. Por favor, tente novamente mais tarde."
+					})
+					setInputState({
+						osPass: 0,
+						searchText: 2
+					})
+				}
+				else if (res.data === 500) {
+					setAnnouncement({
+						enabled: 1,
+						type: "danger",
+						massage: String.error500
+					})
+					setInputState({
+						osPass: 0,
+						searchText: 2
+					})
+				}
+				else {
+					setValue(res.data)
+					setInputState({
+						osPass: 0,
+						searchText: 1
+					})
+				}
+			}).catch(error => {
+				setAnnouncement({
+					enabled: 1,
+					type: "danger",
+					massage: String.error500
+				})
+				setInputState({
+					osPass: 0,
+					searchText: 2
+				})
+			});;
+
+		} else setValue(initValues);
+
+	}
+
+	const onChangeEventForPass = event => {
+		let code = event.target.value.toLowerCase();
+		setOsPass(code);
+
+		setAnnouncement({ ..."", enabled: 0 })
+	}
+
+	const enableValidaPassword = () => setValidaPassword(1);
+
+	const disableValidaPassword = () => setValidaPassword(0);
+
+	const viewOs = event => {
+		event.preventDefault();
+		var osPass = event.target[0].value;
+		setLoading(1);
+
+		if (osPass.length === 6) {
+			osValidateManager(searchText, osPass).then(res => {
+				if (res.data === 200) {
+					redirect[1](1)
+				} else if (res.data === 401) {
+					setAnnouncement({
+						enabled: 1,
+						type: "warning",
+						massage: String.OS_error_senha
+					})
+					setInputState({
+						osPass: 2,
+						searchText: 0
+					})
+					setLoading(0);
+				}
+				else {
+					setAnnouncement({
+						enabled: 1,
+						type: "danger",
+						massage: String.error500
+					})
+					setInputState({
+						osPass: 2,
+						searchText: 0
+					})
+					setLoading(0);
+				}
+			}).catch(error => {
+				setAnnouncement({
+					enabled: 1,
+					type: "danger",
+					massage: String.error500
+				})
+				setInputState({
+					osPass: 2,
+					searchText: 0
+				})
+				setLoading(0);
+			});;
+
+		} else {
+			setAnnouncement({
+				enabled: 1,
+				type: "warning",
+				massage: String.OS_error_senha
+			})
+			setInputState({
+				osPass: 2,
+				searchText: 0
+			})
+			setLoading(0);
+		}
+
+	};
+
+	return (
+		&lt;div>
+			{redirect[0] ? &lt;Redirect to={'/viewOs/' + searchText + "/" + osPass} /> : null}
+			&lt;Helmet>
+				&lt;title>{String.nomeApp_sistema}&lt;/title>
+				&lt;meta name="title" content={String.nomeApp_sistema} />
+				&lt;meta property="og:title" content={String.nomeApp_sistema} />
+				&lt;meta property="og:site_name" content={String.nomeApp_sistema} />
+				&lt;meta property="og:description" content={String.nomeApp_descricao} />
+			&lt;/Helmet>
+
+			&lt;ContainerOff>
+				&lt;HeaderOff>
+
+					&lt;HeaderContainerOff />
+
+				&lt;/HeaderOff>
+				{validaPassword ?
+					&lt;BodyOff>
+
+						&lt;BodyOff_top_off>
+
+							{/* danger: vermelho | warning: amarelo | info: azul | dark: cinza*/}
+							{announcement.enabled ? &lt;Alert color={announcement.type} dismissible>{announcement.massage}&lt;/Alert> : null}
+
+							&lt;h2>{String.search_OS}&lt;/h2>
+
+						&lt;/BodyOff_top_off>
+
+						&lt;BodyOff_buttom>
+
+							&lt;Form onSubmit={viewOs}>
+								&lt;FormGroup row>
+									&lt;Input
+										className={(state => {
+											if (state === 0) return ("")
+											else if (state === 1) return ("is-valid")
+											else if (state === 2) return ("is-invalid")
+										})(inputState.osPass)}
+										type="text"
+										maxLength="6"
+										placeholder={String.pass_OS}
+										name='osPass'
+										value={osPass}
+										onChange={onChangeEventForPass}
+									/>
+
+									{loading ?
+										&lt;Button type="submit">&lt;img alt="loading.gif" style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" />&lt;/Button>
+										:
+										&lt;Button type="submit">{String.service_view}&lt;/Button>
+									}
+
+									&lt;Button onClick={e => disableValidaPassword()}>
+										{String.cancel}
+									&lt;/Button>
+								&lt;/FormGroup>
+							&lt;/Form>
+							&lt;ViewOSClear
+								service_order_id={value.service_order_id}
+								owner_name={value.owner_name}
+								description={value.description}
+								delivery_date={value.delivery_date}
+								completion_date={value.completion_date}
+								status={value.status}
+								service_value={value.service_value}
+								user_name={value.user_name}
+								user_photo={value.user_photo}
+							/>
+
+						&lt;/BodyOff_buttom>
+
+					&lt;/BodyOff>
+					:
+					&lt;BodyOff>
+
+						&lt;BodyOff_top_off>
+
+							{/* danger: vermelho | warning: amarelo | info: azul | dark: cinza*/}
+							{announcement.enabled ? &lt;Alert color={announcement.type} dismissible>{announcement.massage}&lt;/Alert> : null}
+
+							&lt;h2>{String.search_OS}&lt;/h2>
+
+						&lt;/BodyOff_top_off>
+
+						&lt;BodyOff_buttom>
+
+							&lt;Form>
+								&lt;FormGroup row>
+									&lt;Input
+										className={(state => {
+											if (state === 0) return ("")
+											else if (state === 1) return ("is-valid")
+											else if (state === 2) return ("is-invalid")
+										})(inputState.searchText)}
+										type="text"
+										maxLength="6"
+										placeholder={String.cod_OS}
+										name='searchText'
+										value={searchText}
+										onChange={onChangeEvent}
+									/>
+								&lt;/FormGroup>
+							&lt;/Form>
+							&lt;ViewOS
+								service_order_id={value.service_order_id}
+								owner_name={value.owner_name}
+								description={value.description}
+								delivery_date={value.delivery_date}
+								completion_date={value.completion_date}
+								status={value.status}
+								service_value={value.service_value}
+								user_name={value.user_name}
+								user_photo={value.user_photo}
+								enableValidaPassword={enableValidaPassword}
+							/>
+
+						&lt;/BodyOff_buttom>
+
+					&lt;/BodyOff>
+				}
+				&lt;FooterOff>
+
+					&lt;Footer_off />
+
+				&lt;/FooterOff>
+			&lt;/ContainerOff>
+		&lt;/div >
+	);
+}
+
+export default App;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Classes</h3><ul><li><a href="Button_UserP.html">Button_UserP</a></li><li><a href="deleteUserAlert.html">deleteUserAlert</a></li><li><a href="Footer_off.html">Footer_off</a></li><li><a href="Footer_on.html">Footer_on</a></li><li><a href="HeaderContainerOff.html">HeaderContainerOff</a></li><li><a href="HeaderContainerOn.html">HeaderContainerOn</a></li><li><a href="InfoAlert.html">InfoAlert</a></li><li><a href="ItemListOs_On.html">ItemListOs_On</a></li><li><a href="ItemLoginOff.html">ItemLoginOff</a></li><li><a href="ItemUser.html">ItemUser</a></li><li><a href="ListFactory.html">ListFactory</a></li><li><a href="ViewOpenOs_on.html">ViewOpenOs_on</a></li><li><a href="ViewOS.html">ViewOS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppDispatcher-api">AppDispatcher-api</a></li><li><a href="global.html#AppDispatcher-createOsManager">AppDispatcher-createOsManager</a></li><li><a href="global.html#AppDispatcher-deleteOsManager">AppDispatcher-deleteOsManager</a></li><li><a href="global.html#AppDispatcher-editOsManager">AppDispatcher-editOsManager</a></li><li><a href="global.html#AppDispatcher-listOSRequestManager">AppDispatcher-listOSRequestManager</a></li><li><a href="global.html#AppDispatcher-loginManager">AppDispatcher-loginManager</a></li><li><a href="global.html#AppDispatcher-osInfosResultManager">AppDispatcher-osInfosResultManager</a></li><li><a href="global.html#AppDispatcher-osValidateManager">AppDispatcher-osValidateManager</a></li><li><a href="global.html#AppDispatcher-registerProfileManager">AppDispatcher-registerProfileManager</a></li><li><a href="global.html#AppDispatcher-searchResultManager">AppDispatcher-searchResultManager</a></li><li><a href="global.html#AppDispatcher-tokenManager-addDays">AppDispatcher-tokenManager-addDays</a></li><li><a href="global.html#AppDispatcher-tokenManager-checkToken">AppDispatcher-tokenManager-checkToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-createToken">AppDispatcher-tokenManager-createToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-deleteToken">AppDispatcher-tokenManager-deleteToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-readToken">AppDispatcher-tokenManager-readToken</a></li><li><a href="global.html#AppDispatcher-updateInfosRequestManager">AppDispatcher-updateInfosRequestManager</a></li><li><a href="global.html#AppDispatcher-userInfosRequestManager">AppDispatcher-userInfosRequestManager</a></li><li><a href="global.html#AppScreen-Index">AppScreen-Index</a></li><li><a href="global.html#AppScreen-Login">AppScreen-Login</a></li><li><a href="global.html#AppScreen-Open_os">AppScreen-Open_os</a></li><li><a href="global.html#AppScreen-Painel_user">AppScreen-Painel_user</a></li><li><a href="global.html#AppScreen-Registrar">AppScreen-Registrar</a></li><li><a href="global.html#AppScreen-Search">AppScreen-Search</a></li><li><a href="global.html#Components-Painel-Add_OS">Components-Painel-Add_OS</a></li><li><a href="global.html#Components-Painel-Adivanced_view_os">Components-Painel-Adivanced_view_os</a></li><li><a href="global.html#Components-Painel-Edit_OS">Components-Painel-Edit_OS</a></li><li><a href="global.html#Components-Painel-Edit_user">Components-Painel-Edit_user</a></li><li><a href="global.html#Components-Painel-logout">Components-Painel-logout</a></li><li><a href="global.html#Components-Painel-search">Components-Painel-search</a></li><li><a href="global.html#Element-Pdf_Factory">Element-Pdf_Factory</a></li><li><a href="global.html#Element-Private_Route">Element-Private_Route</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 09:06:56 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

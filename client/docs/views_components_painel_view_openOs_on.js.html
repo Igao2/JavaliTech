@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/components/painel/view_openOs_on.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/components/painel/view_openOs_on.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/jsx-pascal-case */
+import React from 'react';
+import String from '../../../assets/values/string.json';
+
+import { AlertDelet, ItemColAvatar, ProfilePhoto, ItemColTextOS, ItemDiv, QuadrosOS } from '../../../assets/values/styles';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Col, Row, Container, Button } from 'reactstrap';
+
+import avatarBackground from '../../../assets/images/icons/backgroundAvatar.png';
+
+import { PDFDownloadLink } from '@react-pdf/renderer';
+
+import OsPdf from './pdfFactory';
+
+/**
+ * @class
+ * @description Componente que gera uma tela de visualização da OS
+ */
+class ViewOpenOs_on extends React.Component {
+    render() {
+        return (
+            &lt;Container>
+                &lt;br />
+                &lt;QuadrosOS>
+                    &lt;h6>{String.osInfoBasic}: &lt;/h6>
+                    &lt;Row md="3" sm="3" xs="1">
+                        &lt;Col>
+                            &lt;ItemColAvatar>
+                                &lt;ProfilePhoto imgUrl={avatarBackground}>
+                                    &lt;img
+                                        src={this.props.user_photo[0]}
+                                        alt="Imagem"
+                                        style={{
+                                            left: this.props.user_photo[1].left + "px",
+                                            top: this.props.user_photo[1].top + "px",
+                                            width: this.props.user_photo[1].width + "%"
+                                        }}
+                                    />
+                                &lt;/ProfilePhoto>
+
+                            &lt;/ItemColAvatar>
+                        &lt;/Col>
+                        &lt;Col>
+                            &lt;ItemColTextOS>
+                                &lt;p>
+                                    &lt;h2>{this.props.user_name}&lt;/h2>
+                                    {this.props.user_address.rua}, {this.props.user_address.bairro}, {this.props.user_address.cidade}, {this.props.user_address.estado}
+                                    &lt;br />&lt;br />
+                                    {this.props.user_telephone}
+                                    &lt;br />
+                                    {this.props.user_email}
+
+                                &lt;/p>
+                            &lt;/ItemColTextOS>
+                        &lt;/Col>
+                        &lt;Col>
+                            &lt;ItemColAvatar>
+
+                                &lt;h6>{String.osCodeAcess}:&lt;/h6>
+                                &lt;h4>{this.props.service_order_id}&lt;/h4>
+
+                                &lt;h6>{String.osPassAcess}:&lt;/h6>
+                                &lt;h4>{this.props.senha}&lt;/h4>
+                            &lt;/ItemColAvatar>
+                        &lt;/Col>
+                    &lt;/Row>
+                &lt;/QuadrosOS>
+                &lt;QuadrosOS>
+                    &lt;h4>{String.osCATinfo}:&lt;/h4>
+                    &lt;ItemDiv />
+
+                    &lt;h6>{String.owner_name}: {this.props.owner_name}&lt;/h6>
+                    &lt;h6>{String.owner_information}: {this.props.owner_information}&lt;/h6>
+
+                &lt;/QuadrosOS>
+                &lt;QuadrosOS>
+                    &lt;h4>{String.osInfoService}: &lt;/h4>
+                    &lt;ItemDiv />
+
+                    &lt;h6>{String.device_name}: {this.props.device_name}&lt;/h6>
+                    &lt;ItemDiv />
+                    &lt;h6>{String.description}:&lt;/h6>
+                    &lt;h6>{this.props.description}&lt;/h6>
+                    &lt;ItemDiv />
+                    &lt;Container>
+                        &lt;Row md="2" sm="2" xs="1">
+                            &lt;Col>
+                                &lt;AlertDelet>
+                                    &lt;h6>{String.delivery_date}: {this.props.delivery_date ? this.props.delivery_date.replace(/([0-9]+)-([0-9]+)-([0-9]+)T(\S+)/, "$3/$2/$1") : null}&lt;/h6>
+                                &lt;/AlertDelet>
+                            &lt;/Col>
+                            &lt;Col>
+                                &lt;AlertDelet>
+                                    &lt;h6>{String.completion_date}: {this.props.completion_date ? this.props.completion_date.replace(/([0-9]+)-([0-9]+)-([0-9]+)T(\S+)/, "$3/$2/$1") : null}&lt;/h6>
+                                &lt;/AlertDelet>
+                            &lt;/Col>
+                        &lt;/Row>
+                    &lt;/Container>
+
+                    &lt;ItemDiv />
+                    &lt;h6>{String.service_value}:  &lt;b>{String.tipoMoeda} {this.props.service_value}&lt;/b>&lt;/h6>
+
+                &lt;/QuadrosOS>
+                &lt;QuadrosOS>
+                    &lt;h6>{String.osPDF}&lt;/h6>
+                    &lt;PDFDownloadLink document={&lt;OsPdf {...(this.props)} />} fileName="somename.pdf">
+                        {
+                            ({ loading }) => loading ?
+                                &lt;Button
+                                    block
+                                    color="dark"
+                                >
+                                    &lt;img alt="loading.gif" style={{ width: "3%" }} src="https://i.imgur.com/TRbq1bq.gif" />
+                                &lt;/Button> : &lt;Button
+                                    block
+                                    color="dark"
+                                >
+                                    {String.creatPDF}
+                                &lt;/Button>
+                        }
+                    &lt;/PDFDownloadLink>
+                &lt;/QuadrosOS>
+
+
+            &lt;/Container>
+
+        )
+    }
+}
+
+export default ViewOpenOs_on;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Classes</h3><ul><li><a href="Button_UserP.html">Button_UserP</a></li><li><a href="deleteUserAlert.html">deleteUserAlert</a></li><li><a href="Footer_off.html">Footer_off</a></li><li><a href="Footer_on.html">Footer_on</a></li><li><a href="HeaderContainerOff.html">HeaderContainerOff</a></li><li><a href="HeaderContainerOn.html">HeaderContainerOn</a></li><li><a href="InfoAlert.html">InfoAlert</a></li><li><a href="ItemListOs_On.html">ItemListOs_On</a></li><li><a href="ItemLoginOff.html">ItemLoginOff</a></li><li><a href="ItemUser.html">ItemUser</a></li><li><a href="ListFactory.html">ListFactory</a></li><li><a href="ViewOpenOs_on.html">ViewOpenOs_on</a></li><li><a href="ViewOS.html">ViewOS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppDispatcher-api">AppDispatcher-api</a></li><li><a href="global.html#AppDispatcher-createOsManager">AppDispatcher-createOsManager</a></li><li><a href="global.html#AppDispatcher-deleteOsManager">AppDispatcher-deleteOsManager</a></li><li><a href="global.html#AppDispatcher-editOsManager">AppDispatcher-editOsManager</a></li><li><a href="global.html#AppDispatcher-listOSRequestManager">AppDispatcher-listOSRequestManager</a></li><li><a href="global.html#AppDispatcher-loginManager">AppDispatcher-loginManager</a></li><li><a href="global.html#AppDispatcher-osInfosResultManager">AppDispatcher-osInfosResultManager</a></li><li><a href="global.html#AppDispatcher-osValidateManager">AppDispatcher-osValidateManager</a></li><li><a href="global.html#AppDispatcher-registerProfileManager">AppDispatcher-registerProfileManager</a></li><li><a href="global.html#AppDispatcher-searchResultManager">AppDispatcher-searchResultManager</a></li><li><a href="global.html#AppDispatcher-tokenManager-addDays">AppDispatcher-tokenManager-addDays</a></li><li><a href="global.html#AppDispatcher-tokenManager-checkToken">AppDispatcher-tokenManager-checkToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-createToken">AppDispatcher-tokenManager-createToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-deleteToken">AppDispatcher-tokenManager-deleteToken</a></li><li><a href="global.html#AppDispatcher-tokenManager-readToken">AppDispatcher-tokenManager-readToken</a></li><li><a href="global.html#AppDispatcher-updateInfosRequestManager">AppDispatcher-updateInfosRequestManager</a></li><li><a href="global.html#AppDispatcher-userInfosRequestManager">AppDispatcher-userInfosRequestManager</a></li><li><a href="global.html#AppScreen-Index">AppScreen-Index</a></li><li><a href="global.html#AppScreen-Login">AppScreen-Login</a></li><li><a href="global.html#AppScreen-Open_os">AppScreen-Open_os</a></li><li><a href="global.html#AppScreen-Painel_user">AppScreen-Painel_user</a></li><li><a href="global.html#AppScreen-Registrar">AppScreen-Registrar</a></li><li><a href="global.html#AppScreen-Search">AppScreen-Search</a></li><li><a href="global.html#Components-Painel-Add_OS">Components-Painel-Add_OS</a></li><li><a href="global.html#Components-Painel-Adivanced_view_os">Components-Painel-Adivanced_view_os</a></li><li><a href="global.html#Components-Painel-Edit_OS">Components-Painel-Edit_OS</a></li><li><a href="global.html#Components-Painel-Edit_user">Components-Painel-Edit_user</a></li><li><a href="global.html#Components-Painel-logout">Components-Painel-logout</a></li><li><a href="global.html#Components-Painel-search">Components-Painel-search</a></li><li><a href="global.html#Element-Pdf_Factory">Element-Pdf_Factory</a></li><li><a href="global.html#Element-Private_Route">Element-Private_Route</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 09:06:56 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
