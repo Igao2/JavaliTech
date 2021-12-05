@@ -3,7 +3,17 @@ const mysqlConnection = require('../database/connection');
 const fs = require('fs')
 const definitions = require('../assets/definitions.json');
 
+/**
+ * @async
+ * @class
+ * @description Pesquisa se uma determinada OS existe
+ */
 class SearchBar {
+    /**
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.params.osId Contém o codico de uma determinada OS
+     * @param {object} res "response"
+     */
     searchQuery(req, res) {
         const codeId = req.params.osId;
 

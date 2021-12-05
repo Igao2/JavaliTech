@@ -1,6 +1,12 @@
 const mysql = require('mysql');
 const mysqlConnection = require('../database/connection');
 
+/**
+ * @async
+ * @module Model-osCodeFactory
+ * @description verifica o tamanho, formato e tipo das informações
+ * @returns {Array}
+ */
 module.exports = class osCodeFactory {
 
     newOsCode() {

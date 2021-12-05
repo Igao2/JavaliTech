@@ -1,7 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-
 /**
  *  @file index.js é o arquivo de execução deste sistema
  *
@@ -15,4 +11,9 @@ import App from './App';
  *  @author LEANDRO DE MEIRELLES
  *
  */
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
 ReactDOM.render(<App />, document.getElementById('root'));

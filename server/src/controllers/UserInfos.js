@@ -3,7 +3,17 @@ const mysqlConnection = require('../database/connection');
 const fs = require('fs')
 const definitions = require('../assets/definitions.json');
 
+/**
+ * @async
+ * @class
+ * @description Retorna informações básicas do usuário
+ */
 class UserInfos {
+    /**
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.userId.id Contém o ID do usuario
+     * @param {object} res "response"
+     */
     UserInfosQuery(req, res) {
         const userId = req.userId.id;
 

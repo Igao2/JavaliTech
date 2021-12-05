@@ -6,7 +6,21 @@ const validateInformation = require('../Model/validateInformation');
 const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(definitions.bcryptSalt);
 
+/**
+ * @async
+ * @class
+ * @description Registra um novo usuário
+ */
 class Register {
+
+    /**
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.body.formInputs Contém as informaçoes para registro
+     * @param {object} req.file Contém as propriedades da imagem (foto de perfil)
+     * @param {string} req.file.path Contém o diretório da imagem (foto de perfil) temporária
+     * @param {string} req.file.originalname Contém o nome da imagem (foto de perfil) original
+     * @param {object} res "response"
+     */
     registerQuery(req, res) {
 
         const formInputs = JSON.parse(req.body.formInputs);

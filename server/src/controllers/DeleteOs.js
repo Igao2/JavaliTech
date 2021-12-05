@@ -1,12 +1,19 @@
 const mysql = require('mysql');
 const mysqlConnection = require('../database/connection');
-const fs = require('fs')
-const definitions = require('../assets/definitions.json');
-const validateInformation = require('../Model/validateInformation');
-const bcrypt = require('bcryptjs');
-const salt = bcrypt.genSaltSync(definitions.bcryptSalt);
 
+/**
+ * @async
+ * @class
+ * @description Deleta uma OS específica
+ */
 class DeleteOs {
+
+    /**
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.userId.id Contém o ID do usuário
+     * @param {string} req.params.osId Contém o ID da OS
+     * @param {object} res "response"
+    */
     deleteOsQuery(req, res) {
         const userId = req.userId.id;
         const codeId = req.params.osId;

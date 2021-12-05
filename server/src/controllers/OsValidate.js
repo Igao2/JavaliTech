@@ -3,7 +3,19 @@ const mysqlConnection = require('../database/connection');
 const fs = require('fs')
 const definitions = require('../assets/definitions.json');
 
+/**
+ * @async
+ * @class
+ * @description Verifica se existe uma OS com determinados "ID" e "senha"
+ */
 class OsValidate {
+
+    /**
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.params.osId  Contém o ID da OS
+     * @param {string} req.params.osPass Contém a senha da OS
+     * @param {object} res "response"
+     */
     validateQuery(req, res) {
         const codeId = req.params.osId;
         const osPass = req.params.osPass;

@@ -1,18 +1,26 @@
 const multer = require('multer');
 
-module.exports = (multer({
-    storage: multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, './public/userImages')
-        }
-    }),
-    fileFilter: (req, file, cb) => {
-        const extensaoImg = ['image/png', 'image/jpg', 'image/jpeg'].find(formatoAceito => formatoAceito == file.mimetype);
 
-        if (extensaoImg) {
-            return cb(null, true);
-        }
+module.exports = (
+    /**
+     * @module Middleware-multer
+     * @description armazena a imagem em um arquivo temporário
+     * @param {BinaryData} image - imagem em binário.
+     */
+    multer({
 
-        return cb(null, false);
-    }
-}));
+        storage: multer.diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, './public/userImages')
+            }
+        }),
+        fileFilter: (req, file, cb) => {
+            const extensaoImg = ['image/png', 'image/jpg', 'image/jpeg'].find(formatoAceito => formatoAceito == file.mimetype);
+
+            if (extensaoImg) {
+                return cb(null, true);
+            }
+
+            return cb(null, false);
+        }
+    }));

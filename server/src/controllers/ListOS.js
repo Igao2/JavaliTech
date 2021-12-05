@@ -3,7 +3,20 @@ const mysqlConnection = require('../database/connection');
 const definitions = require('../assets/definitions.json');
 const advancedSearch = require('../Model/advancedSearchManager');
 
+/**
+ * @async
+ * @class
+ * @description Lista as OS's existes com um determinado filtro
+ */
 class ListOS {
+
+    /**
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.userId.id Contém o ID do usuario
+     * @param {string} req.params.page Contém a página atual da paginação da listagem de OS
+     * @param {string} req.query Contém os parâmetros do filtro da listagem de OS
+     * @param {object} res "response"
+     */
     listOSQuery(req, res) {
         const userId = req.userId.id;
         const page = req.params.page;

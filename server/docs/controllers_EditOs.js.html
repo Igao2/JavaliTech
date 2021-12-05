@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/EditOs.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/EditOs.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const mysql = require('mysql');
+const mysqlConnection = require('../database/connection');
+const fs = require('fs')
+const definitions = require('../assets/definitions.json');
+const validateInformation = require('../Model/validateInformation');
+const osCodeFactory = require('../Model/osCodeFactory');
+const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(definitions.bcryptSalt);
+
+/**
+ * @async
+ * @class
+ * @description Edita uma OS existente
+ */
+class EditOs {
+
+    /**
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.params.osId  Contém o ID da OS
+     * @param {object} req.body Contém as informações para a edição da OS
+     * @param {string} req.body.senha Contém a senha
+     * @param {string} req.body.ownerInformation Contém o texto de informação do cliente
+     * @param {string} req.body.ownerName Contém o nome do cliente
+     * @param {string} req.body.description Contém a descrição
+     * @param {string} req.body.deviceName Contém o nome do dispositivo
+     * @param {date} req.body.deliveryDate Contém a data de entrega
+     * @param {date} req.body.completionDate Contém a data estimada ou definitiva de conclusão
+     * @param {number} req.body.status Contém o status de progresso da OS
+     * @param {number} req.body.serviceValue Contém o valor/preço do serviço
+     * @param {object} res "response"
+     */
+    editOsQuery(req, res) {
+        const userId = req.userId.id;
+
+
+        try {
+            function editOsResultQuery() {
+                return new Promise((resolve, reject) => {
+                    const error500 = {
+                        erro: true,
+                        code: 500,
+                        erroDetails: {
+                            mensagem: "Ouve um erro em nosso sistema. Tente novamente mais tarde."
+                        }
+                    }
+
+                    let data = new Date();
+                    let hora = data.toJSON().split("T")[1];
+                    req.body.deliveryDate = req.body.deliveryDate.replace(/(\d{4}-\d{2}-\d{2})/gm, "$1") + " " + hora.slice(0, -6);
+                    let completionDate;
+                    if (req.body.completionDate != "") {
+                        completionDate = `completion_date='${req.body.completionDate.replace(/(\d{4}-\d{2}-\d{2})/gm, "$1") + " " + hora.slice(0, -6)}',`;
+                    } else {
+                        completionDate = ` `;
+                    }
+                    var sqlCode = `UPDATE service_order SET  owner_information='${req.body.ownerInformation}',    owner_name='${req.body.ownerName}',    description='${req.body.description}',    device_name='${req.body.deviceName}',    delivery_date='${req.body.deliveryDate}', ${completionDate}    status='${req.body.status}',    service_value='${req.body.serviceValue}' WHERE user_id=${userId} AND service_order_id='${req.body.serviceOrderId}' AND senha='${req.body.senha}';`;
+
+                    const connection = mysql.createConnection(mysqlConnection);
+
+                    connection.connect();
+
+                    connection.query((sqlCode), (error, response) => {
+                        if (error) {
+                            console.log(error); reject(error500);
+                        }
+                        else resolve();
+                    });
+
+                    connection.end();
+
+                })
+
+            }
+
+            editOsResultQuery()
+                .then(result => {
+                    res.json({
+                        erro: false,
+                        code: 200,
+                        mensagem: "Ordem de serviço atualizada com sucesso"
+                    });
+
+                }).catch(error => {
+                    res.json(error);
+                });
+
+        } catch (error) {
+
+            res.json({
+                erro: true,
+                code: 500,
+                erroDetails: {
+                    mensagem: "Ouve um erro em nosso sistema. Tente novamente mais tarde."
+                }
+            });
+
+        }
+    }
+
+
+}
+
+module.exports = new EditOs();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">JavaliTech</a></h2><h3>Modules</h3><ul><li><a href="module-Middleware-multer.html">Middleware-multer</a></li><li><a href="module-Middleware-validateToken.html">Middleware-validateToken</a></li><li><a href="module-Model-advancedSearch.html">Model-advancedSearch</a></li><li><a href="module-Model-osCodeFactory.html">Model-osCodeFactory</a></li><li><a href="module-Model-validateInformation.html">Model-validateInformation</a></li></ul><h3>Classes</h3><ul><li><a href="CreateOs.html">CreateOs</a></li><li><a href="DeleteOs.html">DeleteOs</a></li><li><a href="EditOs.html">EditOs</a></li><li><a href="ListOS.html">ListOS</a></li><li><a href="Login.html">Login</a></li><li><a href="OsInfos.html">OsInfos</a></li><li><a href="OsValidate.html">OsValidate</a></li><li><a href="Register.html">Register</a></li><li><a href="SearchBar.html">SearchBar</a></li><li><a href="UpdateInfos.html">UpdateInfos</a></li><li><a href="UserInfos.html">UserInfos</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Route-createOs">Route-createOs</a></li><li><a href="global.html#Route-deleteOs">Route-deleteOs</a></li><li><a href="global.html#Route-editOs">Route-editOs</a></li><li><a href="global.html#Route-listOS">Route-listOS</a></li><li><a href="global.html#Route-login">Route-login</a></li><li><a href="global.html#Route-OsInfos">Route-OsInfos</a></li><li><a href="global.html#Route-osValidate">Route-osValidate</a></li><li><a href="global.html#Route-register">Route-register</a></li><li><a href="global.html#Route-search">Route-search</a></li><li><a href="global.html#Route-updateInfos-delete">Route-updateInfos-delete</a></li><li><a href="global.html#Route-updateInfos-email">Route-updateInfos-email</a></li><li><a href="global.html#Route-updateInfos-image">Route-updateInfos-image</a></li><li><a href="global.html#Route-updateInfos-imageSetting">Route-updateInfos-imageSetting</a></li><li><a href="global.html#Route-updateInfos-senha">Route-updateInfos-senha</a></li><li><a href="global.html#Route-UserInfos">Route-UserInfos</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Dec 05 2021 17:54:03 GMT-0300 (Brasilia Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

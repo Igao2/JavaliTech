@@ -5,7 +5,19 @@ const validateInformation = require('../Model/validateInformation');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+/**
+ * @async
+ * @class
+ * @description Retorna um JWT caso as informações do usuário estejam certas
+ */
 class Login {
+    /**
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {object} req.body Contém as informações para o login
+     * @param {string} req.body.email Contém o email do usuario
+     * @param {string} req.body.password Contém a senha do usuário
+     * @param {object} res "response"
+     */
     loginQuery(req, res) {
 
         function registerResultQuery(data) {

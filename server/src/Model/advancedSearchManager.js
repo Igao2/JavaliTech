@@ -1,7 +1,17 @@
+/**
+ * @module Model-advancedSearch
+ * @description cria a condição para a busca de OS
+ * @param {object} filter - informações para o filtro de pesquisa.
+ * @param {string} filter.filterType - tipo de filtragen.
+ * @param {string} filter.dado - dados da filtragen.
+ * @returns {string}
+ */
 module.exports = class advancedSearch {
+
     constructor(filter) {
         this.filter = filter;
     }
+
     get getSqlCondision() {
         switch (this.filter.filterType) {
             case '0': return " "; break;

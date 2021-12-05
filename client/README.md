@@ -1,5 +1,4 @@
 
-# JavaliTech
 ## Desenvolvido por: JavaliTech Team
 
 #
@@ -30,14 +29,13 @@
 
 ### Rodar projeto
 ###### Para rodar o projeto, deve-se ter o React rodando, para isso, deve-se seguir o processo:
- - ######  1º Navegue até 'client' (```cd client```);
- - ######  2º Inicio o projeto com (```npm start```);
+ - ######  1º Inicio o projeto com (```npm start```);
 
 ### Regras do Commit
 ###### Para tornar o commit organizado e padronizado deve-se seguir as seguintes regras:
  - ######  Sammary 
  - ```MM/DD Mudança (em inglês)```
- - ######  Description 
+ - ######  Description (```opcional```)
  - ```- Escreva a descrição aqui... (em português)```
 
 #

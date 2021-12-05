@@ -1,3 +1,13 @@
+/**
+ * @module Model-validateInformation
+ * @description verifica o tamanho, formato e tipo das informações
+ * @param {object} info - informações a serem validadas.
+ * @param {number} info.type - define qual informação sera conferida.
+ * @param {string} info.name - nome do usuario.
+ * @param {string} info.email - email do usuario.
+ * @param {string} info.password - senha do usuario.
+ * @param {string} info.telephone - telefone do usuario.
+ */
 module.exports = class validateInformation {
     constructor(info) {
         this.type = info.type
@@ -6,6 +16,7 @@ module.exports = class validateInformation {
         this.password = info.password;
         this.telephone = info.telephone;
     }
+
 
     get checkAll() {
         let errors = {
@@ -183,3 +194,4 @@ module.exports = class validateInformation {
 
 }
 
+module.exports

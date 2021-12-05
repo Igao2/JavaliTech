@@ -6,7 +6,22 @@ const validateInformation = require('../Model/validateInformation');
 const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(definitions.bcryptSalt);
 
-class UserInfos {
+
+/**
+ * @async
+ * @class
+ * @description Edita as informações do usuário
+ */
+class UpdateInfos {
+
+    /**
+     * @description Altera as configurações da foto de perfil do usuário
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.userId.id Contém o ID do usuário
+     * @param {object} req.body Contém as informações para a edição das informações do usuário
+     * @param {object} req.body.imageSetting Contém as configurações da imagem (foto de perfil) do usuário
+     * @param {object} res "response"
+     */
     imageSetting(req, res) {
         const userId = req.userId.id;
 
@@ -72,6 +87,17 @@ class UserInfos {
             });
     }
 
+    /**
+     * @description Altera a foto de perfil do usuário
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.userId.id Contém o ID do usuário
+     * @param {object} req.file Contém as propriedades da imagem (foto de perfil)
+     * @param {string} req.file.path Contém o diretório da imagem (foto de perfil) temporária
+     * @param {string} req.file.originalname Contém o nome da imagem (foto de perfil) original
+     * @param {object} req.body Contém as informações para a edição das informações do usuário
+     * @param {object} req.body.formInputs.imageSetting Contém as configurações da imagem (foto de perfil) do usuário
+     * @param {object} res "response"
+     */
     image(req, res) {
         const userId = req.userId.id;
         const formInputs = JSON.parse(req.body.formInputs);
@@ -178,6 +204,13 @@ class UserInfos {
         }
     }
 
+    /**
+     * @description Altera o email do usuário
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.userId.id Contém o ID do usuário
+     * @param {object} req.body.email Contém o novo email do usuário
+     * @param {object} res "response"
+     */
     email(req, res) {
         const userId = req.userId.id;
 
@@ -248,6 +281,22 @@ class UserInfos {
             });
     }
 
+    /**
+     * @description Altera o os dados do usuário
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.userId.id Contém o ID do usuário
+     * @param {string} req.body.name Contém o nome do usuário
+     * @param {object} req.body.address Contém as informações do endereço
+     * @param {string} req.body.address.rua Contém o nome da rua
+     * @param {string} req.body.address.bairro Contém o nome do bairro
+     * @param {string} req.body.address.cidade Contém o nome da cidade
+     * @param {string} req.body.address.estado Contém o nome do estado
+     * @param {string} req.body.address.numero Contém o numero da casa
+     * @param {string} req.body.address.complemento Contém o complemento do endereço
+     * @param {string} req.body.address.cep Contém o cep
+     * @param {string} req.body.telephone Contém o telefone do usuário
+     * @param {object} res "response"
+     */
     dados(req, res) {
         const userId = req.userId.id;
 
@@ -362,6 +411,13 @@ class UserInfos {
             });
     }
 
+    /**
+     * @description Altera o senha do usuário
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.userId.id Contém o ID do usuário
+     * @param {string} req.body.password Contém a nova senha do usuário
+     * @param {object} res "response"
+     */
     senha(req, res) {
         const userId = req.userId.id;
 
@@ -404,6 +460,12 @@ class UserInfos {
             });
     }
 
+    /**
+     * @description Deleta a conta de um usuário
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.userId.id Contém o ID do usuário
+     * @param {object} res "response"
+     */
     deleteUser(req, res) {
         const userId = req.userId.id;
 
@@ -492,4 +554,4 @@ class UserInfos {
 
 }
 
-module.exports = new UserInfos();
+module.exports = new UpdateInfos();

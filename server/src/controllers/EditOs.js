@@ -7,7 +7,28 @@ const osCodeFactory = require('../Model/osCodeFactory');
 const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(definitions.bcryptSalt);
 
+/**
+ * @async
+ * @class
+ * @description Edita uma OS existente
+ */
 class EditOs {
+
+    /**
+     * @param {object} req Conteúdo da requisição "request"
+     * @param {string} req.params.osId  Contém o ID da OS
+     * @param {object} req.body Contém as informações para a edição da OS
+     * @param {string} req.body.senha Contém a senha
+     * @param {string} req.body.ownerInformation Contém o texto de informação do cliente
+     * @param {string} req.body.ownerName Contém o nome do cliente
+     * @param {string} req.body.description Contém a descrição
+     * @param {string} req.body.deviceName Contém o nome do dispositivo
+     * @param {date} req.body.deliveryDate Contém a data de entrega
+     * @param {date} req.body.completionDate Contém a data estimada ou definitiva de conclusão
+     * @param {number} req.body.status Contém o status de progresso da OS
+     * @param {number} req.body.serviceValue Contém o valor/preço do serviço
+     * @param {object} res "response"
+     */
     editOsQuery(req, res) {
         const userId = req.userId.id;
 

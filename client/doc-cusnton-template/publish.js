@@ -613,7 +613,7 @@ exports.publish = (taffyData, opts, tutorials) => {
     files = find({ kind: 'file' });
     packages = find({ kind: 'package' });
 
-    generate('JavaliTech documentação do codigo <br> (FRONT END)',
+    generate('Documentação do FRONT END',
         packages.concat(
             [{
                 kind: 'mainpage',
